@@ -83,6 +83,23 @@
     |T3.12 |`app.jar -login q -pass @#$%^&*! -role READ -res A.AA` | 6 | R1.8, R1.9 Нет доступа (выше узла) |
     |T3.13 |`app.jar -role -res -login sasha -pass 123` | 0 | R1.3, R1.10 |
     
+    4. Аккаунтинг (R1.7)
+    
+    | # | Act | Result | Purpose |
+    |:---|---|:---:|:---|
+    |T4.1 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
+    |T4.2 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol ten` | 7 |R1.9 — Некорректная активность, не приводится vol|
+    |T4.3 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1` | 7 |R1.9 — Некорректная активность, не приводится vol<0|
+    |T4.4 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-00 -de 2000-02-15 -vol 10` | 7 |R1.9 — Некорректная активность, не приводится дата ds|
+    |T4.5 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-32 -vol 10` | 7 |R1.9 — Некорректная активность, не приводится дата de|
+    |T4.6 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-02-15 -de 2000-01-15 -vol 10` | 7 |R1.9 — Некорректная активность, ds > ds|
+    |T4.7 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
+    |T4.8 |`app.jar -login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
+    |T4.9 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10` | 0 | R1.3 Успешная авторизация |
+    |T4.10 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10` | 0 | R1.3 Успешная авторизация |
+    |T4.11 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.3 Успешная авторизация |
+    |T4.12 |`app.jar -login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.1 Успешная аутентификация |
+    |T4.13 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |  
     
 ## Этап 1: Работа с консольными параметрами 
 1. Написать тесты на падачу параметров командной строки (R1.12)
