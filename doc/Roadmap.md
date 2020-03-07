@@ -39,13 +39,30 @@
         - r16: res: A.B, role: execute, user: sasha
         - r17: res: A.B.C, role: execute, user: sasha
 2. Записать тесты в test.sh
-    1. Справка:
+    1. Справка (R1.8):
     
     | # | Act | Result | Purpose |
     |:---|---|:---:|:---|
-    |T1.1 |`app.jar`|1, печать справки| R1.8, |
+    |T1.1 |`app.jar`|1, печать справки| R1.8 |
     |T1.2 |`app.jar -h`|1, печать справки| R1.8 |
     |T1.3 |`app.jar -bla` | 0, печать справки| особенности реализации библиотеки |
+    
+    2. Аунтентификация (R1.1)
+        
+    | # | Act | Result | Purpose |
+    |:---|---|:---:|:---|
+    |T2.1 |`app.jar -login sasha -pass 123` | 0 | R1.9, R1.8 | 
+    |T2.2 |`app.jar -pass 123 -login sasha` | 0 | R1.9, R1.10 |     
+    |T2.3.1 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
+    |T2.3.2 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
+    |T2.3.4 |`app.jar -login "" -pass pass` | 2 | R1.9 Неверный формат, логин пустой |
+    |T2.3.3 |`app.jar -login abashkirova -pass pass` | 2 | R1.9 Неверный формат, логин больше 10 символов |
+    |T2.4 |`app.jar -login vasya -pass 123` | 3 | R1.9 Невеизвестный логин | 
+    |T2.5.1 |`app.jar -login admin -pass 1234` | 4 | R1.9 Неверный пароль | 
+    |T2.5.2 |`app.jar -login admin -pass ""` | 4 | R1.9 Неверный пароль, пустой | 
+    |T2.6 |`app.jar -login admin -pass qwerty` | 0 | R1.9 | 
+    |T2.7 |`app.jar -login q -pass @#$%^&*!` | 0 | R1.9 | 
+    |T2.8 |`app.jar -login aleksandra -pass abc` | 0 | R1.9 |
     
 ## Этап 1: Работа с консольными параметрами 
 1. Написать тесты на падачу параметров командной строки (R1.12)
