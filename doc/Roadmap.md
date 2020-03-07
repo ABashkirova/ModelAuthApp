@@ -134,7 +134,7 @@
 12. Создать класс `HelpHandler`
     1. Перенести функцию печати справки в класс `HelpHandler`
     2. Отрефакторить код на работу с классом `HelpHandler`
-14. Написать функции хеширования пароля в классе `AuthenticationService`
+14. Написать функции хеширования пароля в классе `AuthenticationService` - R1.2
     1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String)->String`
     2. Написать функцию генерации соли `generateSalt()->String`
     3. Написать функцию сравнение хешей в `validate(pass: String, usersHash: String) -> Bool` 
@@ -151,7 +151,7 @@
 2. Добавить функцию валидации роли validate(role: String), код 5 - R1.5, R1.8.4
 3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String) -> Bool` 
 (проверяем, что res equal A), код 6 — R1.9
-4. Создать функцию, проверяющую доступ к потомку по родителю `haveParentAccess(res: String, role: String)`
+4. Создать функцию, проверяющую доступ к потомку по родителю `haveParentAccess(res: String, role: String)` - R1.4
 5. Создать перечисление `enum Role` c READ, WRITE, EXECUTE R1.3, R1.5
 6. Создать `data class UsersResources` (R1.3, R1.6) с полями `path: String`, `role: Role`, `user: User` 
 7. Создать список ресурсов с тестовыми данными
@@ -165,7 +165,7 @@
         - resourceExist
         - haveParentAccess
     3. Перенести список тестовых данных
-12. Создать класс `Application`
+12. Создать класс `Application` - R1.11
     1. Создать функцию `printHelp` 
     2. Перенести шаг аутентификации в функцию `startAuthentication(login: String, pass: String, completion: () )`
     3. Создать функцию для шага авторизации `startAuthorization(user: User, res: String, role: String, completion: ())`
@@ -175,16 +175,18 @@
 14. Опубликовать изменения в git
 
 ## Этап 5: Аккаунтинг (R1.7)
-1. Создать функцию, проверяющую валидность даты `validate(date: String)` 
+1. Добавить функцию в `ArgHandler`, проверяющую необходим ли аккаунтинг `accountingIsNeeded()->Bool`
+2. Добавить в `ArgHandler` поля `-ds`, `-de`, `-vol`
+3. Создать функцию, проверяющую валидность даты `validate(date: String)` 
 (проверяем `date as Date`, иначе код 7) - R1.9
-2. Создать функцию, проверяющую валидность объему `validate(vol: String)` 
+4. Создать функцию, проверяющую валидность объему `validate(vol: String)` 
 (проверяем `vol as Int` и положительность результата приведения, иначе код 7) - R1.9
-3. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date)` 
+5. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date)` 
 (проверяем ds.isBefore(de), иначе код 7) - R1.9
-4. Написать шаг аккаунтинга в `Application` в функции 
-`startAccounting(user: User, res: UsersResources, ds: String, de: String, vol: String)`
-5. Создать класс сессии пользователя `UserSession(user:User,res: UsersResources, ds: Date, de: Date, vol: Int)`(R1.7)
-6. Создать класс `AccountService` 
+6. Написать шаг аккаунтинга в `Application` в функции 
+`startAccounting(user: User, res: UsersResources, ds: String, de: String, vol: String)` - R1.11
+7. Создать класс сессии пользователя `UserSession(user:User,res: UsersResources, ds: Date, de: Date, vol: Int)`(R1.7)
+8. Создать класс `AccountService` 
     1. Перенести функции в класс 
         - `validate(date: String)` 
         - `validate(vol: String)`
@@ -192,12 +194,12 @@
     2. Создать коллекцию `UserSession`
     3. Создать метод сохранения активности `writeSession` 
     (записываем в коллекцию все данные аккаунтинга)
-7. Отрефакторить код в `Application` на работу с `AccountService`
-8. Протестировать реализацию автотестами R1.12
-9. Опубликовать изменения в git
+9. Отрефакторить код в `Application` на работу с `AccountService` (вызываем последовательно, после авторизации) - R1.11
+10. Протестировать реализацию автотестами R1.12
+11. Опубликовать изменения в git
 
 ## Этап 6: Сборка требований
-1. Написать процесс AAA (R1.11)
+1. Написать процесс AAA в классе `Application` (R1.11)
     1. Сначала аутентификацию (два параметра и более)
     2. Если успешно, переходим к авторизации (четыре параметра и более)
     3. Если успешно, переходим к аккаунтингу (семь параметров)
