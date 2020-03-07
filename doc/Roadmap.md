@@ -53,16 +53,36 @@
     |:---|---|:---:|:---|
     |T2.1 |`app.jar -login sasha -pass 123` | 0 | R1.9, R1.8 | 
     |T2.2 |`app.jar -pass 123 -login sasha` | 0 | R1.9, R1.10 |     
-    |T2.3.1 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
-    |T2.3.2 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
-    |T2.3.4 |`app.jar -login "" -pass pass` | 2 | R1.9 Неверный формат, логин пустой |
-    |T2.3.3 |`app.jar -login abashkirova -pass pass` | 2 | R1.9 Неверный формат, логин больше 10 символов |
-    |T2.4 |`app.jar -login vasya -pass 123` | 3 | R1.9 Невеизвестный логин | 
-    |T2.5.1 |`app.jar -login admin -pass 1234` | 4 | R1.9 Неверный пароль | 
-    |T2.5.2 |`app.jar -login admin -pass ""` | 4 | R1.9 Неверный пароль, пустой | 
-    |T2.6 |`app.jar -login admin -pass qwerty` | 0 | R1.9 | 
-    |T2.7 |`app.jar -login q -pass @#$%^&*!` | 0 | R1.9 | 
-    |T2.8 |`app.jar -login aleksandra -pass abc` | 0 | R1.9 |
+    |T2.3 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
+    |T2.4 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
+    |T2.5 |`app.jar -login "" -pass pass` | 2 | R1.9 Неверный формат, логин пустой |
+    |T2.6 |`app.jar -login abashkirova -pass pass` | 2 | R1.9 Неверный формат, логин больше 10 символов |
+    |T2.7 |`app.jar -login vasya -pass 123` | 3 | R1.9 Невеизвестный логин | 
+    |T2.8 |`app.jar -login admin -pass 1234` | 4 | R1.9 Неверный пароль | 
+    |T2.9 |`app.jar -login admin -pass ""` | 4 | R1.9 Неверный пароль, пустой | 
+    |T2.10 |`app.jar -login admin -pass qwerty` | 0 | R1.9 | 
+    |T2.11 |`app.jar -login q -pass @#$%^&*!` | 0 | R1.9 | 
+    |T2.12 |`app.jar -login aleksandra -pass abc` | 0 | R1.9 |
+    |T2.13 |`app.jar -h -login aleksandra -pass abc` | 0 | R1.9 Аунтентификация |
+    
+    3. Авторизация (R1.3)
+    
+    | # | Act | Result | Purpose |
+    |:---|---|:---:|:---|
+    |T3.1 |`app.jar -login sasha -pass 123 -role READ -res A` | 0 | R1.3, R1.8, R1.9 Успешный доступ|
+    |T3.2 |`app.jar -login sasha -pass 123 -role DELETE -res A` | 5 | R1.8, R1.9 Неизвестная роль | 
+    |T3.3 |`app.jar -login sasha -pass 123 -role WRITE -res A` | 6 | R1.8, R1.9 Нет доступа (ресурс есть) | 
+    |T3.4 |`app.jar -login sasha -pass 123 -role WRITE -res a.b.c` | 6 | R1.8, R1.9 Нет доступа (ресур не найден) | 
+    |T3.5 |`app.jar -login sasha -pass 123 -role READ -res A.B` | 0 | R1.6 Доступ к потомкам |
+    |T3.6 |`app.jar -login sasha -pass 123 -role READ -res A.B.C.D` | 0 |R1.6, R1.3, R1.8, R1.9 Доступ к потомкам | 
+    |T3.7 |`app.jar -login admin -pass qwerty -role EXECUTE -res A.AA` | 0 | R1.3, R1.8, R1.9 Успешный доступ |
+    |T3.8 |`app.jar -login admin -pass qwerty -role EXECUTE -res A.B` | 6 | R1.3, R1.8, R1.9 Доступ к брату |
+    |T3.9 |`app.jar -login q -pass @#$%^&*! -role READ` | 0 | R1.1, R1.8, R1.9 Успешная аутентификация |
+    |T3.10 |`app.jar -login q -pass 1234 -role DELETE -res A.B` | 4 | R1.1, R1.8, R1.9 Неверный пароль| 
+    |T3.11 |`app.jar -login q -pass @#$%^&*! -role READ -res A.AA.AAA` | 0 | R1.3 Успешный доступ |
+    |T3.12 |`app.jar -login q -pass @#$%^&*! -role READ -res A.AA` | 6 | R1.8, R1.9 Нет доступа (выше узла) |
+    |T3.13 |`app.jar -role -res -login sasha -pass 123` | 0 | R1.3, R1.10 |
+    
     
 ## Этап 1: Работа с консольными параметрами 
 1. Написать тесты на падачу параметров командной строки (R1.12)
