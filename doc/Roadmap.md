@@ -13,6 +13,32 @@
 6. Написать bash скрипт сборки приложения `build.sh` (R1.12)
 7. Написать bash скрипт запуск приложения `run.sh` (R1.12)
 
+## Этап 1: Тестирование (R1.12)
+1. Описать тестовые входные данные
+    1. Описать пользователей
+        - u1: login: sasha, pass: 123
+        - u2: login: admin, pass: qwerty
+        - u3: login: q, pass: @#$%^&*!
+        - u4: login: aleksandra, pass: abc (без ролей)
+    2. Описать ресурсы:
+        - r1: res: A, role: read, user: sasha
+        - r2: res: A.AA, role: write, user: sasha
+        - r3: res: A.AA.AAA, role: execute, user: sasha
+        - r4: res: B, role: execute, user: admin
+        - r5: res: A.B, role: write, user: admin
+        - r6: res: A.B, role: write, user: sasha
+        - r7: res: A.B.C, role: read, user: admin
+        - r8: res: A.B.C, role: write, user: q
+        - r9: res: A.B, role: execute, user: q
+        - r10: res: B, role: read, user: q
+        - r11: res: A.AA.AAA, role: read, user: q
+        - r12: res: A, role: execute, user: q
+        - r13: res: A, role: write, user: admin
+        - r14: res: A.AA, role: execute, user: admin
+        - r15: res: B, role: write, user: sasha
+        - r16: res: A.B, role: execute, user: sasha
+        - r17: res: A.B.C, role: execute, user: sasha
+
 ## Этап 1: Работа с консольными параметрами 
 1. Написать тесты на падачу параметров командной строки (R1.12)
     1. Взять тестовые входные данные.
