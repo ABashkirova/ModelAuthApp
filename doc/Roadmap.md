@@ -96,6 +96,7 @@
     |T4.13 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |
     |T4.14 |`app.jar -res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE ` | 0 | R1.10 Порядок параметров |  
     
+    
 ## Этап 2: Работа с консольными параметрами 
 1. Написать `main` c параметрами командной строки (R1.8)
 2. Написать фукнцию, проверяющую наличие аргументов `argsIsNotEmpty(args: Array<String>)`
@@ -135,49 +136,42 @@
 14. Написать функции хеширования пароля в классе `AuthenticationService`
     1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String)->String`
     2. Написать функцию генерации соли `generateSalt()->String`
-    3. Написать функцию сравнение хешей в `validate(pass: String, usersHash: String) -> Bool` (0 — успех, 4 — не успех (R1.9))
+    3. Написать функцию сравнение хешей в `validate(pass: String, usersHash: String) -> Bool` 
+    (0 — успех, 4 — не успех (R1.9))
     4. Заменить поле в `User` c `pass` на `hash`
     5. Обновить тестовые данные с генерацией `hash`-й
 15. Протестировать реализацию автотестами(R1.12)
 16. Опубликовать изменения в git
 
-## Этап 3: Авторизация
-1. Написать тесты на вторизацию (R1.12)
-    1. Взять тестовые данные
-        1. Авторизация к ресурсу по роли:
-            - Успешная авторизация по логину, паролю и роли `READ`: 
-            ```app.jar -login user -pass mypassword -role read -res A.B.D``` — 0
-            - Успешная авторизация по логину, паролю и роли `WRITE`: 
-            ```app.jar -login author -pass mypass -role write -res A.B.C``` — 0
-            - Успешная авторизация по логину, паролю и роли `EXECUTE`: 
-            ```app.jar -login admin -pass admin -role execute -res A.B.C``` — 0
-            - Повторить неагитивные тесты на коды 2-3-4 для роли read, write и execute соответственно
-        2. Негативные тесты
-            - Неизвестная роль: 
-            ```app.jar -login admin -pass admin -role admin -res A.B.C``` — 5
-            - Неизвестная роль - пустая: 
-            ```app.jar -login admin -pass admin -role -res A.B.C``` — 5
-            - Нет доступа: 
-            ```app.jar -login user mypassword execute A.B.C``` — 6
-            - Нет доступа(ресурс пустой): 
-            ```app.jar -login user -pass mypassword -role execute -res``` — 6
-    2. Дописать `bash` скрипт `test.sh` с тестами 
-    3. Опубликовать изменения в git
-2. Создать `data class Resource` (R1.3, R1.6) с полем `path: String`
-3. Создать перечисление `enum Role` (R1.3,R1.5)
-4. Добавить структуру со связью между ресурсом, пользователем и ролью `data class UsersResources`. Поля: 
-    - `user: User`
-    - `resource: Resource`
-    - `role: Role`
-5. Создать класс `Authorization` (R1.3)
-    - поиск ресурса
-    - проверка доступа к ресурсу (R1.3, R1.4, R1.6), определяя уровень доступа по дереву, возврат кода 6, если доступа нет (R1.9)
-6. Дописать чтение параметрами `res`, `role` (R1.8.4)
-    - Проверка формата ресурса (R1.3)
-    - Проверку роли по списку (R1.5, R1.8.4)
-7. Протестировать реализацию автотестами п.1 (R1.12)
-8. Обновить автотесты, если требуется (R1.12)
-9. Опубликовать изменения в git
+## Этап 4: Авторизация (R1.3)
+1. Создать функцию, проверяющую есть ли доступ у пользователя с такой ролью к ресурсу 
+    `Users.haveAccess(res: String, role: String)` 
+    (проверяем, что user.login equal sasha && role equal READ && res equal A), код 6 
+2. Добавить функцию валидации роли validate(role: String), код 5 - R1.5, R1.8.4
+3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String) -> Bool` 
+(проверяем, что res equal A), код 6 — R1.9
+4. Создать функцию, проверяющую доступ к потомку по родителю `haveParentAccess(res: String, role: String)`
+5. Создать перечисление `enum Role` c READ, WRITE, EXECUTE R1.3, R1.5
+6. Создать `data class UsersResources` (R1.3, R1.6) с полями `path: String`, `role: Role`, `user: User` 
+7. Создать список ресурсов с тестовыми данными
+8. Добавить функцию в `ArgHandler`, проверяющую необходима ли авторизация `authorizationIsNeeded()->Bool`
+9. Добавить в `ArgHandler` поля `-res`, `-role`
+10. Отрефакторить функции на работу с коллекцией 
+11. Создать класс `AuthorizationService` (R1.3)
+    1. Создать функцию поиск ресурса `findBy(res: String)`
+    2. Перенести функции в класс:
+        - haveAccess
+        - resourceExist
+        - haveParentAccess
+    3. Перенести список тестовых данных
+12. Создать класс `Application`
+    1. Создать функцию `printHelp` 
+    2. Перенести шаг аутентификации в функцию `startAuthentication(login: String, pass: String, completion: () )`
+    3. Создать функцию для шага авторизации `startAuthorization(user: User, res: String, role: String, completion: ())`
+    4. Написать функцию, выбирающую последовательность действий `run()` 
+    (проверяем нужна ли справка, проверяем нужно ли аутентифицировать и/или авторизовывать)
+13. Протестировать реализацию автотестами R1.12
+14. Опубликовать изменения в git
 
 ## Этап 4: Аккаунтинг
 1. Написать тесты на вторизацию (R1.12)
