@@ -38,7 +38,7 @@
         - r15: res: B, role: write, user: sasha
         - r16: res: A.B, role: execute, user: sasha
         - r17: res: A.B.C, role: execute, user: sasha
-2. Записать тесты в test.sh
+2. Записать тесты в `test.sh`
     1. Справка (R1.8):
     
     | # | Act | Result | Purpose |
@@ -99,7 +99,8 @@
     |T4.10 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10` | 0 | R1.3 Успешная авторизация |
     |T4.11 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.3 Успешная авторизация |
     |T4.12 |`app.jar -login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.1 Успешная аутентификация |
-    |T4.13 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |  
+    |T4.13 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |
+    |T4.14 |`app.jar -res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE ` | 0 | R1.10 Порядок параметров |  
     
 ## Этап 1: Работа с консольными параметрами 
 1. Написать тесты на падачу параметров командной строки (R1.12)
