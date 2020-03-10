@@ -49,11 +49,11 @@
     |T2.2 |`app.jar -pass 123 -login sasha` | 0 | R1.9, R1.10 |     
     |T2.3 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
     |T2.4 |`app.jar -login SASHA -pass 123` | 2 | R1.9 Неверный формат, логин прописными |
-    |T2.5 |`app.jar -login "" -pass pass` | 2 | R1.9 Неверный формат, логин пустой |
+    |T2.5 |`app.jar -login -pass pass` | 2 | R1.9 Неверный формат, логин пустой |
     |T2.6 |`app.jar -login abashkirova -pass pass` | 2 | R1.9 Неверный формат, логин больше 10 символов |
     |T2.7 |`app.jar -login vasya -pass 123` | 3 | R1.9 Невеизвестный логин | 
     |T2.8 |`app.jar -login admin -pass 1234` | 4 | R1.9 Неверный пароль | 
-    |T2.9 |`app.jar -login admin -pass ""` | 4 | R1.9 Неверный пароль, пустой | 
+    |T2.9 |`app.jar -login admin -pass ` | 4 | R1.9 Неверный пароль, пустой | 
     |T2.10 |`app.jar -login admin -pass qwerty` | 0 | R1.9 | 
     |T2.11 |`app.jar -login q -pass @#$%^&*!` | 0 | R1.9 | 
     |T2.12 |`app.jar -login aleksandra -pass abc` | 0 | R1.9 |
@@ -75,7 +75,7 @@
     |T3.10 |`app.jar -login q -pass 1234 -role DELETE -res A.B` | 4 | R1.1, R1.8, R1.9 Неверный пароль| 
     |T3.11 |`app.jar -login q -pass @#$%^&*! -role READ -res A.AA.AAA` | 0 | R1.3 Успешный доступ |
     |T3.12 |`app.jar -login q -pass @#$%^&*! -role READ -res A.AA` | 6 | R1.8, R1.9 Нет доступа (выше узла) |
-    |T3.13 |`app.jar -role -res -login sasha -pass 123` | 0 | R1.3, R1.10 |
+    |T3.13 |`app.jar -role READ -res А -login sasha -pass 123` | 0 | R1.3, R1.10 |
     
     4. Аккаунтинг (R1.7)
     
@@ -83,120 +83,121 @@
     |:---|---|:---:|:---|
     |T4.1 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
     |T4.2 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol ten` | 7 |R1.9 — Некорректная активность, не приводится vol|
-    |T4.3 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1` | 7 |R1.9 — Некорректная активность, не приводится vol<0|
+    |T4.3 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1` | 7 |R1.9 — Некорректная активность, не приводится vol < 0|
     |T4.4 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-00 -de 2000-02-15 -vol 10` | 7 |R1.9 — Некорректная активность, не приводится дата ds|
     |T4.5 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-32 -vol 10` | 7 |R1.9 — Некорректная активность, не приводится дата de|
-    |T4.6 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-02-15 -de 2000-01-15 -vol 10` | 7 |R1.9 — Некорректная активность, ds > ds|
-    |T4.7 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
-    |T4.8 |`app.jar -login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
-    |T4.9 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10` | 0 | R1.3 Успешная авторизация |
-    |T4.10 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10` | 0 | R1.3 Успешная авторизация |
-    |T4.11 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.3 Успешная авторизация |
-    |T4.12 |`app.jar -login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.1 Успешная аутентификация |
-    |T4.13 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |
-    |T4.14 |`app.jar -res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE ` | 0 | R1.10 Порядок параметров |  
-    
-    
+    |T4.6 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-02-15 -de 2000-01-15 -vol 10` | 7 |R1.9 — Некорректная активность, de > ds|
+    |T4.7 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2120-02-15 -de 2120-01-15 -vol 10` | 7 |R1.9 — Некорректная активность, today < ds < de|
+    |T4.8 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
+    |T4.9 |`app.jar -login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 10` | 0 |R1.7,R1.8,R1.9|
+    |T4.10 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10` | 0 | R1.3 Успешная авторизация (параметров <7) |
+    |T4.11 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10` | 0 | R1.3 Успешная авторизация (параметров <7) |
+    |T4.12 |`app.jar -login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.3 Успешная авторизация (параметров <7) |
+    |T4.13 |`app.jar -login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 0 | R1.1 Успешная аутентификация |
+    |T4.14 |`app.jar -login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15` | 2 | R1.1 Неверный пароль |
+    |T4.15 |`app.jar -res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE ` | 0 | R1.10 Порядок параметров |  
+    |T4.16 |`app.jar -login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.0` | 7 |R1.9 — Некорректная активность, не приводится vol |
     
 ## Этап 2: Работа с консольными параметрами 
 1. Написать `main` c параметрами командной строки (R1.8)
-2. Написать фукнцию, проверяющую наличие аргументов `argsIsNotEmpty(args: Array<String>)`
+2. Написать фукнцию, проверяющую наличие аргументов `argsAreNotEmpty(args: Array<String>)`
 3. Создать метод печати справки `printHelp()` и `System.exit(1)` (R1.8.1, R1.8.2, R1.8.6)
-4. Создать функцию, проверяющую необходима ли справка `helpIsNeeded(args: Array<String>) -> Bool` (`arg[0] equal "-h"`)
+4. Создать функцию, проверяющую необходима ли справка `helpIsNeeded(args: Array<String>): Bool` (`arg[0] equal "-h"`)
 5. Печатать во всех остальных случаях справку и код 0 (`System.exit(0)`)
 6. Запустить автотесты
 7. Опубликовать изменения в git
 
 ## Этап 3: Аутентификация пользователя (R1.1)
-1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>) -> Bool`
+1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Bool`
 (args[0] equal -login && args[2] equal -path)
-2. Создать функцию, валидирующую надо логин `validate(login: String) `
+2. Создать функцию, валидирующую надо логин `validate(login: String): Bool`
 (проверяем формат через regexp `[a-z]{1-10}`, код 2 ) - R1.9, R1.8.3
 3. Создать функцию, проверяющую что логин существует `findUserBy(login: String)`
 (проверяем, что login equal sasha)
-4. Создать функцию, проверяющую валидность пароля `validate(pass: String, for login: String) -> Bool`
+4. Создать функцию, проверяющую валидность пароля `validate(pass: String, for login: String): Bool`
  (проверяем, что login equal sasha && pass equal 123, код 3, если не найден) - R1.9
 5. Создать `data class User` с логином и паролем - R1.1
 6. Создать коллекцию `Users`, заполненную тестовыми данными
 7. Отефакторить методы на работу с коллекцией пользователей
-8. Создать класс `ArgHandler` (поля-аргументы -h, -login, -pass) для разбора параметров
+8. Создать класс `ArgHandler` (поля-аргументы `-h`, `-login`, `-pass`) для разбора параметров c функцией `getValue(key: String): String?` — R1.10
 9. Перенести функции в `ArgHandler`:
-     - `argsIsNotEmpty(args: Array<String>) -> Bool`, 
-     - `helpIsNeeded(args: Array<String>) -> Bool`, 
-     - `authenticationIsNeeded(args: Array<String>) -> Bool`
+     - `helpIsNeeded(args: Array<String>): Bool`, 
+     - `authenticationIsNeeded(args: Array<String>): Bool`
 10. Отрефакторим код, чтобы использовать `ArgHandler`
 11. Создать класс `AuthenticationService` для аутентификации пользователя по логину и паролю - R1.1
     1. Перенести коллекцию пользователей в класс
     2. Перенести функции
-        - `User.validateUserLogin() -> Bool`
+        - `User.validateUserLogin(): Bool`
         - `findUser(user: User)`
         - `validate(pass: String, for login: String)`
 12. Создать класс `HelpHandler`
     1. Перенести функцию печати справки в класс `HelpHandler`
     2. Отрефакторить код на работу с классом `HelpHandler`
+13. Добавить в класс `User` поля `salt` и `hash`, а `pass` — удалить — R1.2
 14. Написать функции хеширования пароля в классе `AuthenticationService` - R1.2
-    1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String)->String`
-    2. Написать функцию генерации соли `generateSalt()->String`
-    3. Написать функцию сравнение хешей в `validate(pass: String, usersHash: String) -> Bool` 
+    1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String): String`
+    2. Написать функцию сравнение хешей в `isEqualsHash(pass: String, usersHash: String): Bool` 
     (0 — успех, 4 — не успех (R1.9))
-    4. Заменить поле в `User` c `pass` на `hash`
-    5. Обновить тестовые данные с генерацией `hash`-й
+    3. Обновить тестовые данные с `salt` и `hash`
 15. Протестировать реализацию автотестами(R1.12)
 16. Опубликовать изменения в git
 
 ## Этап 4: Авторизация (R1.3)
 1. Создать функцию, проверяющую есть ли доступ у пользователя с такой ролью к ресурсу 
-    `Users.haveAccess(res: String, role: String)` 
+    `haveAccess(res: String, role: String)` 
     (проверяем, что user.login equal sasha && role equal READ && res equal A), код 6 
-2. Добавить функцию валидации роли validate(role: String), код 5 - R1.5, R1.8.4
-3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String) -> Bool` 
+2. Добавить функцию валидации роли `validate(role: String)`, код 5 - R1.5, R1.8.4
+3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String): Bool` 
 (проверяем, что res equal A), код 6 — R1.9
 4. Создать функцию, проверяющую доступ к потомку по родителю `haveParentAccess(res: String, role: String)` - R1.4
 5. Создать перечисление `enum Role` c READ, WRITE, EXECUTE R1.3, R1.5
 6. Создать `data class UsersResources` (R1.3, R1.6) с полями `path: String`, `role: Role`, `user: User` 
 7. Создать список ресурсов с тестовыми данными
-8. Добавить функцию в `ArgHandler`, проверяющую необходима ли авторизация `authorizationIsNeeded()->Bool`
+8. Добавить функцию в `ArgHandler`, проверяющую необходима ли авторизация `authorizationIsNeeded(): Bool`
 9. Добавить в `ArgHandler` поля `-res`, `-role`
 10. Отрефакторить функции на работу с коллекцией 
 11. Создать класс `AuthorizationService` (R1.3)
-    1. Создать функцию поиск ресурса `findBy(res: String)`
+    1. Создать функцию поиск ресурса `findBy(res: String): List< Pair< String, Role>>` 
+    (найдет для этого user все возможные доступы, например для sasha по ресурсу A.AA вернется список A.AA-Write, A - Read)
     2. Перенести функции в класс:
-        - haveAccess
-        - resourceExist
-        - haveParentAccess
+        - `haveParentAccess(res: String, role: String)`
+        - `haveAccess(res: String, role: String): Bool`
+        - `resourceExist(res: String): Bool`
     3. Перенести список тестовых данных
 12. Создать класс `Application` - R1.11
-    1. Создать функцию `printHelp` 
-    2. Перенести шаг аутентификации в функцию `startAuthentication(login: String, pass: String, completion: () )`
-    3. Создать функцию для шага авторизации `startAuthorization(user: User, res: String, role: String, completion: ())`
-    4. Написать функцию, выбирающую последовательность действий `run()` 
+    1. Создать метод `printHelp()` 
+    2. Перенести шаг аутентификации в функцию `startAuthentication(login: String, pass: String): Int`
+    3. Создать функцию для шага авторизации `startAuthorization(user: User, res: String, role: String): Int`
+    4. Написать функцию, выбирающую последовательность действий `run()` (справка или сценарий авторизации)
     (проверяем нужна ли справка, проверяем нужно ли аутентифицировать и/или авторизовывать)
 13. Протестировать реализацию автотестами R1.12
 14. Опубликовать изменения в git
 
 ## Этап 5: Аккаунтинг (R1.7)
-1. Добавить функцию в `ArgHandler`, проверяющую необходим ли аккаунтинг `accountingIsNeeded()->Bool`
+1. Добавить функцию в `ArgHandler`, проверяющую необходим ли аккаунтинг `accountingIsNeeded(): Bool`
 2. Добавить в `ArgHandler` поля `-ds`, `-de`, `-vol`
-3. Создать функцию, проверяющую валидность даты `validate(date: String)` 
-(проверяем `date as Date`, иначе код 7) - R1.9
-4. Создать функцию, проверяющую валидность объему `validate(vol: String)` 
-(проверяем `vol as Int` и положительность результата приведения, иначе код 7) - R1.9
-5. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date)` 
-(проверяем ds.isBefore(de), иначе код 7) - R1.9
-6. Написать шаг аккаунтинга в `Application` в функции 
-`startAccounting(user: User, res: UsersResources, ds: String, de: String, vol: String)` - R1.11
-7. Создать класс сессии пользователя `UserSession(user:User,res: UsersResources, ds: Date, de: Date, vol: Int)`(R1.7)
-8. Создать класс `AccountService` 
+3. Создать функцию в `ArgHandler` приводим строку к дате `parse(date: String): Date?` 
+(если неуспешно код 7) - R1.9
+4. Создать функцию в `ArgHandler`, приводим строку к `Int` `parse(vol: String): Int?` 
+(если неуспешно код 7) - R1.9
+5. Создать функцию, проверяющую возможен ли аккаунтинг `accountingIsPossible(): Bool` 
+(приведем типы здесь, проверим на null)
+6. Создать функцию, проверяющую объем на неотрицательность`validate(volume: Int?): Bool`
+7. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date): Bool` 
+(проверяем ds.isBefore(de))
+8. Написать шаг аккаунтинга в `Application` в функции 
+`startAccounting(user: User, res: UsersResources, ds: String, de: String, vol: String): Int` - R1.11
+9. Создать класс сессии пользователя `UserSession(user: User, res: UsersResources, ds: Date, de: Date, vol: Int)`(R1.7)
+10. Создать класс `AccountService` c коллекцией  `UserSession`
     1. Перенести функции в класс 
-        - `validate(date: String)` 
-        - `validate(vol: String)`
-        - `validateActivity(ds: Date, de: Date)` 
-    2. Создать коллекцию `UserSession`
-    3. Создать метод сохранения активности `writeSession` 
-    (записываем в коллекцию все данные аккаунтинга)
-9. Отрефакторить код в `Application` на работу с `AccountService` (вызываем последовательно, после авторизации) - R1.11
-10. Протестировать реализацию автотестами R1.12
-11. Опубликовать изменения в git
+        - `validate(volume: Int): Bool`
+        - `validateActivity(ds: Date, de: Date): Bool` 
+    Если одна из них неверна, вернем код 7
+    2. Создать метод сохранения активности `write(session: UserSession)` 
+    (записываем в коллекцию все данные аккаунтинга — пользователь, роль, даты доступа и потребленный объем — put)
+11. Отрефакторить код в `Application` на работу с `AccountService` (вызываем последовательно, после авторизации) - R1.11
+12. Протестировать реализацию автотестами R1.12
+13. Опубликовать изменения в git
 
 ## Этап 6: Сборка требований
 1. Написать процесс AAA в классе `Application` (R1.11)
