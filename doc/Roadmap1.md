@@ -111,7 +111,7 @@
 1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Boolean`
 (args[0] equal -login && args[2] equal -path)
 2. Создать функцию, валидирующую надо логин `validateogin(login: String): Boolean`
-(проверяем формат через regexp `[a-z]{1-10}`, код 2 ) - R1.9, R1.8.3
+(проверяем формат через regexp `[a-z]{1,10}`, код 2 ) - R1.9, R1.8.3
 3. Создать функцию, проверяющую что логин существует `findUserBy(login: String)`
 (проверяем, что login equal sasha)
 4. Создать функцию, проверяющую валидность пароля `validatePass(pass: String, for login: String): Boolean`
