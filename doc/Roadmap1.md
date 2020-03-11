@@ -158,7 +158,7 @@
 9. Добавить в `ArgHandler` поля `-res`, `-role`
 10. Отрефакторить функции на работу с коллекцией 
 11. Создать класс `AuthorizationService` (R1.3)
-    1. Создать функцию поиск ресурса `findBy(res: String): List< Pair< String, Role>>` 
+    1. Создать функцию поиск ресурса `getResourcesRoleBy(path: String): List< Pair< String, Role>>` 
     (найдет для этого user все возможные доступы, например для sasha по ресурсу A.AA вернется список A.AA-Write, A - Read)
     2. Перенести функции в класс:
         - `haveParentAccess(res: String, role: String)`
