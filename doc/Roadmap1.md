@@ -102,34 +102,34 @@
 1. Написать `main` c параметрами командной строки (R1.8)
 2. Написать фукнцию, проверяющую наличие аргументов `argsAreNotEmpty(args: Array<String>)`
 3. Создать метод печати справки `printHelp()` и `System.exit(1)` (R1.8.1, R1.8.2, R1.8.6)
-4. Создать функцию, проверяющую необходима ли справка `helpIsNeeded(args: Array<String>): Bool` (`arg[0] equal "-h"`)
+4. Создать функцию, проверяющую необходима ли справка `helpIsNeeded(args: Array<String>): Boolean` (`arg[0] equal "-h"`)
 5. Печатать во всех остальных случаях справку и код 0 (`System.exit(0)`)
 6. Запустить автотесты
 7. Опубликовать изменения в git
 
 ## Этап 3: Аутентификация пользователя (R1.1)
-1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Bool`
+1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Boolean`
 (args[0] equal -login && args[2] equal -path)
-2. Создать функцию, валидирующую надо логин `validate(login: String): Bool`
+2. Создать функцию, валидирующую надо логин `validateogin(login: String): Boolean`
 (проверяем формат через regexp `[a-z]{1-10}`, код 2 ) - R1.9, R1.8.3
 3. Создать функцию, проверяющую что логин существует `findUserBy(login: String)`
 (проверяем, что login equal sasha)
-4. Создать функцию, проверяющую валидность пароля `validate(pass: String, for login: String): Bool`
+4. Создать функцию, проверяющую валидность пароля `validatePass(pass: String, for login: String): Boolean`
  (проверяем, что login equal sasha && pass equal 123, код 3, если не найден) - R1.9
 5. Создать `data class User` с логином и паролем - R1.1
 6. Создать коллекцию `Users`, заполненную тестовыми данными
 7. Отефакторить методы на работу с коллекцией пользователей
 8. Создать класс `ArgHandler` (поля-аргументы `-h`, `-login`, `-pass`) для разбора параметров c функцией `getValue(key: String): String?` — R1.10
 9. Перенести функции в `ArgHandler`:
-     - `helpIsNeeded(args: Array<String>): Bool`, 
-     - `authenticationIsNeeded(args: Array<String>): Bool`
+     - `helpIsNeeded(args: Array<String>): Boolean`, 
+     - `authenticationIsNeeded(args: Array<String>): Boolean`
 10. Отрефакторим код, чтобы использовать `ArgHandler`
 11. Создать класс `AuthenticationService` для аутентификации пользователя по логину и паролю - R1.1
     1. Перенести коллекцию пользователей в класс
     2. Перенести функции
-        - `User.validateUserLogin(): Bool`
+        - `User.validateUserLogin(): Boolean`
         - `findUser(user: User)`
-        - `validate(pass: String, for login: String)`
+        - `validatePass(pass: String, for login: String)`
 12. Создать класс `HelpHandler`
     1. Перенести функцию печати справки в класс `HelpHandler`
     2. Отрефакторить код на работу с классом `HelpHandler`
@@ -137,7 +137,7 @@
 14. Написать функции хеширования пароля в классе `AuthenticationService` - R1.2
     1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String): String` 
     (встроенная библиотека `MessageDigest`, алгоритм "SHA-256")
-    2. Написать функцию сравнение хешей в `isEqualsHash(pass: String, usersHash: String): Bool` 
+    2. Написать функцию сравнение хешей в `isEqualsHash(pass: String, usersHash: String): Boolean` 
     (0 — успех, 4 — не успех (R1.9))
     3. Обновить тестовые данные с `salt` и `hash`
 15. Протестировать реализацию автотестами(R1.12)
@@ -147,14 +147,14 @@
 1. Создать функцию, проверяющую есть ли доступ у пользователя с такой ролью к ресурсу 
     `haveAccess(res: String, role: String)` 
     (проверяем, что user.login equal sasha && role equal READ && res equal A), код 6 
-2. Добавить функцию валидации роли `validate(role: String)`, код 5 - R1.5, R1.8.4
-3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String): Bool` 
+2. Добавить функцию валидации роли `validateRole(role: String)`, код 5 - R1.5, R1.8.4
+3. Создать функцию, проверяющую существует ли такой ресурс в списке `resourceExist(res: String): Boolean` 
 (проверяем, что res equal A), код 6 — R1.9
 4. Создать функцию, проверяющую доступ к потомку по родителю `haveParentAccess(res: String, role: String)` - R1.4
 5. Создать перечисление `enum Role` c READ, WRITE, EXECUTE R1.3, R1.5
 6. Создать `data class UsersResources` (R1.3, R1.6) с полями `path: String`, `role: Role`, `user: User` 
 7. Создать список ресурсов с тестовыми данными
-8. Добавить функцию в `ArgHandler`, проверяющую необходима ли авторизация `authorizationIsNeeded(): Bool`
+8. Добавить функцию в `ArgHandler`, проверяющую необходима ли авторизация `authorizationIsNeeded(): Boolean`
 9. Добавить в `ArgHandler` поля `-res`, `-role`
 10. Отрефакторить функции на работу с коллекцией 
 11. Создать класс `AuthorizationService` (R1.3)
@@ -162,8 +162,8 @@
     (найдет для этого user все возможные доступы, например для sasha по ресурсу A.AA вернется список A.AA-Write, A - Read)
     2. Перенести функции в класс:
         - `haveParentAccess(res: String, role: String)`
-        - `haveAccess(res: String, role: String): Bool`
-        - `resourceExist(res: String): Bool`
+        - `haveAccess(res: String, role: String): Boolean`
+        - `resourceExist(res: String): Boolean`
     3. Перенести список тестовых данных
 12. Создать класс `Application` - R1.11
     1. Создать метод `printHelp()` 
@@ -175,24 +175,24 @@
 14. Опубликовать изменения в git
 
 ## Этап 5: Аккаунтинг (R1.7)
-1. Добавить функцию в `ArgHandler`, проверяющую необходим ли аккаунтинг `accountingIsNeeded(): Bool`
+1. Добавить функцию в `ArgHandler`, проверяющую необходим ли аккаунтинг `accountingIsNeeded(): Boolean`
 2. Добавить в `ArgHandler` поля `-ds`, `-de`, `-vol`
 3. Создать функцию в `ArgHandler` приводим строку к дате `parse(date: String): Date?` 
 (если неуспешно код 7) - R1.9
 4. Создать функцию в `ArgHandler`, приводим строку к `Int` `parse(vol: String): Int?` 
 (если неуспешно код 7) - R1.9
-5. Создать функцию, проверяющую возможен ли аккаунтинг `accountingIsPossible(): Bool` 
+5. Создать функцию, проверяющую возможен ли аккаунтинг `accountingIsPossible(): Boolean` 
 (приведем типы здесь, проверим на null)
-6. Создать функцию, проверяющую объем на неотрицательность`validate(volume: Int?): Bool`
-7. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date): Bool` 
+6. Создать функцию, проверяющую объем на неотрицательность`validateVolume(volume: Int?): Boolean`
+7. Создаем функцию, проверяющую последовательность дат `validateActivity(ds: Date, de: Date): Boolean` 
 (проверяем ds.isBefore(de))
 8. Написать шаг аккаунтинга в `Application` в функции 
 `startAccounting(user: User, res: UsersResources, ds: String, de: String, vol: String): Int` - R1.11
 9. Создать класс сессии пользователя `UserSession(user: User, res: UsersResources, ds: Date, de: Date, vol: Int)`(R1.7)
 10. Создать класс `AccountService` c коллекцией  `UserSession`
     1. Перенести функции в класс 
-        - `validate(volume: Int): Bool`
-        - `validateActivity(ds: Date, de: Date): Bool` 
+        - `validateVolume(volume: Int): Boolean`
+        - `validateActivity(ds: Date, de: Date): Boolean` 
     Если одна из них неверна, вернем код 7
     2. Создать метод сохранения активности `write(session: UserSession)` 
     (записываем в коллекцию все данные аккаунтинга — пользователь, роль, даты доступа и потребленный объем — put)
