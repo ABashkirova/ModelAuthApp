@@ -135,7 +135,8 @@
     2. Отрефакторить код на работу с классом `HelpHandler`
 13. Добавить в класс `User` поля `salt` и `hash`, а `pass` — удалить — R1.2
 14. Написать функции хеширования пароля в классе `AuthenticationService` - R1.2
-    1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String): String`
+    1. Написать функцию получения хеша по паролю `generateHash(pass: String, salt: String): String` 
+    (встроенная библиотека `MessageDigest`, алгоритм "SHA-256")
     2. Написать функцию сравнение хешей в `isEqualsHash(pass: String, usersHash: String): Bool` 
     (0 — успех, 4 — не успех (R1.9))
     3. Обновить тестовые данные с `salt` и `hash`
