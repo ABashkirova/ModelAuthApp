@@ -179,7 +179,7 @@
 2. Добавить в `ArgHandler` поля `-ds`, `-de`, `-vol`
 3. Создать функцию в `ArgHandler` приводим строку к дате `parse(date: String): Date?` 
 (если неуспешно код 7) - R1.9
-4. Создать функцию в `ArgHandler`, приводим строку к `Int` `parse(vol: String): Int?` 
+4. Создать функцию в `ArgHandler`, приводим строку к `Int`с помощью`String.toIntOrNull` 
 (если неуспешно код 7) - R1.9
 5. Создать функцию, проверяющую возможен ли аккаунтинг `accountingIsPossible(): Boolean` 
 (приведем типы здесь, проверим на null)
