@@ -110,11 +110,11 @@
 ## Этап 3: Аутентификация пользователя (R1.1)
 1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Boolean`
 (args[0] equal -login && args[2] equal -path)
-2. Создать функцию, валидирующую надо логин `validateogin(login: String): Boolean`
+2. Создать функцию, валидирующую надо логин `validateLogin(login: String): Boolean`
 (проверяем формат через regexp `[a-z]{1,10}`, код 2 ) - R1.9, R1.8.3
-3. Создать функцию, проверяющую что логин существует `findUserBy(login: String)`
+3. Создать функцию, проверяющую что логин существует `loginExists(login: String): Boolean`
 (проверяем, что login equal sasha)
-4. Создать функцию, проверяющую валидность пароля `validatePass(pass: String, for login: String): Boolean`
+4. Создать функцию, проверяющую валидность пароля `validatePassForLogin(pass: String, login: String): Boolean`
  (проверяем, что login equal sasha && pass equal 123, код 3, если не найден) - R1.9
 5. Создать `data class User` с логином и паролем - R1.1
 6. Создать коллекцию `Users`, заполненную тестовыми данными
@@ -127,9 +127,9 @@
 11. Создать класс `AuthenticationService` для аутентификации пользователя по логину и паролю - R1.1
     1. Перенести коллекцию пользователей в класс
     2. Перенести функции
-        - `User.validateUserLogin(): Boolean`
+        - `validateUserLogin(login: String): Boolean`
         - `findUser(user: User)`
-        - `validatePass(pass: String, for login: String)`
+        - `validatePassForLogin(pass: String, login: String): Boolean`
 12. Создать класс `HelpHandler`
     1. Перенести функцию печати справки в класс `HelpHandler`
     2. Отрефакторить код на работу с классом `HelpHandler`
