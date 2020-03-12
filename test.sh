@@ -110,21 +110,24 @@ testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-32
 ##T4.6
 testcase "-login sasha -pass 123 -role READ -res A -ds 2000-02-15 -de 2000-01-15 -vol 10" 7 "T4.6: R1.9 — Некорректная активность, ds > ds"
 ##T4.7
-testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 20" 0 "T4.7: R1.7,R1.8,R1.9 Успешный аккаунитнг"
+testcase "-login sasha -pass 123 -role READ -res A -ds 2120-02-15 -de 2120-01-15 -vol 10" 7 "T4.7: R1.9 — Некорректная активность, today < ds < de"
 ##T4.8
-testcase "-login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 100" 0 "T4.8: R1.7,R1.8,R1.9 Успешный аккаунитнг"
+testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 20" 0 "T4.8: R1.7,R1.8,R1.9 Успешный аккаунитнг"
 ##T4.9
-testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10" 0 "T4.9: R1.3 Успешная авторизация(не передан de)"
+testcase "-login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 100" 0 "T4.9: R1.7,R1.8,R1.9 Успешный аккаунитнг"
 ##T4.10
-testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10" 0 "T4.10: R1.3 Успешная авторизация(не передан ds)"
+testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10" 0 "T4.10: R1.3 Успешная авторизация(не передан de)"
 ##T4.11
-testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.11: R1.3 Успешная авторизация(не передан vol)"
+testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10" 0 "T4.11: R1.3 Успешная авторизация(не передан ds)"
 ##T4.12
-testcase "-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.12: R1.1 Успешная аутентификация(не передан vol, несуществующая роль)"
+testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.12: R1.3 Успешная авторизация(не передан vol)"
 ##T4.13
-testcase "-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 2 "T4.13: R1.1 Неверный пароль"
+testcase "-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.13: R1.1 Успешная аутентификация(не передан vol, несуществующая роль)"
 ##T4.14
-testcase "-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE" 0 "T4.14: R1.10 Успешный аккаунитнг, Порядок параметров"
-
+testcase "-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 2 "T4.14: R1.1 Неверный пароль"
+##T4.15
+testcase "-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE" 0 "T4.15: R1.10 Успешный аккаунитнг, Порядок параметров"
+##T4.16
+testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.0" 7 "T4.16 R1.9 — Некорректная активность, не приводится vol"
 
 echo -e "Tests run: $TESTS_RUN, Success: ${GREEN}$TEST_SUCCESS${NC}, Failures: ${RED}$TEST_FAILURES${NC}"
