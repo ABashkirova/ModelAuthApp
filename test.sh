@@ -1,19 +1,31 @@
 #!/usr/bin/env bash
+# coloring output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;32m'
+NC='\033[0m'
+# counting tests
+TESTS_RUN=0
+TEST_FAILURES=0
+TEST_SUCCESS=0
 
 function testcase {
     ACT=$1;
     EXPECTED_CODE=$2;
     PURPOSE=$3
 
-    echo -e "$PURPOSE"
-    echo "java -jar app.jar $ACT"
+    echo -e "${YELLOW}$PURPOSE${NC}"
+    echo $ACT
 
-    ./run.sh $ACT
+    OUTPUT=`./run.sh $ACT`
     RES=$?
+    let "TESTS_RUN+=1"
     if [ $RES -eq $EXPECTED_CODE ]; then
-        echo -e "Test passed"
+        echo -e "${GREEN}✅  Test passed${NC}"
+        let "TEST_SUCCESS+=1"
     else
-        echo -e "Test failed. Expected $EXPECTED_CODE. Actual $RES"
+        echo -e "${RED}🚫 Test failed. Expected $EXPECTED_CODE. Actual $RES${NC}"
+        let "TEST_FAILURES+=1"
     fi
     echo
 }
@@ -113,3 +125,6 @@ testcase "-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 200
 testcase "-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 2 "T4.13: R1.1 Неверный пароль"
 ##T4.14
 testcase "-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE" 0 "T4.14: R1.10 Успешный аккаунитнг, Порядок параметров"
+
+
+echo -e "Tests run: $TESTS_RUN, Success: ${GREEN}$TEST_SUCCESS${NC}, Failures: ${RED}$TEST_FAILURES${NC}"
