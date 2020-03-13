@@ -6,9 +6,14 @@ fun main(args: Array<String>) {
             printHelp()
             exitProcess(status = 1)
         }
+
         authenticationIsNeeded(args) -> {
-            exitProcess(status = 0)
+            when {
+                validateLogin(args[1]) -> exitProcess(status = 0)
+                else -> exitProcess(status = 2)
+            }
         }
+
         else -> {
             printHelp()
             exitProcess(status = 0)
@@ -17,8 +22,12 @@ fun main(args: Array<String>) {
 }
 
 fun authenticationIsNeeded(args: Array<String>): Boolean = when {
-    argsAreNotEmpty(args) -> args[0] == "-login" && args[2] == "-pass"
+    argsAreNotEmpty(args) && args.size >= 4 -> args[0] == "-login" && args[2] == "-pass"
     else -> false
+}
+
+fun validateLogin(login: String): Boolean {
+    return login.matches(regex = "[a-z]{1,10}".toRegex())
 }
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
