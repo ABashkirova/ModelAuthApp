@@ -1,24 +1,31 @@
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+    val exitCode: Int
     when {
         helpIsNeeded(args) -> {
+            exitCode = 1
             printHelp()
-            exitProcess(status = 1)
         }
 
         authenticationIsNeeded(args) -> {
-            when {
-                validateLogin(args[1]) -> exitProcess(status = 0)
-                else -> exitProcess(status = 2)
+            exitCode = when {
+                validateLogin(args[1]) -> {
+                    when {
+                        loginExists(args[1]) -> 0
+                        else -> 3
+                    }
+                }
+                else -> 2
             }
         }
-
         else -> {
+            exitCode = 0
             printHelp()
-            exitProcess(status = 0)
         }
     }
+
+    exitProcess(status = exitCode)
 }
 
 fun authenticationIsNeeded(args: Array<String>): Boolean = when {
@@ -28,6 +35,10 @@ fun authenticationIsNeeded(args: Array<String>): Boolean = when {
 
 fun validateLogin(login: String): Boolean {
     return login.matches(regex = "[a-z]{1,10}".toRegex())
+}
+
+fun loginExists(login: String): Boolean {
+    return login == "sasha"
 }
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
