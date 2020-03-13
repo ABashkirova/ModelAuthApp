@@ -5,13 +5,6 @@ import service.AuthenticationService
 import service.HelpService
 import kotlin.system.exitProcess
 
-val users = listOf(
-    User(login = "sasha", password = "123"),
-    User(login = "admin", password = "qwerty"),
-    User(login = "q", password = "@#\$%^&*!"),
-    User(login = "aleksandra", password = "abc")
-)
-
 fun main(args: Array<String>) {
     val argHandler = ArgHandler(args)
     val helpService = HelpService()
