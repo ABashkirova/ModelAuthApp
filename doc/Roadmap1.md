@@ -114,7 +114,7 @@
 
 ## Этап 3: Аутентификация пользователя (R1.1)
 1. Создать функцию, проверяющую надо ли аутентифицировать `authenticationIsNeeded(args: Array<String>): Boolean`
-(args[0] equal -login && args[2] equal -path)
+(args[0] equal -login && args[2] equal -pass)
 2. Создать функцию, валидирующую надо логин `validateLogin(login: String): Boolean`
 (проверяем формат через regexp `[a-z]{1,10}`, код 2 ) - R1.9, R1.8.3
 3. Создать функцию, проверяющую что логин существует `loginExists(login: String): Boolean`
