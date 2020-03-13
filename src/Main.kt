@@ -2,6 +2,7 @@ import controller.ArgHandler
 import controller.ArgKey
 import model.User
 import service.AuthenticationService
+import service.HelpService
 import kotlin.system.exitProcess
 
 val users = listOf(
@@ -13,12 +14,12 @@ val users = listOf(
 
 fun main(args: Array<String>) {
     val argHandler = ArgHandler(args)
-
+    val helpService = HelpService()
     val exitCode: Int
     when {
         argHandler.helpIsNeeded() -> {
             exitCode = 1
-            printHelp()
+            helpService.printHelp()
         }
 
         argHandler.authenticationIsNeeded() -> {
@@ -37,31 +38,9 @@ fun main(args: Array<String>) {
         }
         else -> {
             exitCode = 0
-            printHelp()
+            helpService.printHelp()
         }
     }
 
     exitProcess(status = exitCode)
-}
-
-fun printHelp() {
-    """
-        Возможные аргументы программы:
-        -h                              - Вызов справки
-        
-        Аутентифицироваться 
-        -login  <string>                - Логин пользователя, строка, строчные буквы. Не более 10 символов
-        -pass   <string>                - Пароль пользователя
-        
-        Авторизоваться
-        -res    <PATH.TO.RESOURCE>      - Абсолютный путь до запрашиваемого ресурса
-        -role   <READ|WRITE|EXECUTE>    - Уровень доступа к ресурсу
-        
-        Активность
-        -ds     <yyyy-mm-dd>            - Дата начала сессии с ресурсом
-        -de     <yyyy-mm-dd>            - Дата окончания сессии с ресурсом, формат
-        -vol    <int>	                - Потребляемый объем, целое число
-    """.trimIndent().also {
-        println(it)
-    }
 }
