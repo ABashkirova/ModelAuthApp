@@ -6,11 +6,19 @@ fun main(args: Array<String>) {
             printHelp()
             exitProcess(status = 1)
         }
+        authenticationIsNeeded(args) -> {
+            exitProcess(status = 0)
+        }
         else -> {
             printHelp()
             exitProcess(status = 0)
         }
     }
+}
+
+fun authenticationIsNeeded(args: Array<String>): Boolean = when {
+    argsAreNotEmpty(args) -> args[0] == "-login" && args[2] == "-pass"
+    else -> false
 }
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
