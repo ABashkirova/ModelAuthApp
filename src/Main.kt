@@ -1,6 +1,7 @@
 import controller.ArgHandler
 import controller.ArgKey
 import model.User
+import service.AuthenticationService
 import kotlin.system.exitProcess
 
 val users = listOf(
@@ -21,12 +22,13 @@ fun main(args: Array<String>) {
         }
 
         argHandler.authenticationIsNeeded() -> {
+            val authService = AuthenticationService()
             val login: String? = argHandler.getValue(ArgKey.LOGIN)
-            exitCode = if (login != null && validateLogin(login = login)) {
-                val user: User? = getUser(login = login)
+            exitCode = if (login != null && authService.validateLogin(login = login)) {
+                val user: User? = authService.getUser(login = login)
                 val pass: String? = argHandler.getValue(ArgKey.PASSWORD)
                 if (user != null && pass != null) {
-                    if (verifyPassForUser(pass = pass, user = user)) 0
+                    if (authService.verifyPassForUser(pass = pass, user = user)) 0
                     else 4
                 } else {
                     3
@@ -40,16 +42,6 @@ fun main(args: Array<String>) {
     }
 
     exitProcess(status = exitCode)
-}
-
-fun validateLogin(login: String): Boolean {
-    return login.matches(regex = "[a-z]{1,10}".toRegex())
-}
-
-fun getUser(login: String): User? = users.find { it.login == login }
-
-fun verifyPassForUser(pass: String, user: User): Boolean {
-    return user.password == pass
 }
 
 fun printHelp() {
