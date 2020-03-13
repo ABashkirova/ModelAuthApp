@@ -1,3 +1,3 @@
 package model
 
-data class User(val login: String, val password: String)
+data class User(val login: String, val hash: String)
