@@ -1,13 +1,25 @@
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    printHelp()
-    exitProcess(status = 1)
+    when {
+        helpIsNeeded(args) -> {
+            printHelp()
+            exitProcess(status = 1)
+        }
+        else -> {
+            printHelp()
+            exitProcess(status = 0)
+        }
+    }
 }
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
 
-fun helpIsNeeded(args: Array<String>): Boolean = args[0] == "-h"
+fun helpIsNeeded(args: Array<String>): Boolean {
+    return if (argsAreNotEmpty(args)) {
+        args[0] == "-h"
+    } else true
+}
 
 fun printHelp() {
     """
