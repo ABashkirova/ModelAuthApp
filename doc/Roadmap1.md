@@ -118,9 +118,9 @@
 2. Создать функцию, валидирующую надо логин `validateLogin(login: String): Boolean`
 (проверяем формат через regexp `[a-z]{1,10}`, код 2 ) - R1.9, R1.8.3
 3. Создать функцию, проверяющую что логин существует `loginExists(login: String): Boolean`
-(проверяем, что login equal sasha)
-4. Создать функцию, проверяющую валидность пароля `validatePassForLogin(pass: String, login: String): Boolean`
- (проверяем, что login equal sasha && pass equal 123, код 3, если не найден) - R1.9
+(проверяем, что login equal sasha, код 3, если не найден)
+4. Создать функцию, проверяющую валидность пароля `verifyPassForLogin(pass: String, login: String): Boolean`
+ (проверяем, что login equal sasha && pass equal 123, код 4, если не совпадает) - R1.9
 5. Создать `data class User` с логином и паролем - R1.1
 6. Создать коллекцию `Users`, заполненную тестовыми данными
 7. Отефакторить методы на работу с коллекцией пользователей
@@ -134,7 +134,7 @@
     2. Перенести функции
         - `validateUserLogin(login: String): Boolean`
         - `findUser(user: User)`
-        - `validatePassForLogin(pass: String, login: String): Boolean`
+        - `verifyPassForLogin(pass: String, login: String): Boolean`
 12. Создать класс `HelpHandler`
     1. Перенести функцию печати справки в класс `HelpHandler`
     2. Отрефакторить код на работу с классом `HelpHandler`

@@ -3,16 +3,21 @@ import kotlin.system.exitProcess
 fun main(args: Array<String>) {
     val exitCode: Int
     when {
-        helpIsNeeded(args) -> {
+        helpIsNeeded(args = args) -> {
             exitCode = 1
             printHelp()
         }
 
-        authenticationIsNeeded(args) -> {
+        authenticationIsNeeded(args = args) -> {
             exitCode = when {
-                validateLogin(args[1]) -> {
+                validateLogin(login = args[1]) -> {
                     when {
-                        loginExists(args[1]) -> 0
+                        loginExists(login = args[1]) -> {
+                            when {
+                                verifyPassForLogin(pass = args[3], login = args[1]) -> 0
+                                else -> 4
+                            }
+                        }
                         else -> 3
                     }
                 }
@@ -39,6 +44,10 @@ fun validateLogin(login: String): Boolean {
 
 fun loginExists(login: String): Boolean {
     return login == "sasha"
+}
+
+fun verifyPassForLogin(pass: String, login: String): Boolean {
+    return login == "sasha" && pass == "123"
 }
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
