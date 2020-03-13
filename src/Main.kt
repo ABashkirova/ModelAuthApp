@@ -1,6 +1,14 @@
+import model.User
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
+    val users = listOf(
+        User(login = "sasha", password = "123"),
+        User(login = "admin", password = "qwerty"),
+        User(login = "q", password = "@#\$%^&*!"),
+        User(login = "aleksandrа", password = "abc")
+    )
+
     val exitCode: Int
     when {
         helpIsNeeded(args = args) -> {
