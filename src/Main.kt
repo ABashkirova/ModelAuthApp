@@ -1,3 +1,5 @@
+import controller.ArgHandler
+import controller.ArgKey
 import model.User
 import kotlin.system.exitProcess
 
@@ -9,24 +11,27 @@ val users = listOf(
 )
 
 fun main(args: Array<String>) {
+    val argHandler = ArgHandler(args)
+
     val exitCode: Int
     when {
-        helpIsNeeded(args = args) -> {
+        argHandler.helpIsNeeded() -> {
             exitCode = 1
             printHelp()
         }
 
-        authenticationIsNeeded(args = args) -> {
-            exitCode = if (validateLogin(login = args[1])) {
-                val user = getUser(login = args[1])
-                if (user != null) {
-                    if (verifyPassForUser(pass = args[3], user = user)) 0
+        argHandler.authenticationIsNeeded() -> {
+            val login: String? = argHandler.getValue(ArgKey.LOGIN)
+            exitCode = if (login != null && validateLogin(login = login)) {
+                val user: User? = getUser(login = login)
+                val pass: String? = argHandler.getValue(ArgKey.PASSWORD)
+                if (user != null && pass != null) {
+                    if (verifyPassForUser(pass = pass, user = user)) 0
                     else 4
                 } else {
                     3
                 }
-            }
-            else 2
+            } else 2
         }
         else -> {
             exitCode = 0
@@ -37,11 +42,6 @@ fun main(args: Array<String>) {
     exitProcess(status = exitCode)
 }
 
-fun authenticationIsNeeded(args: Array<String>): Boolean = when {
-    argsAreNotEmpty(args) && args.size >= 4 -> args[0] == "-login" && args[2] == "-pass"
-    else -> false
-}
-
 fun validateLogin(login: String): Boolean {
     return login.matches(regex = "[a-z]{1,10}".toRegex())
 }
@@ -50,14 +50,6 @@ fun getUser(login: String): User? = users.find { it.login == login }
 
 fun verifyPassForUser(pass: String, user: User): Boolean {
     return user.password == pass
-}
-
-fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
-
-fun helpIsNeeded(args: Array<String>): Boolean {
-    return if (argsAreNotEmpty(args)) {
-        args[0] == "-h"
-    } else true
 }
 
 fun printHelp() {
