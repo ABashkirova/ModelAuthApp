@@ -7,8 +7,10 @@ fun main(args: Array<String>) {
 
 fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
 
+fun helpIsNeeded(args: Array<String>): Boolean = args[0] == "-h"
+
 fun printHelp() {
-    val helpMessage = """
+    """
         Возможные аргументы программы:
         -h                              - Вызов справки
         
@@ -24,6 +26,7 @@ fun printHelp() {
         -ds     <yyyy-mm-dd>            - Дата начала сессии с ресурсом
         -de     <yyyy-mm-dd>            - Дата окончания сессии с ресурсом, формат
         -vol    <int>	                - Потребляемый объем, целое число
-    """.trimIndent()
-    println(helpMessage)
+    """.trimIndent().also {
+        println(it)
+    }
 }
