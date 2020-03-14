@@ -1,6 +1,7 @@
 import ExitCode.*
 import controller.ArgHandler
-import controller.ArgKey.*
+import controller.ArgKey.LOGIN
+import controller.ArgKey.PASSWORD
 import service.AuthenticationService
 import service.HelpService
 import kotlin.system.exitProcess
@@ -11,30 +12,36 @@ fun main(args: Array<String>) {
 
     if (argHandler.helpIsNeeded()) {
         helpService.printHelp()
-        exitProcess(ExitCode.HELP.value)
+        exitProgram(HELP_CODE)
     }
 
     if (!argHandler.authenticationIsNeeded()) {
         helpService.printHelp()
-        exitProcess(SUCCESS.value)
+        exitProgram(SUCCESS_CODE)
     }
 
     val authService = AuthenticationService()
     val login: String? = argHandler.getValue(LOGIN)
 
     if (login == null || !authService.validateLogin(login)) {
-        exitProcess(INVALID_LOGIN_FORMAT.value)
+        exitProgram(INVALID_LOGIN_FORMAT)
     } else {
         val user = authService.getUser(login)
         val pass = argHandler.getValue(PASSWORD)
 
         if (user == null || pass == null) {
-            exitProcess(UNKNOWN_LOGIN.value)
+            exitProgram(UNKNOWN_LOGIN)
         } else {
             val passwordMatches = authService.verifyPassForUser(pass, user)
             if (!passwordMatches) {
-                exitProcess(INVALID_PASSWORD.value)
+                exitProgram(INVALID_PASSWORD)
+            } else {
+                exitProgram(SUCCESS_CODE)
             }
         }
     }
+}
+
+fun exitProgram(exitCode: ExitCode) {
+    exitProcess(exitCode.value)
 }
