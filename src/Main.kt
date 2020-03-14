@@ -1,44 +1,47 @@
+import ExitCode.*
+import controller.ArgHandler
+import controller.ArgKey.LOGIN
+import controller.ArgKey.PASSWORD
+import service.AuthenticationService
+import service.HelpService
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {
-    when {
-        helpIsNeeded(args) -> {
-            printHelp()
-            exitProcess(status = 1)
-        }
-        else -> {
-            printHelp()
-            exitProcess(status = 0)
+    val argHandler = ArgHandler(args)
+    val helpService = HelpService()
+
+    if (argHandler.helpIsNeeded()) {
+        helpService.printHelp()
+        exitProgram(HELP_CODE)
+    }
+
+    if (!argHandler.authenticationIsNeeded()) {
+        helpService.printHelp()
+        exitProgram(SUCCESS_CODE)
+    }
+
+    val authService = AuthenticationService()
+    val login: String? = argHandler.getValue(LOGIN)
+
+    if (login == null || !authService.validateLogin(login)) {
+        exitProgram(INVALID_LOGIN_FORMAT)
+    } else {
+        val user = authService.getUser(login)
+        val pass = argHandler.getValue(PASSWORD)
+
+        if (user == null || pass == null) {
+            exitProgram(UNKNOWN_LOGIN)
+        } else {
+            val passwordMatches = authService.verifyPassForUser(pass, user)
+            if (!passwordMatches) {
+                exitProgram(INVALID_PASSWORD)
+            } else {
+                exitProgram(SUCCESS_CODE)
+            }
         }
     }
 }
 
-fun argsAreNotEmpty(args: Array<String>): Boolean = args.isNotEmpty()
-
-fun helpIsNeeded(args: Array<String>): Boolean {
-    return if (argsAreNotEmpty(args)) {
-        args[0] == "-h"
-    } else true
-}
-
-fun printHelp() {
-    """
-        Возможные аргументы программы:
-        -h                              - Вызов справки
-        
-        Аутентифицироваться 
-        -login  <string>                - Логин пользователя, строка, строчные буквы. Не более 10 символов
-        -pass   <string>                - Пароль пользователя
-        
-        Авторизоваться
-        -res    <PATH.TO.RESOURCE>      - Абсолютный путь до запрашиваемого ресурса
-        -role   <READ|WRITE|EXECUTE>    - Уровень доступа к ресурсу
-        
-        Активность
-        -ds     <yyyy-mm-dd>            - Дата начала сессии с ресурсом
-        -de     <yyyy-mm-dd>            - Дата окончания сессии с ресурсом, формат
-        -vol    <int>	                - Потребляемый объем, целое число
-    """.trimIndent().also {
-        println(it)
-    }
+fun exitProgram(exitCode: ExitCode) {
+    exitProcess(exitCode.value)
 }

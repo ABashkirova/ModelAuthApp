@@ -15,12 +15,12 @@ function testcase {
     PURPOSE=$3
 
     echo -e "${YELLOW}$PURPOSE${NC}"
-    echo $ACT
+    echo ${ACT}
 
-    OUTPUT=`./run.sh $ACT`
+    OUTPUT=`./run.sh ${ACT}`
     RES=$?
     let "TESTS_RUN+=1"
-    if [ $RES -eq $EXPECTED_CODE ]; then
+    if [[ ${RES} -eq ${EXPECTED_CODE} ]]; then
         echo -e "${GREEN}✅  Test passed${NC}"
         let "TEST_SUCCESS+=1"
     else
