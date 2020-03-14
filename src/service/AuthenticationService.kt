@@ -28,7 +28,7 @@ class AuthenticationService {
     )
 
     fun validateLogin(login: String): Boolean {
-        return login.matches(regex = "[a-z]{1,10}".toRegex())
+        return login.matches(Regex("[a-z]{1,10}"))
     }
 
     fun getUser(login: String): User? = users.find { it.login == login }

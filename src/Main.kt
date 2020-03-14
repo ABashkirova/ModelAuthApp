@@ -1,6 +1,6 @@
+import ExitCode.*
 import controller.ArgHandler
-import controller.ArgKey
-import model.User
+import controller.ArgKey.*
 import service.AuthenticationService
 import service.HelpService
 import kotlin.system.exitProcess
@@ -8,31 +8,34 @@ import kotlin.system.exitProcess
 fun main(args: Array<String>) {
     val argHandler = ArgHandler(args)
     val helpService = HelpService()
-    val exitCode: Int
-    when {
-        argHandler.helpIsNeeded() -> {
-            exitCode = 1
-            helpService.printHelp()
-        }
 
-        argHandler.authenticationIsNeeded() -> {
-            val authService = AuthenticationService()
-            val login: String? = argHandler.getValue(ArgKey.LOGIN)
-            exitCode = if (login != null && authService.validateLogin(login = login)) {
-                val user: User? = authService.getUser(login = login)
-                val pass: String? = argHandler.getValue(ArgKey.PASSWORD)
-                if (user == null || pass == null) {
-                    3
-                } else if (authService.verifyPassForUser(pass = pass, user = user)) 0
-                    else 4
-            } else 2
-        }
-
-        else -> {
-            exitCode = 0
-            helpService.printHelp()
-        }
+    if (argHandler.helpIsNeeded()) {
+        helpService.printHelp()
+        exitProcess(ExitCode.HELP.value)
     }
 
-    exitProcess(status = exitCode)
+    if (!argHandler.authenticationIsNeeded()) {
+        helpService.printHelp()
+        exitProcess(SUCCESS.value)
+    }
+
+    var exitCode: ExitCode = SUCCESS
+    val authService = AuthenticationService()
+    val login: String? = argHandler.getValue(LOGIN)
+
+    if (login != null && authService.validateLogin(login)) {
+        val user = authService.getUser(login)
+        val pass = argHandler.getValue(PASSWORD)
+
+        if (user == null || pass == null) {
+            exitProcess(UNKNOWN_LOGIN.value)
+        } else {
+            val passwordMatches = authService.verifyPassForUser(pass, user)
+            if (!passwordMatches) {
+                exitProcess(INVALID_PASSWORD.value)
+            }
+        }
+    } else {
+        exitProcess(INVALID_LOGIN_FORMAT.value)
+    }
 }
