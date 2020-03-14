@@ -21,14 +21,13 @@ fun main(args: Array<String>) {
             exitCode = if (login != null && authService.validateLogin(login = login)) {
                 val user: User? = authService.getUser(login = login)
                 val pass: String? = argHandler.getValue(ArgKey.PASSWORD)
-                if (user != null && pass != null) {
-                    if (authService.verifyPassForUser(pass = pass, user = user)) 0
-                    else 4
-                } else {
+                if (user == null || pass == null) {
                     3
-                }
+                } else if (authService.verifyPassForUser(pass = pass, user = user)) 0
+                    else 4
             } else 2
         }
+
         else -> {
             exitCode = 0
             helpService.printHelp()

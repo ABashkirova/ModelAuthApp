@@ -4,26 +4,26 @@ import model.User
 import java.security.MessageDigest
 
 class AuthenticationService {
-    companion object {
-        private const val SALT = "prt&MM"
-    }
-
     private val users = listOf(
         User(
             login = "sasha",
-            hash = "834d80053ffca546c11b486db79dbe31878b67e7cc9f6f74462f2347f28c767b"
+            hash = "51b9ec587113b9e2f85bceb78fa9861557ee3067a9338c23f7b057ff0555cb45",
+            salt = "V9Me2nx"
         ), // password = "123"
         User(
             login = "admin",
-            hash = "affb3cd6b447ff1630c9ebf933f9abfad257bc32a0e5a25c80341bbc8e3d3a9b"
+            hash = "da1c80f1005782d17d1696dc81d6bbc1b2c47d48cc3901d04d71e4d66cf68dae",
+            salt = "6xInN0l"
         ), // password = "qwerty",
         User(
             login = "q",
-            hash = "cd18eba9806a168bb471da898670708d172ff3ddb60a3ad697c4ee0c51f95986"
+            hash = "2911cb39357394f698d5b9afc266ac40d4af7e6ffc3effa212fb614598dacfb1",
+            salt = "4bxdOU7"
         ), //  password = "@#\$%^&*!",
         User(
             login = "aleksandra",
-            hash = "91fdccfd2cdf63a743242d8f6a315a77dc498adf13db05e5e875d147a0f47cf2"
+            hash = "8a6d445578f6b2e38adf7b5f44b6705d416c1ec5484b1c11c08f10fae6291fac",
+            salt = "TM36tOy"
         ) // password = "abc",
     )
 
@@ -37,14 +37,16 @@ class AuthenticationService {
         return isEqualsHash(pass, user)
     }
 
-    private fun isEqualsHash(pass: String, user: User): Boolean = getHashPassword(pass) == user.hash
+    private fun isEqualsHash(pass: String, user: User): Boolean = getHashPassword(pass, user.salt) == user.hash
 
-    private fun getHashPassword(pass: String): String = generateHash(pass = pass, salt = SALT)
+    private fun getHashPassword(pass: String, salt: String): String {
+        return generateHash(generateHash(input = pass) + salt)
+    }
 
-    private fun generateHash(pass: String, salt: String): String {
+    private fun generateHash(input: String): String {
         return MessageDigest
             .getInstance("SHA-256")
-            .digest((salt + pass).toByteArray())
+            .digest(input.toByteArray())
             .fold("", { str, it -> str + "%02x".format(it) })
     }
 }
