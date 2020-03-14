@@ -19,11 +19,12 @@ fun main(args: Array<String>) {
         exitProcess(SUCCESS.value)
     }
 
-    var exitCode: ExitCode = SUCCESS
     val authService = AuthenticationService()
     val login: String? = argHandler.getValue(LOGIN)
 
-    if (login != null && authService.validateLogin(login)) {
+    if (login == null || !authService.validateLogin(login)) {
+        exitProcess(INVALID_LOGIN_FORMAT.value)
+    } else {
         val user = authService.getUser(login)
         val pass = argHandler.getValue(PASSWORD)
 
@@ -35,7 +36,5 @@ fun main(args: Array<String>) {
                 exitProcess(INVALID_PASSWORD.value)
             }
         }
-    } else {
-        exitProcess(INVALID_LOGIN_FORMAT.value)
     }
 }
