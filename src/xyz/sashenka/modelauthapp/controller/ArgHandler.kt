@@ -1,39 +1,60 @@
 package xyz.sashenka.modelauthapp.controller
 
-enum class ArgKey(val value: String) {
-    HELP("-h"),
-    LOGIN("-login"),
-    PASSWORD("-pass")
-}
+import kotlinx.cli.ArgParser
+import kotlinx.cli.ArgType
 
-class ArgHandler(private val args: Array<String>) {
+class ArgHandler(args: Array<String>) {
+    private val parser = ArgParser("app.jar", true)
 
-    fun getValue(key: ArgKey): String? {
-        val flag = key.value
-        return if (
-            key != ArgKey.HELP
-            && argsContainsFlag(flag)
-        ) {
-            args[args.indexOf(flag) + 1]
-        } else null
-    }
+    val login: String? by parser.option(
+        ArgType.String,
+        shortName = "login",
+        description = "Логин пользователя, строка, строчные буквы. Не более 10 символов"
+    )
+    val password: String? by parser.option(
+        ArgType.String,
+        shortName = "pass",
+        description = "Пароль"
+    )
+    val resource: String? by parser.option(
+        ArgType.String,
+        shortName = "res",
+        description = "Абсолютный путь до запрашиваемого ресурса, формат A.B.C"
+    )
+    val role: String? by parser.option(
+        ArgType.String,
+        shortName = "role",
+        description = "Уровень доступа к ресурсу. Возможные варианты: READ, WRITE, EXECUTE"
+    )
+    val dateStart: String? by parser.option(
+        ArgType.String,
+        shortName = "ds",
+        description = "Дата начала сессии с ресурсом, формат YYYY-MM-DD "
+    )
+    val dateEnd: String? by parser.option(
+        ArgType.String,
+        shortName = "de",
+        description = "Дата окончания сессии с ресурсом, формат YYYY-MM-DD "
+    )
+    val volume: String? by parser.option(
+        ArgType.String,
+        shortName = "vol",
+        description = "Потребляемый объем, целое число"
+    )
 
-    fun authenticationIsNeeded(): Boolean = when {
-        argsAreNotEmpty() && args.size >= 4 -> {
-            argsContainsFlag(ArgKey.LOGIN.value)
-                    && argsContainsFlag(ArgKey.PASSWORD.value)
+    init {
+        try {
+            parser.parse(args)
+        } catch (ex: IllegalStateException) {
         }
-        else -> false
     }
 
-    fun helpIsNeeded(): Boolean {
-        return if (argsAreNotEmpty()) {
-            args.contains(ArgKey.HELP.value)
-        } else true
-    }
+    fun canAuthenticate() = !(login.isNullOrBlank() || password.isNullOrBlank())
 
-    private fun argsAreNotEmpty(): Boolean = args.isNotEmpty()
+    fun canAuthorise() = !(resource.isNullOrEmpty() || role.isNullOrEmpty())
 
-    private fun argsContainsFlag(flag: String): Boolean =
-        args.contains(flag) && (args.size > args.indexOf(flag) + 1)
+    fun canAccount() = !(dateStart.isNullOrEmpty() || dateEnd.isNullOrEmpty() || volume == null)
+
+    fun shouldPrintHelp() = !canAuthenticate()
+
 }
