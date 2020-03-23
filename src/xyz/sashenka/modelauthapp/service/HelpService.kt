@@ -1,4 +1,4 @@
-package service
+package xyz.sashenka.modelauthapp.service
 
 class HelpService {
     fun printHelp() {

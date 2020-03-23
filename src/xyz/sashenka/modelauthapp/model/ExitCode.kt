@@ -1,3 +1,5 @@
+package xyz.sashenka.modelauthapp.model
+
 enum class ExitCode(val value: Int) {
     SUCCESS_CODE(0),
     HELP_CODE(1),

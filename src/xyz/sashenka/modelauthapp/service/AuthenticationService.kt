@@ -1,6 +1,6 @@
-package service
+package xyz.sashenka.modelauthapp.service
 
-import model.User
+import xyz.sashenka.modelauthapp.model.User
 import java.security.MessageDigest
 
 class AuthenticationService {

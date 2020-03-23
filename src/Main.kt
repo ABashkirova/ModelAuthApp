@@ -1,9 +1,10 @@
-import ExitCode.*
-import controller.ArgHandler
-import controller.ArgKey.LOGIN
-import controller.ArgKey.PASSWORD
-import service.AuthenticationService
-import service.HelpService
+import xyz.sashenka.modelauthapp.model.ExitCode.*
+import xyz.sashenka.modelauthapp.controller.ArgHandler
+import xyz.sashenka.modelauthapp.controller.ArgKey.LOGIN
+import xyz.sashenka.modelauthapp.controller.ArgKey.PASSWORD
+import xyz.sashenka.modelauthapp.model.ExitCode
+import xyz.sashenka.modelauthapp.service.AuthenticationService
+import xyz.sashenka.modelauthapp.service.HelpService
 import kotlin.system.exitProcess
 
 fun main(args: Array<String>) {

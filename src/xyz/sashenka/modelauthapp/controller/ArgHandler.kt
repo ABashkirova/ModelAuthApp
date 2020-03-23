@@ -1,4 +1,4 @@
-package controller
+package xyz.sashenka.modelauthapp.controller
 
 enum class ArgKey(val value: String) {
     HELP("-h"),
