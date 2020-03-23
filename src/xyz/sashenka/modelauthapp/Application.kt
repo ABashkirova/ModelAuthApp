@@ -3,9 +3,9 @@ package xyz.sashenka.modelauthapp
 import xyz.sashenka.modelauthapp.model.ExitCode.*
 import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.Role
-import xyz.sashenka.modelauthapp.model.UserSession
-import xyz.sashenka.modelauthapp.model.UsersResources
+import xyz.sashenka.modelauthapp.model.domain.Role
+import xyz.sashenka.modelauthapp.model.domain.UserSession
+import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import xyz.sashenka.modelauthapp.repository.UserRepository
 import xyz.sashenka.modelauthapp.service.*

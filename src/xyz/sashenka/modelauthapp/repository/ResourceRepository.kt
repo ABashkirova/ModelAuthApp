@@ -1,7 +1,7 @@
 package xyz.sashenka.modelauthapp.repository
 
-import xyz.sashenka.modelauthapp.model.Role
-import xyz.sashenka.modelauthapp.model.UsersResources
+import xyz.sashenka.modelauthapp.model.domain.Role
+import xyz.sashenka.modelauthapp.model.domain.UsersResources
 
 class ResourceRepository {
     private var resources: List<UsersResources> = listOf(

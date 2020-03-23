@@ -1,6 +1,6 @@
 package xyz.sashenka.modelauthapp.service
 
-import xyz.sashenka.modelauthapp.model.User
+import xyz.sashenka.modelauthapp.model.domain.User
 import xyz.sashenka.modelauthapp.repository.UserRepository
 import xyz.sashenka.modelauthapp.utils.SecureUtils
 

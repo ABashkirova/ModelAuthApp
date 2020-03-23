@@ -1,6 +1,6 @@
 package xyz.sashenka.modelauthapp.repository
 
-import xyz.sashenka.modelauthapp.model.User
+import xyz.sashenka.modelauthapp.model.domain.User
 
 class UserRepository {
     private val users = listOf(

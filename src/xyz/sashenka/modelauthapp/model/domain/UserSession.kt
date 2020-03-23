@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.model
+package xyz.sashenka.modelauthapp.model.domain
 
 import java.util.*
 

@@ -1,6 +1,6 @@
 package xyz.sashenka.modelauthapp.service
 
-import xyz.sashenka.modelauthapp.model.Role
+import xyz.sashenka.modelauthapp.model.domain.Role
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
