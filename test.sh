@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# coloring output
+# colouring output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;32m'
@@ -10,22 +10,24 @@ TEST_FAILURES=0
 TEST_SUCCESS=0
 
 function testcase {
-    ACT=$1;
+    ARGS=$1;
     EXPECTED_CODE=$2;
     PURPOSE=$3
 
     echo -e "${YELLOW}$PURPOSE${NC}"
-    echo $ACT
+    echo "$ARGS"
 
-    OUTPUT=`./run.sh $ACT`
+    ./run.sh ${ARGS}
+
     RES=$?
-    let "TESTS_RUN+=1"
-    if [ $RES -eq $EXPECTED_CODE ]; then
+
+    (("TESTS_RUN+=1"))
+    if [[ ${RES} -eq "$EXPECTED_CODE" ]]; then
         echo -e "${GREEN}✅  Test passed${NC}"
-        let "TEST_SUCCESS+=1"
+        (("TEST_SUCCESS+=1"))
     else
         echo -e "${RED}🚫 Test failed. Expected $EXPECTED_CODE. Actual $RES${NC}"
-        let "TEST_FAILURES+=1"
+        (("TEST_FAILURES+=1"))
     fi
     echo
 }
@@ -34,12 +36,12 @@ function testcase {
 #T1.1
 testcase "" 1 "#T1.1: R1.8 Печать справки"
 #T1.2
-testcase "-h" 1 "#T1.2: R1.8 Печать справки"
+testcase "-h" 0 "#T1.2: R1.8 Печать справки"
 #T1.3
-testcase "-bla" 0 "#T1.3: R1.8 Печать справки"
+testcase "-bla" 1 "#T1.3: R1.8 Печать справки"
 
-## Аунтентификация
-##T2.1
+# Аунтентификация
+#T2.1
 testcase "-login sasha -pass 123" 0 "T2.1: R1.9, R1.8 Успешная Аунтентификация U1"
 ##T2.2
 testcase "-pass 123 -login sasha" 0 "T2.2: R1.9, R1.10 Успешная Аунтентификация U1"
@@ -48,23 +50,23 @@ testcase "-login SASHA -pass 123" 2 "T2.3: R1.9 Неверный формат, �
 ##T2.4
 testcase "-login SA12 -pass 123" 2 "T2.4: R1.9 Неверный формат, логин c цифрами"
 ##T2.5
-testcase "-login   -pass pass" 2 "T2.5: R1.9 Неверный формат, логин пустой"
+testcase "-login   -pass pass" 1 "T2.5: R1.9 Неверный формат, логин пустой — справка"
 ##T2.6
-testcase "-login abashkirova -pass pass" 2 "T2.6: R1.9 Неверный формат, логин больше 10 символов"
+testcase "-login abcdqwertyqwerty -pass pass" 2 "T2.6: R1.9 Неверный формат, логин больше 10 символов"
 ##T2.7
 testcase "-login vasya -pass 123" 3 "T2.7: R1.9 Невеизвестный логин"
 ##T2.8
 testcase "-login admin -pass 1234" 4 "T2.8: R1.9 Неверный пароль"
 ##T2.9
-testcase "-login admin -pass  " 4 "T2.9: R1.9 Неверный пароль, пустой"
+testcase "-login admin -pass  " 1 "T2.9: R1.9 Неверный пароль, пустой — справка "
 ##T2.10
 testcase "-login admin -pass qwerty" 0 "T2.10: R1.9 Успешная Аунтентификация U2"
 ##T2.11
 testcase "-login q -pass @#$%^&*!" 0 "T2.11: R1.9 Успешная Аунтентификация U3"
 ##T2.12
-testcase "-login aleksandra -pass abc" 0 "T2.12: R1.9 Успешная Аунтентификация U4"
+testcase "-login abcdefghij -pass abc" 0 "T2.12: R1.9 Успешная Аунтентификация U4"
 ##T2.13
-testcase "-h -login aleksandra -pass abc" 0 "T2.13: R1.9 R1.9 Аунтентификация при дополнительном вызове справки"
+testcase "-h -login abcdefghij -pass abc" 0 "T2.13: R1.9 R1.10 Аунтентификация при дополнительном вызове справки"
 
 ## Авторизация
 #
@@ -93,7 +95,11 @@ testcase "-login q -pass @#$%^&*! -role READ -res A.AA.AAA" 0 "T3.11: R1.3 Ус�
 ##T3.12
 testcase "-login q -pass @#$%^&*! -role READ -res A.AA" 6 "T3.12: R1.8, R1.9 Нет доступа (выше узла)"
 ##T3.13
-testcase "-role -res -login sasha -pass 123" 0 "T3.13: R1.3, R1.10 - Успешный доступ, порядок аргументов"
+testcase "-role READ -res A -login sasha -pass 123" 0 "T3.13: R1.3, R1.10 - Успешный доступ, порядок аргументов"
+##T3.14
+testcase "-login sasha -pass 123 -role Write -res A" 5 "T3.14: R1.5, R1.9 Неправильная роль"
+##T3.15
+testcase "-login sasha -pass 123 -role write -res A" 5 "T3.14: R1.5, R1.9 Неправильная роль"
 
 ## Аккаунтинг
 #
@@ -114,7 +120,7 @@ testcase "-login sasha -pass 123 -role READ -res A -ds 2120-02-15 -de 2120-01-15
 ##T4.8
 testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 20" 0 "T4.8: R1.7,R1.8,R1.9 Успешный аккаунитнг"
 ##T4.9
-testcase "-login admin -pass qwerty -role execute -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 100" 0 "T4.9: R1.7,R1.8,R1.9 Успешный аккаунитнг"
+testcase "-login admin -pass qwerty -role EXECUTE -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 100" 0 "T4.9: R1.7,R1.8,R1.9 Успешный аккаунитнг"
 ##T4.10
 testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10" 0 "T4.10: R1.3 Успешная авторизация(не передан de)"
 ##T4.11
@@ -122,12 +128,12 @@ testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10"
 ##T4.12
 testcase "-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.12: R1.3 Успешная авторизация(не передан vol)"
 ##T4.13
-testcase "-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 0 "T4.13: R1.1 Успешная аутентификация(не передан vol, несуществующая роль)"
+testcase "-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 5 "T4.13: R1.1 Успешная аутентификация(не передан vol, несуществующая роль)"
 ##T4.14
-testcase "-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 2 "T4.14: R1.1 Неверный пароль"
+testcase "-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15" 4 "T4.14: R1.1 Неверный пароль"
 ##T4.15
 testcase "-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE" 0 "T4.15: R1.10 Успешный аккаунитнг, Порядок параметров"
 ##T4.16
-testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.0" 7 "T4.16 R1.9 — Некорректная активность, не приводится vol"
+testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.6" 7 "T4.16 R1.9 — Некорректная активность, не приводится vol"
 
 echo -e "Tests run: $TESTS_RUN, Success: ${GREEN}$TEST_SUCCESS${NC}, Failures: ${RED}$TEST_FAILURES${NC}"
