@@ -9,4 +9,4 @@ elif [[ "$OSTYPE" == "win32" ]]; then
         sep=";"
 fi
 
-java -classpath "lib/kotlinx-cli-0.2.1.jar${sep}out/app.jar" ru.kafedrase.authapp.MainKt "$@"
+java -classpath "lib/kotlinx-cli.jar${sep}out/app.jar" xyz.sashenka.modelauthapp.MainKt "$@"
