@@ -1,2 +1,12 @@
 #!/usr/bin/env bash
-java -jar app.jar "$@"
+sep=":"
+
+if [[ "$OSTYPE" == "cygwin" ]]; then
+        sep=";"
+elif [[ "$OSTYPE" == "msys" ]]; then
+        sep=";"
+elif [[ "$OSTYPE" == "win32" ]]; then
+        sep=";"
+fi
+
+java -classpath "lib/kotlinx-cli-0.2.1.jar${sep}out/app.jar" ru.kafedrase.authapp.MainKt "$@"
