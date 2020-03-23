@@ -1,6 +1,8 @@
 package xyz.sashenka.modelauthapp.model.dto
 
-class AccountingData(
+data class AccountingData(
+    val login: String,
+    val resource: String,
     val startDate: String,
     val endDate: String,
     val volume: String

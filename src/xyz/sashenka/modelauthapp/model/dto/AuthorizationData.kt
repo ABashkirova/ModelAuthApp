@@ -1,6 +1,7 @@
 package xyz.sashenka.modelauthapp.model.dto
 
-class AuthorizationData(
+data class AuthorizationData(
     val path: String,
-    val role: String
+    val role: String,
+    val login: String
 )
