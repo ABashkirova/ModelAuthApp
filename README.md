@@ -14,8 +14,7 @@
 1. Склонировать репозиторий 
 2. Запустить скрипт сборки — `BUILD.sh`
 ```bash
-cd scripts
-./BUILD.sh
+./scripts/BUILD.sh
 ```
 или
 1. Склонировать репозиторий 
@@ -32,8 +31,7 @@ kotlinc \
 ## Run
 Запустить скрипт `RUN.sh`
 ```bash
-cd scripts
-./RUN.sh {{key} {value}}
+scripts/RUN.sh {{key} {value}}
 ```
 или сделать это вручную
 ```bash
@@ -55,6 +53,5 @@ java -classpath "%/PATH/TO/KOTLINX-CLI.jar%:out/app.jar" xyz.sashenka.modelautha
 ## Test
 Запустить скрипт `TEST.sh`
 ```bash
-cd scripts
-./TEST.sh
+./scripts/TEST.sh
 ```

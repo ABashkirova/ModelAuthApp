@@ -17,7 +17,7 @@ function testcase {
     echo -e "${YELLOW}$PURPOSE${NC}"
     echo "$ARGS"
 
-    ./run.sh ${ARGS}
+    ./scripts/RUN.sh ${ARGS}
 
     RES=$?
 
