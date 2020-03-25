@@ -138,7 +138,7 @@ testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15
 
 echo -e "Tests run: $TESTS_RUN, Success: ${GREEN}$TEST_SUCCESS${NC}, Failures: ${RED}$TEST_FAILURES${NC}"
 
-if [ "$TEST_FAILURES" -ne "0" ]; then
+if [[ "$TEST_FAILURES" -ne "0" ]]; then
   echo "TEST fail"
   exit 1
 fi
