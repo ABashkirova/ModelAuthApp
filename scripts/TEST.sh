@@ -137,3 +137,8 @@ testcase "-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE"
 testcase "-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.6" 7 "T4.16 R1.9 — Некорректная активность, не приводится vol"
 
 echo -e "Tests run: $TESTS_RUN, Success: ${GREEN}$TEST_SUCCESS${NC}, Failures: ${RED}$TEST_FAILURES${NC}"
+
+if [ "$TEST_FAILURES" -ne "0" ]; then
+  echo "TEST fail"
+  exit 1
+fi
