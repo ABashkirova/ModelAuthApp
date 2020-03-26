@@ -1,13 +1,14 @@
 # ModelAuthApp
-
+[![Build Status](https://travis-ci.org/ABashkirova/model-auth-app.svg?branch=master)](https://travis-ci.org/ABashkirova/model-auth-app) 
+[GitHub Pages](https://abashkirova.github.io/model-auth-app/)
 Это учебный проект, моделирующий процесс [Аутентификации, Авторизации и Аккаунтинга пользователя](https://ru.wikipedia.org/wiki/AAA_(информационная_безопасность)).
 Приложение представляет собой консольную утилиту, принимающую на вход аргументы. 
 
 # Roadmap
-В приложении последовательно реализованы [наборы требований](./doc/Requirements.md).
+В приложении последовательно реализованы [наборы требований](./docs/Requirements.md).
 
-1. [План работ по набору требований #1](./doc/Roadmap1.md)
-2. [План работ по набору требований #2](./doc/Roadmap2.md)
+1. [План работ по набору требований #1](./docs/Roadmap1.md)
+2. [План работ по набору требований #2](./docs/Roadmap2.md)
 
 # Build & Run application
 ## Build jar

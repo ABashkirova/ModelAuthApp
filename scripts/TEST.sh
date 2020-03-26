@@ -9,7 +9,7 @@ TESTS_RUN=0
 TEST_FAILURES=0
 TEST_SUCCESS=0
 
-function testcase {
+testcase() {
     ARGS=$1;
     EXPECTED_CODE=$2;
     PURPOSE=$3

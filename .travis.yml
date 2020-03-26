@@ -1,0 +1,14 @@
+language: java
+
+jdk: oraclejdk11
+
+branches:
+  only:
+  - master
+before_install:
+  - curl -s get.sdkman.io | bash
+  - source "$HOME/.sdkman/bin/sdkman-init.sh"
+  - sdk install kotlin
+  - ./scripts/BUILD.sh
+script: 
+  - ./scripts/TEST.sh
