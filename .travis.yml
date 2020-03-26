@@ -6,6 +6,6 @@ branches:
   only:
   - master
 before_install:
-  - ./scripts/BUILD.sh
+  - sh ./scripts/BUILD.sh
 script: 
-  - ./scripts/TEST.sh
+  - sh ./scripts/TEST.sh
