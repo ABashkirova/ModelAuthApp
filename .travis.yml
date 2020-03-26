@@ -1,0 +1,11 @@
+language: java
+
+jdk: oraclejdk11
+
+branches:
+  only:
+  - master
+  
+script: 
+  ./scripts/BUILD.sh
+  ./scripts/TEST.sh
