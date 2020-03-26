@@ -28,5 +28,5 @@ class ValidatingService {
 
     fun areDatesValid(start: Date?, end: Date?) = start != null && end != null && end.after(start)
 
-    fun isVolumeValid(volume: Int?)= volume != null && volume > 0
+    fun isVolumeValid(volume: Int?) = volume != null && volume > 0
 }
