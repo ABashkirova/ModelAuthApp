@@ -3,7 +3,10 @@ package xyz.sashenka.modelauthapp.service
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 
-class AuthorizationService(val usersResource: UsersResources, private var resourceRepository: ResourceRepository) {
+class AuthorizationService(
+    private val usersResource: UsersResources,
+    private var resourceRepository: ResourceRepository
+) {
 
     /**
      * Работает для отфильтрованных ресурсов по конкретному пользователю
