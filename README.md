@@ -31,11 +31,11 @@ kotlinc \
 ## Run
 Запустить скрипт `RUN.sh`
 ```bash
-scripts/RUN.sh {{key} {value}}
+scripts/RUN.sh -key value
 ```
 или сделать это вручную
 ```bash
-java -classpath "%/PATH/TO/KOTLINX-CLI.jar%:out/app.jar" xyz.sashenka.modelauthapp.MainKt {{key} {value}}
+java -classpath "%/PATH/TO/KOTLINX-CLI.jar%:out/app.jar" xyz.sashenka.modelauthapp.MainKt -key value
 ```
 
 #### Приложение работает со следующим списком аргументов
