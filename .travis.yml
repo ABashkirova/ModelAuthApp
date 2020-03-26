@@ -6,6 +6,8 @@ branches:
   only:
   - master
 before_install:
+  - curl -s get.sdkman.io | bash
+  - sdk install kotlin
   - sh ./scripts/BUILD.sh
 script: 
   - sh ./scripts/TEST.sh
