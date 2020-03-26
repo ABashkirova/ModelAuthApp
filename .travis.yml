@@ -9,6 +9,6 @@ before_install:
   - curl -s get.sdkman.io | bash
   - source "$HOME/.sdkman/bin/sdkman-init.sh"
   - sdk install kotlin
-  - sh ./scripts/BUILD.sh
+  - ./scripts/BUILD.sh
 script: 
-  - sh ./scripts/TEST.sh
+  - ./scripts/TEST.sh
