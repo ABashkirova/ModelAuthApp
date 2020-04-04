@@ -1,14 +1,7 @@
 language: java
-
-jdk: oraclejdk11
-
-branches:
-  only:
-  - master
-before_install:
-  - curl -s get.sdkman.io | bash
-  - source "$HOME/.sdkman/bin/sdkman-init.sh"
-  - sdk install kotlin
+compiler: kotlinc
+before_install: sudo snap install --classic kotlin
+script:
   - ./scripts/BUILD.sh
-script: 
+after_success:
   - ./scripts/TEST.sh
