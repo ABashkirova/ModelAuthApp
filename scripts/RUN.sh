@@ -1,12 +1,3 @@
 #!/usr/bin/env bash
-sep=":"
 
-if [[ "$OSTYPE" == "cygwin" ]]; then
-        sep=";"
-elif [[ "$OSTYPE" == "msys" ]]; then
-        sep=";"
-elif [[ "$OSTYPE" == "win32" ]]; then
-        sep=";"
-fi
-
-java -classpath "lib/kotlinx-cli.jar${sep}out/app.jar" xyz.sashenka.modelauthapp.MainKt "$@"
+java -classpath "lib/kotlinx-cli.jar:lib/h2-1.4.200.jar:lib/log4j-api-2.13.1.jar:lib/log4j-api-kotlin-1.0.0.jar:lib/log4j-core-2.13.1.jar:out/app.jar" xyz.sashenka.modelauthapp.MainKt "$@"

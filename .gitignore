@@ -1,7 +1,6 @@
 ### Intellij ###
 .idea
 out/
-lib
 .idea_modules/
 *.iml
 
