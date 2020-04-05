@@ -1,27 +1,57 @@
 package xyz.sashenka.modelauthapp.service
 
 import org.flywaydb.core.Flyway
-import org.flywaydb.core.api.Location
+import java.io.File
 import java.sql.Connection
 import java.sql.DriverManager
 
 class DBService {
-    var connection: Connection
-        private set
+    private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:"
+    private val envDBFile: String? = System.getenv("DBFILE") ?: "./AAA"
+    private val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
+    private val envPass: String = System.getenv("DBPASS") ?: ""
+
+    var connection: Connection? = null
 
     init {
-        val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:./db/AuthorizationApp"
-        val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
-        val envPass: String = System.getenv("DBPASS") ?: ""
-        val envDBFile: String = System.getenv("DBFILE") ?: "./AAA"
-        val flyway = Flyway
-            .configure()
-            .dataSource(envUrl, envLogin, envPass)
-            .locations("db/migration")
-            .load()
-
-        this.connection = DriverManager.getConnection(envUrl, envLogin, envPass)
+        println("init db")
+        migrate()
+        connect()
     }
 
+    fun <R> inConnect(body: (db: Connection) -> R): R? {
+        connect()
+        if (connection != null) {
+            val res = body(this.connection!!)
+            close()
+            return res
+        }
+        return null
+    }
 
+    private fun migrate() {
+        val flyway = Flyway
+            .configure()
+            .dataSource(envUrl + envDBFile, envLogin, envPass)
+            .locations("db/migration")
+            .load()
+        println("flyway load $flyway")
+        val dbFileName = "$envDBFile.mv.db"
+        if (!File(dbFileName).exists()) {
+            println("flyway migrate")
+            flyway.migrate()
+        }
+    }
+
+    private fun connect() {
+        if (connection == null) {
+            println("init connect")
+            connection = DriverManager.getConnection(envUrl + envDBFile, envLogin, envPass)
+        }
+    }
+
+    private fun close() {
+        println("connect close")
+        connection?.close()
+    }
 }
