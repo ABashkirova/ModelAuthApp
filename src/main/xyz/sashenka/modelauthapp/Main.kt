@@ -1,14 +1,18 @@
 package xyz.sashenka.modelauthapp
 
-import xyz.sashenka.modelauthapp.dao.UserDAO
-import xyz.sashenka.modelauthapp.service.DBService
+import xyz.sashenka.modelauthapp.di.Container
 import kotlin.system.exitProcess
 
-fun main(args: Array<String>) {
-    val dbService = DBService()
-    val user = UserDAO(dbService).getUserByLogin("admin")
+object Main {
+    @JvmStatic
+    fun main(args: Array<String>) {
+        val container = Container()
+        container.getLogger().info { "Инициализация: ${args.joinToString(" ")}" }
 
-    val app = Application(args)
-    val returnCode = app.run()
-    exitProcess(returnCode.value)
+        val app = Application(args, container)
+        val returnCode = app.run()
+
+        container.getLogger().info { "Завершение программы с кодом: ${returnCode.value}" + "\n---------" }
+        exitProcess(returnCode.value)
+    }
 }
