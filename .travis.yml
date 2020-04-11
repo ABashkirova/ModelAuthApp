@@ -1,6 +1,10 @@
 language: java
 compiler: kotlinc
-before_install: sudo snap install --classic kotlin
+install: sudo snap install --classic kotlin
+env:
+  - DBURL=jdbc:h2:./AAA
+  - DBLOGIN=sa
+  - DBPASS=
 script:
   - ./scripts/BUILD.sh
 after_success:
