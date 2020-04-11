@@ -8,5 +8,8 @@ enum class ExitCode(val value: Int) {
     WRONG_PASSWORD(4),
     UNKNOWN_ROLE(5),
     NO_ACCESS(6),
-    INVALID_ACTIVITY(7)
+    INVALID_ACTIVITY(7),
+    DI_ERROR(8),
+    DB_ERROR(9),
+    APP_ERROR(-1)
 }
