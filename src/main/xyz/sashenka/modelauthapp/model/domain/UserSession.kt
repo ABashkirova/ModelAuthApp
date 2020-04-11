@@ -1,11 +1,9 @@
 package xyz.sashenka.modelauthapp.model.domain
 
-import java.util.*
-
 data class UserSession(
     val user: String,
     val resource: String,
-    val dateStart: Date,
-    val dateEnd: Date,
+    val dateStart: String,
+    val dateEnd: String,
     val volume: Int
 )

@@ -1,7 +1,6 @@
 ### Intellij ###
 .idea
 out/
-lib
 .idea_modules/
 *.iml
 
@@ -25,3 +24,6 @@ target/
 ### macOS ###
 .DS_Store
 ._*
+
+*.db
+*.log
