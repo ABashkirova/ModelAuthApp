@@ -7,12 +7,17 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         val container = Container()
-        container.getLogger().info { "Инициализация: ${args.joinToString(" ")}" }
+        container.getLogger(Main::class.java).info {
+            "Инициализация: ${args.joinToString(" ")}"
+        }
 
         val app = Application(args, container)
         val returnCode = app.run()
 
-        container.getLogger().info { "Завершение программы с кодом: ${returnCode.value}" + "\n---------" }
+        container.getLogger(Main::class.java).info {
+            "Завершение программы с кодом: ${returnCode.value}" + "\n---------"
+        }
+
         exitProcess(returnCode.value)
     }
 }

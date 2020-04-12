@@ -2,7 +2,16 @@ package xyz.sashenka.modelauthapp
 
 import xyz.sashenka.modelauthapp.di.Container
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.ExitCode.*
+import xyz.sashenka.modelauthapp.model.ExitCode.DB_ERROR
+import xyz.sashenka.modelauthapp.model.ExitCode.DI_ERROR
+import xyz.sashenka.modelauthapp.model.ExitCode.HELP
+import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_ACTIVITY
+import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_LOGIN_FORMAT
+import xyz.sashenka.modelauthapp.model.ExitCode.NO_ACCESS
+import xyz.sashenka.modelauthapp.model.ExitCode.SUCCESS
+import xyz.sashenka.modelauthapp.model.ExitCode.UNKNOWN_LOGIN
+import xyz.sashenka.modelauthapp.model.ExitCode.UNKNOWN_ROLE
+import xyz.sashenka.modelauthapp.model.ExitCode.WRONG_PASSWORD
 import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
@@ -16,8 +25,9 @@ class Application(private val args: Array<String>, private val container: Contai
 
     fun run(): ExitCode {
         val argHandler = container.getArgHandler(args)
-        val authenticationData = argHandler.getAuthenticationData()
 
+        val authenticationData = argHandler.getAuthenticationData()
+        println(args.joinToString())
         if (authenticationData == null) {
             logger.info { "Данных для аутентификации нет -> Печать справки" }
             container.getHelpService().printHelp()
@@ -51,7 +61,7 @@ class Application(private val args: Array<String>, private val container: Contai
             if (!validatingService.isRoleValid(authorizationData.role)) {
                 logger.error {
                     "Полученено неверное значение роли (${authorizationData.role}). " +
-                            "Завершаем шаг: ${UNKNOWN_ROLE}"
+                        "Завершаем шаг: $UNKNOWN_ROLE"
                 }
                 return@inConnect UNKNOWN_ROLE
             }
@@ -92,7 +102,7 @@ class Application(private val args: Array<String>, private val container: Contai
 
         val user = authenticationService.findUser(login)
         if (user == null) {
-            logger.error { "Не найден пользователь с логином: ${login}" }
+            logger.error { "Не найден пользователь с логином: $login" }
             return UNKNOWN_LOGIN
         }
 

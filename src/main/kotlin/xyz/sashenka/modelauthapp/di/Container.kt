@@ -10,7 +10,12 @@ import xyz.sashenka.modelauthapp.dao.UserDAO
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 import xyz.sashenka.modelauthapp.repository.UserRepository
-import xyz.sashenka.modelauthapp.service.*
+import xyz.sashenka.modelauthapp.service.AccountingService
+import xyz.sashenka.modelauthapp.service.AuthenticationService
+import xyz.sashenka.modelauthapp.service.AuthorizationService
+import xyz.sashenka.modelauthapp.service.DBService
+import xyz.sashenka.modelauthapp.service.HelpService
+import xyz.sashenka.modelauthapp.service.ValidatingService
 
 class Container {
     private lateinit var dbService: DBService
