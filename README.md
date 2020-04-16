@@ -22,41 +22,17 @@
 
 1. [План работ по набору требований #1](./docs/Roadmap1.md)
 2. [План работ по набору требований #2](./docs/Roadmap2.md)
-3. [План работ по набору требований #2](./docs/Roadmap3.md)
+3. [План работ по набору требований #3](./docs/Roadmap3.md)
+3. [План работ по набору требований #4](./docs/Roadmap4.md)
 
 # Build & Run application
-## Build jar
-1. Склонировать репозиторий 
-2. Запустить скрипт сборки — `BUILD.sh`
+## Build 
 ```bash
-./scripts/BUILD.sh
+./gradlew build
 ```
-или
-1. Склонировать репозиторий 
-2. Соберите jar библиотеки [kotlinx.cli](https://github.com/Kotlin/kotlinx.cli.git) с помощью `gradle`
-3. Запустите команду
-```bash
-kotlinc \
-        -cp %/PATH/TO/KOTLINX-CLI.jar% \
-        src \
-        -include-runtime \
-        -d ./out/app.jar/
-```
-
-## Run
-Запустить скрипт `RUN.sh`
-```bash
-scripts/RUN.sh -key value
-```
-или сделать это вручную
-```bash
-java -classpath "%/PATH/TO/KOTLINX-CLI.jar%:out/app.jar" xyz.sashenka.modelauthapp.MainKt -key value
-```
-
-
 
 ## Test
 Запустить скрипт `TEST.sh`
 ```bash
-./scripts/TEST.sh
+./gradlew test
 ```

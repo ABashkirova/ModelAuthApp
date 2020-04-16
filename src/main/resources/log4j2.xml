@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="warn">
     <Appenders>
-        <Console name="Console">
+        <Console name="LogToConsole">
             <PatternLayout>
                 <Pattern>%d{HH:mm:ss.SSS} %-5level [%logger]: %msg%n</Pattern>
             </PatternLayout>
         </Console>
 
-        <RollingRandomAccessFile name="File" fileName="aaa.log">
+        <File name="LogToFile" fileName="logs/app.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger]: %msg%n"/>
-        </RollingRandomAccessFile>
+        </File>
     </Appenders>
-
     <Loggers>
         <Root level="all">
-            <AppenderRef ref="Console" level="info"/>
-            <AppenderRef ref="File" level="info"/>
+            <AppenderRef ref="LogToConsole" level="info"/>
+            <AppenderRef ref="LogToFile" level="info"/>
         </Root>
     </Loggers>
 </Configuration>
