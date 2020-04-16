@@ -1,9 +1,11 @@
 language: java
+install: true
 compiler: kotlinc
 install: sudo snap install --classic kotlin
+os: linux
+dist: trusty
+jdk: oraclejdk8
 env:
-  - DBURL=jdbc:h2:./AAA
-  - DBLOGIN=sa
-  - DBPASS=
+  - DBURL=jdbc:h2:./AAA DBLOGIN=sa DBPASS=
 script:
   - ./gradlew build

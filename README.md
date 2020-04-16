@@ -26,22 +26,13 @@
 3. [План работ по набору требований #4](./docs/Roadmap4.md)
 
 # Build & Run application
-## Build jar
-1. Склонировать репозиторий 
-2. Запустить скрипт сборки — `BUILD.sh`
+## Build 
 ```bash
-./scripts/BUILD.sh
-```
-
-
-## Run
-Запустить скрипт `RUN.sh`
-```bash
-scripts/RUN.sh -key value
+./gradlew build
 ```
 
 ## Test
 Запустить скрипт `TEST.sh`
 ```bash
-./scripts/TEST.sh
+./gradlew test
 ```
