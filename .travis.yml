@@ -6,6 +6,4 @@ env:
   - DBLOGIN=sa
   - DBPASS=
 script:
-  - ./scripts/BUILD.sh
-after_success:
-  - ./scripts/TEST.sh
+  - ./gradlew build

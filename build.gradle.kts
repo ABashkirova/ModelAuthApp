@@ -14,8 +14,7 @@ val kotlinxCliVersion: String by project
 val h2databaseVersion: String by project
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
-val mockitoVertion: String by project
-val mockitoKotlinVersion: String by project
+val mockkVersion: String by project
 
 group = "xyz.sashenka"
 version = "$aaaVersion"
@@ -44,15 +43,11 @@ jacoco {
     reportsDir = file("$buildDir/reports/jacoco")
 }
 
-val detektAll by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
-    parallel = true
-    setSource(files(projectDir))
-    include("**/*.kt")
-    exclude("**/resources/**", "**/build/**")
-    config.setFrom(files("$rootDir/detekt-config.yml"))
+detekt {
+    input = files("src/main/kotlin")
+    config = files("$rootDir/detekt-config.yml")
+    buildUponDefaultConfig = false
     ignoreFailures = true
-    autoCorrect = true
-
     reports {
         xml {
             enabled = true
@@ -65,13 +60,36 @@ val detektAll by tasks.registering(io.gitlab.arturbosch.detekt.Detekt::class) {
     }
 }
 
+// val detekt {
+//     parallel = true
+//     setSource(files(projectDir))
+//     include("**/*.kt")
+//     exclude("**/resources/**", "**/build/**")
+//     config.setFrom(files("$rootDir/detekt-config.yml"))
+//     ignoreFailures = true
+//     autoCorrect = true
+//
+//     reports {
+//         xml {
+//             enabled = true
+//             destination = file("$buildDir/reports/detekt/report_detekt.xml")
+//         }
+//         html {
+//             enabled = true
+//             destination = file("$buildDir/reports/detekt/report_detekt.html")
+//         }
+//     }
+// }
+
 tasks {
     build {
         dependsOn(fatJar)
     }
 
     test {
-        useJUnit()
+        useJUnitPlatform {
+            includeEngines("spek2")
+        }
         testLogging {
             events("passed", "skipped", "failed")
         }
@@ -128,10 +146,10 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
 
     // test:
+
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
-    testImplementation("org.mockito:mockito-core:$mockitoVertion")
-    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
