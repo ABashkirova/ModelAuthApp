@@ -1,7 +1,6 @@
 package xyz.sashenka.modelauthapp.di
 
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import org.apache.logging.log4j.kotlin.logger
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
@@ -23,10 +22,6 @@ class Container {
 
     fun getLogger(ofClass: Class<*>): KotlinLogger {
         return loggerOf(ofClass)
-    }
-
-    fun getLogger(): KotlinLogger {
-        return logger()
     }
 
     fun getDBService(): DBService {
