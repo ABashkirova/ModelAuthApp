@@ -1,8 +1,10 @@
 # [ModelAuthApp](https://abashkirova.github.io/model-auth-app/)
 [![Build Status](https://travis-ci.org/ABashkirova/model-auth-app.svg?branch=master)](https://travis-ci.org/ABashkirova/model-auth-app) 
-![LINE](https://img.shields.io/badge/line--coverage-91%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-82%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1,71-brightgreen.svg)
+![LINE](https://img.shields.io/badge/line--coverage-92%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-83%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1,74-brightgreen.svg)
+
+[![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 
 Это учебный проект, моделирующий процесс [Аутентификации, Авторизации и Аккаунтинга пользователя](https://ru.wikipedia.org/wiki/AAA_(информационная_безопасность)).
 Приложение представляет собой консольную утилиту, принимающую на вход аргументы. 

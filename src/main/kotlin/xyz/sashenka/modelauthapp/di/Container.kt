@@ -20,9 +20,7 @@ class Container {
     private lateinit var dbService: DBService
     private lateinit var validatingService: ValidatingService
 
-    fun getLogger(ofClass: Class<*>): KotlinLogger {
-        return loggerOf(ofClass)
-    }
+    fun getLogger(ofClass: Class<*>): KotlinLogger = loggerOf(ofClass)
 
     fun getDBService(): DBService {
         if (!::dbService.isInitialized) {
@@ -31,9 +29,7 @@ class Container {
         return dbService
     }
 
-    fun getArgHandler(args: Array<String>): ArgHandler {
-        return ArgHandler(args)
-    }
+    fun getArgHandler(args: Array<String>): ArgHandler = ArgHandler(args)
 
     fun getValidatingService(): ValidatingService {
         if (!::validatingService.isInitialized) {
@@ -44,39 +40,21 @@ class Container {
 
     fun getHelpService(): HelpService = HelpService()
 
-    fun getAuthenticationService(): AuthenticationService? {
-        return getUserRepository()?.let { AuthenticationService(it) }
-    }
+    fun getAuthenticationService(): AuthenticationService? = getUserRepository()?.let { AuthenticationService(it) }
 
-    fun getAuthorizationService(): AuthorizationService? {
-        return getResourceRepository()?.let { AuthorizationService(it) }
-    }
+    fun getAuthorizationService(): AuthorizationService? = getResourceRepository()?.let { AuthorizationService(it) }
 
-    fun getAccountingService(): AccountingService? {
-        return getSessionRepository()?.let { AccountingService(it) }
-    }
+    fun getAccountingService(): AccountingService? = getSessionRepository()?.let { AccountingService(it) }
 
-    fun getUserRepository(): UserRepository? {
-        return getUserDAO()?.let { UserRepository(it) }
-    }
+    fun getUserRepository(): UserRepository? = getUserDAO()?.let { UserRepository(it) }
 
-    fun getResourceRepository(): ResourceRepository? {
-        return getResourceDao()?.let { ResourceRepository(it) }
-    }
+    fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepository(it) }
 
-    fun getSessionRepository(): SessionRepository? {
-        return getSessionDAO()?.let { SessionRepository(it) }
-    }
+    fun getSessionRepository(): SessionRepository? = getSessionDAO()?.let { SessionRepository(it) }
 
-    fun getUserDAO(): UserDAO? {
-        return getDBService().connection?.let { UserDAO(it) }
-    }
+    fun getUserDAO(): UserDAO? = getDBService().connection?.let { UserDAO(it) }
 
-    fun getResourceDao(): ResourceDAO? {
-        return getDBService().connection?.let { ResourceDAO(it) }
-    }
+    fun getResourceDao(): ResourceDAO? = getDBService().connection?.let { ResourceDAO(it) }
 
-    fun getSessionDAO(): SessionDAO? {
-        return getDBService().connection?.let { SessionDAO(it) }
-    }
+    fun getSessionDAO(): SessionDAO? = getDBService().connection?.let { SessionDAO(it) }
 }
