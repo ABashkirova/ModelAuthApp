@@ -19,16 +19,6 @@ class DBService(private val logger: KotlinLogger) {
         migrate()
     }
 
-    fun <R> inConnect(body: (db: Connection) -> R): R? {
-        connect()
-        if (connection != null) {
-            val res = body(this.connection!!)
-            close()
-            return res
-        }
-        return null
-    }
-
     private fun migrate() {
         logger.info { "Загрузка миграций flyway" }
         try {
@@ -52,11 +42,5 @@ class DBService(private val logger: KotlinLogger) {
                 logger.error { ex.stackTrace }
             }
         }
-    }
-
-    fun close() {
-        logger.info { "Закрываем подключение к БД" }
-        connection?.close()
-        connection = null
     }
 }

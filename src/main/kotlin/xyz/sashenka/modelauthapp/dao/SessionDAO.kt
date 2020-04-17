@@ -14,13 +14,15 @@ class SessionDAO(private val dbConnection: Connection) {
 
     fun insert(access: DBAccess, session: UserSession): Int {
         val statement = dbConnection.prepareStatement(sessionInsertSql)
-        statement.setDate(1, Date.valueOf(session.dateStart))
-        statement.setDate(2, Date.valueOf(session.dateEnd))
-        statement.setInt(3, session.volume)
-        statement.setInt(4, access.id)
+        return statement.use {
+            it.setDate(1, Date.valueOf(session.dateStart))
+            it.setDate(2, Date.valueOf(session.dateEnd))
+            it.setInt(3, session.volume)
+            it.setInt(4, access.id)
 
-        val result = statement.executeUpdate()
-        statement.close()
-        return result
+            val result = statement.executeUpdate()
+            statement.close()
+            return result
+        }
     }
 }
