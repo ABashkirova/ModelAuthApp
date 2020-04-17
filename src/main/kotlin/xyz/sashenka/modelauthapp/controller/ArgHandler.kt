@@ -49,6 +49,7 @@ class ArgHandler(args: Array<String>) {
         try {
             parser.parse(args)
         } catch (ex: IllegalStateException) {
+            println(ex.localizedMessage)
         }
     }
 

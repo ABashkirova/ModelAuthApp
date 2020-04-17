@@ -21,6 +21,8 @@ class Application(private val args: Array<String>, private val container: Contai
     private val validatingService: ValidatingService
         get() = container.getValidatingService()
     private val logger = container.getLogger(Application::class.java)
+    private val diErrorMessage = "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}"
+    private val nonCorrectActivity = "Неверная активность: "
 
     fun run(): ExitCode {
         val argHandler = container.getArgHandler(args)
@@ -42,15 +44,11 @@ class Application(private val args: Array<String>, private val container: Contai
         dbService.connect()
         return dbService.connection.use {
             logger.info { "Попытка аутентификации" }
-            var currentExitCode = startAuthentication(
-                authenticationData.login,
-                authenticationData.password
-            )
+            var currentExitCode = startAuthentication(authenticationData.login, authenticationData.password)
             if (currentExitCode != SUCCESS) {
                 logger.error { "Результат аутентификации: ${currentExitCode.name}" }
                 return currentExitCode
             }
-
             val authorizationData = argHandler.getAuthorizationData()
             if (authorizationData == null) {
                 logger.info { "Данных для авторизации нет. Завершаем шаг: ${currentExitCode.name}" }
@@ -59,8 +57,7 @@ class Application(private val args: Array<String>, private val container: Contai
             logger.info { "Валидируем роль" }
             if (!validatingService.isRoleValid(authorizationData.role)) {
                 logger.error {
-                    "Полученено неверное значение роли (${authorizationData.role}). " +
-                        "Завершаем шаг: $UNKNOWN_ROLE"
+                    "Полученено неверное значение роли (${authorizationData.role}). " + "Завершаем шаг: $UNKNOWN_ROLE"
                 }
                 return UNKNOWN_ROLE
             }
@@ -95,7 +92,7 @@ class Application(private val args: Array<String>, private val container: Contai
     private fun startAuthentication(login: String, password: String): ExitCode {
         val authenticationService = container.getAuthenticationService()
         if (authenticationService == null) {
-            logger.error { "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}" }
+            logger.error { diErrorMessage }
             return DI_ERROR
         }
 
@@ -116,7 +113,7 @@ class Application(private val args: Array<String>, private val container: Contai
     private fun startAuthorization(usersResources: UsersResources): ExitCode {
         val authorizationService = container.getAuthorizationService()
         if (authorizationService == null) {
-            logger.error { "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}" }
+            logger.error { diErrorMessage }
             return DI_ERROR
         }
 
@@ -143,36 +140,33 @@ class Application(private val args: Array<String>, private val container: Contai
         val endDate = validatingService.parseDate(accountingData.endDate)
         if (endDate == null) {
             logger.error {
-                "Неверная активность: " +
-                    "дата окончании сессии невалидна по формату ${accountingData.endDate}"
+                nonCorrectActivity + "дата окончании сессии невалидна по формату ${accountingData.endDate}"
             }
             return INVALID_ACTIVITY
         }
         val volume = validatingService.parseVolume(accountingData.volume)
         if (volume == null) {
             logger.error {
-                "Неверная активность: " +
-                    "объем ресурса невалиден по формату ${accountingData.volume}"
+                nonCorrectActivity + "объем ресурса невалиден по формату ${accountingData.volume}"
             }
             return INVALID_ACTIVITY
         }
 
         if (!(validatingService.areDatesValid(startDate, endDate) && validatingService.isVolumeValid(volume))) {
             logger.error {
-                "Неверная активность: " +
-                    "дата начала сессии невалидна ${accountingData.startDate}"
+                nonCorrectActivity + "дата начала сессии невалидна ${accountingData.startDate}"
             }
             return INVALID_ACTIVITY
         }
 
         val authorizationService = container.getAuthorizationService()
         if (authorizationService == null) {
-            logger.error { "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}" }
+            logger.error { diErrorMessage }
             return DI_ERROR
         }
         val accountingService = container.getAccountingService()
         if (accountingService == null) {
-            logger.error { "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}" }
+            logger.error { diErrorMessage }
             return DI_ERROR
         }
 
