@@ -26,7 +26,7 @@ class Application(private val args: Array<String>, private val container: Contai
         val argHandler = container.getArgHandler(args)
 
         val authenticationData = argHandler.getAuthenticationData()
-        println(args.joinToString())
+        logger.info { args.joinToString() }
         if (authenticationData == null) {
             logger.info { "Данных для аутентификации нет -> Печать справки" }
             container.getHelpService().printHelp()
