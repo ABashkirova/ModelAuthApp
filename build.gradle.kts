@@ -25,6 +25,7 @@ plugins {
     id("org.jetbrains.dokka") version "0.10.0"
     id("org.flywaydb.flyway") version "6.3.2"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+    id("com.github.dawnwords.jacoco.badge") version "0.2.0"
     jacoco
     application
 }
@@ -43,6 +44,11 @@ jacoco {
     reportsDir = file("$buildDir/reports/jacoco")
 }
 
+jacocoBadgeGenSetting {
+    jacocoReportPath = "$buildDir/reports/jacoco/xml/jacocoTestReport.xml"
+    readmePath = "$projectDir/README.md"
+}
+
 detekt {
     input = files("src/main/kotlin")
     config = files("$rootDir/detekt-config.yml")
@@ -59,27 +65,6 @@ detekt {
         }
     }
 }
-
-// val detekt {
-//     parallel = true
-//     setSource(files(projectDir))
-//     include("**/*.kt")
-//     exclude("**/resources/**", "**/build/**")
-//     config.setFrom(files("$rootDir/detekt-config.yml"))
-//     ignoreFailures = true
-//     autoCorrect = true
-//
-//     reports {
-//         xml {
-//             enabled = true
-//             destination = file("$buildDir/reports/detekt/report_detekt.xml")
-//         }
-//         html {
-//             enabled = true
-//             destination = file("$buildDir/reports/detekt/report_detekt.html")
-//         }
-//     }
-// }
 
 tasks {
     build {
@@ -106,7 +91,9 @@ tasks {
 
     jacocoTestReport {
         reports {
-            xml.destination = file("$buildDir/reports/jacoco/xml")
+            xml.isEnabled = true
+            xml.destination = file("$buildDir/reports/jacoco/xml/jacocoTestReport.xml")
+            html.isEnabled = true
             html.destination = file("$buildDir/reports/jacoco/html")
         }
     }
@@ -146,7 +133,6 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
 
     // test:
-
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")

@@ -8,20 +8,19 @@ class UserDAO(private val dbConnection: Connection) {
         get() = "SELECT * FROM USER WHERE LOGIN=?;"
 
     fun requestUserByLogin(login: String): User? {
-
         val statement = dbConnection.prepareStatement(userByLoginSql)
-        statement.setString(1, login)
-        val value = statement.executeQuery()
-        val user = when {
-            value.next() -> User(
-                value.getString("LOGIN"),
-                value.getString("HASH_PASSWORD"),
-                value.getString("SALT")
-            )
-            else -> null
+        return statement.use {
+            it.setString(1, login)
+            return@use it.executeQuery().use { value ->
+                return@use when {
+                    value.next() -> User(
+                        value.getString("LOGIN"),
+                        value.getString("HASH_PASSWORD"),
+                        value.getString("SALT")
+                    )
+                    else -> null
+                }
+            }
         }
-        statement.close()
-        value.close()
-        return user
     }
 }

@@ -2,7 +2,6 @@ package xyz.sashenka.modelauthapp
 
 import xyz.sashenka.modelauthapp.di.Container
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.ExitCode.DB_ERROR
 import xyz.sashenka.modelauthapp.model.ExitCode.DI_ERROR
 import xyz.sashenka.modelauthapp.model.ExitCode.HELP
 import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_ACTIVITY
@@ -27,7 +26,7 @@ class Application(private val args: Array<String>, private val container: Contai
         val argHandler = container.getArgHandler(args)
 
         val authenticationData = argHandler.getAuthenticationData()
-        println(args.joinToString())
+        logger.info { args.joinToString() }
         if (authenticationData == null) {
             logger.info { "Данных для аутентификации нет -> Печать справки" }
             container.getHelpService().printHelp()
@@ -40,8 +39,8 @@ class Application(private val args: Array<String>, private val container: Contai
         }
 
         val dbService = container.getDBService()
-        return dbService.inConnect {
-
+        dbService.connect()
+        return dbService.connection.use {
             logger.info { "Попытка аутентификации" }
             var currentExitCode = startAuthentication(
                 authenticationData.login,
@@ -49,13 +48,13 @@ class Application(private val args: Array<String>, private val container: Contai
             )
             if (currentExitCode != SUCCESS) {
                 logger.error { "Результат аутентификации: ${currentExitCode.name}" }
-                return@inConnect currentExitCode
+                return currentExitCode
             }
 
             val authorizationData = argHandler.getAuthorizationData()
             if (authorizationData == null) {
                 logger.info { "Данных для авторизации нет. Завершаем шаг: ${currentExitCode.name}" }
-                return@inConnect currentExitCode
+                return currentExitCode
             }
             logger.info { "Валидируем роль" }
             if (!validatingService.isRoleValid(authorizationData.role)) {
@@ -63,7 +62,7 @@ class Application(private val args: Array<String>, private val container: Contai
                     "Полученено неверное значение роли (${authorizationData.role}). " +
                         "Завершаем шаг: $UNKNOWN_ROLE"
                 }
-                return@inConnect UNKNOWN_ROLE
+                return UNKNOWN_ROLE
             }
 
             val usersResources = UsersResources(
@@ -75,13 +74,13 @@ class Application(private val args: Array<String>, private val container: Contai
             currentExitCode = startAuthorization(usersResources)
             if (currentExitCode != SUCCESS) {
                 logger.error { "Результат авторизации: ${currentExitCode.name}" }
-                return@inConnect currentExitCode
+                return currentExitCode
             }
 
             val accountingData = argHandler.getAccountingData()
             if (accountingData == null) {
                 logger.info { "Данных для аккаунтинга нет. Завершаем шаг: ${currentExitCode.name}" }
-                return@inConnect currentExitCode
+                return currentExitCode
             }
             logger.info { "Попытка аккаунтинга" }
             currentExitCode = startAccounting(usersResources, accountingData)
@@ -89,8 +88,8 @@ class Application(private val args: Array<String>, private val container: Contai
                 logger.error { "Результат аккаунтинга: ${currentExitCode.name}" }
             }
             logger.info { "Завершаем шаг: ${currentExitCode.name}" }
-            return@inConnect currentExitCode
-        } ?: DB_ERROR
+            return currentExitCode
+        }
     }
 
     private fun startAuthentication(login: String, password: String): ExitCode {
@@ -124,7 +123,7 @@ class Application(private val args: Array<String>, private val container: Contai
         if (!authorizationService.checkAccess(usersResources)) {
             logger.error {
                 "Нет доступа к ресурсу(${usersResources.path})" +
-                        "c запрашиваемым доступом(${usersResources.role})"
+                    "c запрашиваемым доступом(${usersResources.role})"
             }
             return NO_ACCESS
         }
@@ -137,7 +136,7 @@ class Application(private val args: Array<String>, private val container: Contai
         if (startDate == null) {
             logger.error {
                 "Неверная активность: " +
-                        "дата начала сессии невалидна по формату ${accountingData.startDate}"
+                    "дата начала сессии невалидна по формату ${accountingData.startDate}"
             }
             return INVALID_ACTIVITY
         }
@@ -145,7 +144,7 @@ class Application(private val args: Array<String>, private val container: Contai
         if (endDate == null) {
             logger.error {
                 "Неверная активность: " +
-                        "дата окончании сессии невалидна по формату ${accountingData.endDate}"
+                    "дата окончании сессии невалидна по формату ${accountingData.endDate}"
             }
             return INVALID_ACTIVITY
         }
@@ -153,7 +152,7 @@ class Application(private val args: Array<String>, private val container: Contai
         if (volume == null) {
             logger.error {
                 "Неверная активность: " +
-                        "объем ресурса невалиден по формату ${accountingData.volume}"
+                    "объем ресурса невалиден по формату ${accountingData.volume}"
             }
             return INVALID_ACTIVITY
         }
@@ -161,7 +160,7 @@ class Application(private val args: Array<String>, private val container: Contai
         if (!(validatingService.areDatesValid(startDate, endDate) && validatingService.isVolumeValid(volume))) {
             logger.error {
                 "Неверная активность: " +
-                        "дата начала сессии невалидна ${accountingData.startDate}"
+                    "дата начала сессии невалидна ${accountingData.startDate}"
             }
             return INVALID_ACTIVITY
         }
