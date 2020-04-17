@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
-rm -rf ./build
-
-./gradlew build
+./gradlew clean build
 mv ./build/libs/*-fat-*.jar ./AAA.jar

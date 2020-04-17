@@ -30,12 +30,20 @@
 
 # Build & Run application
 ## Build 
+Запустить скрипт `./script/BUILD.sh`
+```bash
+./gradlew build
+```
+
+## Run 
+Запустить скрипт `./script/Run.sh "-login vasya -pass 123456`
 ```bash
 ./gradlew build
 ```
 
 ## Test
-Запустить скрипт `TEST.sh`
+Запустить скрипт `./script/TEST.sh`
+или
 ```bash
 ./gradlew test
 ```
