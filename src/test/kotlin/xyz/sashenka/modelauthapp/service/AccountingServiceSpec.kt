@@ -1,3 +1,5 @@
+package xyz.sashenka.modelauthapp.service
+
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -6,7 +8,6 @@ import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.dto.DBAccess
 import xyz.sashenka.modelauthapp.repository.SessionRepository
-import xyz.sashenka.modelauthapp.service.AccountingService
 
 object AccountingServiceSpec : Spek({
     lateinit var accountingService: AccountingService

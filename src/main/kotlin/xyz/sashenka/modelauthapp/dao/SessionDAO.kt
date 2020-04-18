@@ -22,9 +22,7 @@ class SessionDAO(private val dbConnection: Connection) {
                 session.volume,
                 access.id
             )
-            val result = statement.executeUpdate()
-            statement.close()
-            return result
+            return@use it.executeUpdate()
         }
     }
 }

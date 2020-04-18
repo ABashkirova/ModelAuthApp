@@ -22,15 +22,14 @@ class ResourceDAO(private val dbConnection: Connection) {
         return statement.use {
             it.setValues(login, resource, role)
             return@use it.executeQuery().use { value ->
-                return@use when {
-                    value.next() -> DBAccess(
+                return@use if (value.next()) {
+                    DBAccess(
                         id = value.getInt("ID"),
                         userId = value.getInt("USER_ID"),
                         resource = value.getString("RESOURCE"),
                         role = value.getString("ROLE")
                     )
-                    else -> null
-                }
+                } else null
             }
         }
     }

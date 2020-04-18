@@ -40,61 +40,60 @@ class Application(private val args: Array<String>, private val container: Contai
             return INVALID_LOGIN_FORMAT
         }
 
-        val dbService = container.getDBService()
-        dbService.connect()
-        return dbService.connection.use {
-            // Authentication
-            logger.info { "Попытка аутентификации" }
-            var currentExitCode = startAuthentication(authenticationData.login, authenticationData.password)
-            if (isExitNeeded(
-                    currentExitCode != SUCCESS,
-                    "Результат аутентификации : ${currentExitCode.name}"
-                )
-            ) return@use currentExitCode
-
-            // Authorization
-            val authorizationData = argHandler.getAuthorizationData()
-            if (authorizationData == null) {
-                logger.info { "Данных для авторизации нет. Завершаем шаг: ${currentExitCode.name}" }
-                return@use currentExitCode
-            }
-            logger.info { "Валидируем роль" }
-            if (!validatingService.isRoleValid(authorizationData.role)) {
-                logger.error {
-                    "Полученено неверное значение роли (${authorizationData.role}). " + "Завершаем шаг: $UNKNOWN_ROLE"
-                }
-                return@use UNKNOWN_ROLE
-            }
-            val usersResources = UsersResources(
-                authorizationData.path,
-                Role.valueOf(authorizationData.role),
-                authorizationData.login
+        container.getDBService().connect()
+        // Authentication
+        logger.info { "Попытка аутентификации" }
+        var currentExitCode = startAuthentication(authenticationData.login, authenticationData.password)
+        if (isExitNeeded(
+                currentExitCode != SUCCESS,
+                "Результат аутентификации : ${currentExitCode.name}"
             )
-            logger.info { "Попытка авторизации" }
-            currentExitCode = startAuthorization(usersResources)
-            if (isExitNeeded(
-                    currentExitCode != SUCCESS,
-                    "Результат авторизации : ${currentExitCode.name}"
-                )
-            ) return@use currentExitCode
+        ) return currentExitCode
 
-            // Accounting
-            val accountingData = argHandler.getAccountingData()
-            if (accountingData == null) {
-                logger.info { "Данных для аккаунтинга нет. Завершаем шаг: ${currentExitCode.name}" }
-                return@use currentExitCode
-            }
-            logger.info { "Попытка аккаунтинга" }
-            currentExitCode = startAccounting(usersResources, accountingData)
-            if (isExitNeeded(
-                    currentExitCode != SUCCESS,
-                    "Результат аккаунтинга : ${currentExitCode.name}"
-                )
-            ) return@use currentExitCode
-
-            logger.info { "Завершаем шаг: ${currentExitCode.name}" }
-            return@use currentExitCode
+        // Authorization
+        val authorizationData = argHandler.getAuthorizationData()
+        if (authorizationData == null) {
+            logger.info { "Данных для авторизации нет. Завершаем шаг: ${currentExitCode.name}" }
+            return currentExitCode
         }
+        logger.info { "Валидируем роль" }
+        if (!validatingService.isRoleValid(authorizationData.role)) {
+            logger.error {
+                "Полученено неверное значение роли (${authorizationData.role}). " + "Завершаем шаг: $UNKNOWN_ROLE"
+            }
+            return UNKNOWN_ROLE
+        }
+        val usersResources = UsersResources(
+            authorizationData.path,
+            Role.valueOf(authorizationData.role),
+            authorizationData.login
+        )
+        logger.info { "Попытка авторизации" }
+        container.getDBService().connect()
+        currentExitCode = startAuthorization(usersResources)
+        if (isExitNeeded(
+                currentExitCode != SUCCESS,
+                "Результат авторизации : ${currentExitCode.name}"
+            )
+        ) return currentExitCode
+
+        // Accounting
+        val accountingData = argHandler.getAccountingData()
+        if (accountingData == null) {
+            logger.info { "Данных для аккаунтинга нет. Завершаем шаг: ${currentExitCode.name}" }
+            return currentExitCode
+        }
+        logger.info { "Попытка аккаунтинга" }
+        container.getDBService().connect()
+        currentExitCode = startAccounting(usersResources, accountingData)
+        if (isExitNeeded(
+                currentExitCode != SUCCESS,
+                "Результат аккаунтинга : ${currentExitCode.name}"
+            )
+        ) return currentExitCode
+
+        logger.info { "Завершаем шаг: ${currentExitCode.name}" }
+        return currentExitCode
     }
 
     private fun isExitNeeded(expression: Boolean, message: String): Boolean {
@@ -186,7 +185,7 @@ class Application(private val args: Array<String>, private val container: Contai
             logger.error { diErrorMessage }
             return DI_ERROR
         }
-
+        container.getDBService().connect()
         val userAccess = authorizationService.getResourceAccess(usersResources)
         if (userAccess == null) {
             logger.error { "Нет доступа, на попытке аккаунтиться" }
