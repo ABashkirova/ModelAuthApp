@@ -98,5 +98,29 @@ class ArgHandlerSpec : Spek({
                 assertNotNull(argHandler.getAccountingData())
             }
         }
+
+        Scenario("getting null authentication data") {
+            val argHandler = ArgHandler(emptyArray())
+
+            Then("it should have login") {
+                assertNull(argHandler.login)
+            }
+
+            Then("it should have password") {
+                assertNull(argHandler.password)
+            }
+
+            Then("it should be not null authentication data") {
+                assertNull(argHandler.getAuthenticationData())
+            }
+
+            Then("it should be not null authorization data") {
+                assertNull(argHandler.getAuthorizationData())
+            }
+
+            Then("it should be not null accounting data") {
+                assertNull(argHandler.getAccountingData())
+            }
+        }
     }
 })

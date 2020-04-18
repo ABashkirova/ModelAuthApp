@@ -1,8 +1,8 @@
 # [ModelAuthApp](https://abashkirova.github.io/model-auth-app/)
 [![Build Status](https://travis-ci.org/ABashkirova/model-auth-app.svg?branch=master)](https://travis-ci.org/ABashkirova/model-auth-app) 
-![LINE](https://img.shields.io/badge/line--coverage-92%25-brightgreen.svg)
-![BRANCH](https://img.shields.io/badge/branch--coverage-83%25-brightgreen.svg)
-![COMPLEXITY](https://img.shields.io/badge/complexity-1,74-brightgreen.svg)
+![LINE](https://img.shields.io/badge/line--coverage-94%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-89%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1,69-brightgreen.svg)
 
 [![ktlint](https://img.shields.io/badge/code%20style-%E2%9D%A4-FF4081.svg)](https://ktlint.github.io/)
 

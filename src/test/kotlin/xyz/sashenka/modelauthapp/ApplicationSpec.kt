@@ -1,119 +1,91 @@
 package xyz.sashenka.modelauthapp
 
-import org.junit.Assert.assertEquals
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verifyOrder
+import org.apache.logging.log4j.kotlin.loggerOf
 import org.spekframework.spek2.Spek
-import org.spekframework.spek2.style.specification.describe
+import org.spekframework.spek2.style.gherkin.Feature
+import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.di.Container
 import xyz.sashenka.modelauthapp.model.ExitCode
+import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.model.dto.AuthenticationData
+import xyz.sashenka.modelauthapp.model.dto.AuthorizationData
+import xyz.sashenka.modelauthapp.service.AuthenticationService
+import xyz.sashenka.modelauthapp.service.ValidatingService
+import kotlin.test.assertEquals
 
 object ApplicationSpec : Spek({
-    lateinit var application: Application
-    describe("Help") {
-        mapOf(
-            arrayOf("") to ExitCode.HELP,
-            // Выход из программы за счет внешней библиотеки
-            // arrayOf("-h") to ExitCode.SUCCESS,
-            arrayOf("-bla") to ExitCode.HELP
-        ).forEach { (input, expected) ->
-            describe("Print help for ${input.joinToString()}") {
-                it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+    lateinit var app: Application
+    val containerMock = mockk<Container>()
+    val argHandlerMock = mockk<ArgHandler>()
+    val validationServiceMock = mockk<ValidatingService>()
+    val authenticationServiceMock = mockk<AuthenticationService>()
+
+    val user = User(
+        "sasha",
+        "bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3",
+        "V9Me2nx"
+    )
+    val authenticationData = AuthenticationData("sasha", "qwerty")
+    val authorizationData = AuthorizationData("A", "READ", "sasha")
+
+    every { containerMock.getLogger(Application::class.java) } returns loggerOf(ApplicationSpec::class.java)
+
+    Feature("Invalid login") {
+        Scenario("return invalid login format") {
+            Given("App with args: -login 123 -pass qwerty") {
+                app = Application(arrayOf("-login 123 -pass qwerty"), containerMock)
+            }
+            When("container init service") {
+                every { containerMock.getValidatingService() } returns validationServiceMock
+                every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
+                every { argHandlerMock.getAuthenticationData() } returns AuthenticationData("123", "qwerty")
+                every { validationServiceMock.isLoginValid("123") } returns false
+            }
+            Then("Return code INVALID_LOGIN_FORMAT") {
+                assertEquals(ExitCode.INVALID_LOGIN_FORMAT, app.run())
+                verifyOrder {
+                    containerMock.getArgHandler(ofType())
+                    argHandlerMock.getAuthenticationData()
+                    containerMock.getValidatingService()
+                    validationServiceMock.isLoginValid("123")
                 }
             }
         }
     }
 
-    describe("Authentication") {
-        mapOf(
-            ("-login sasha -pass 123".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-pass 123 -login sasha".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login SASHA -pass 123".split(" ")).toTypedArray() to ExitCode.INVALID_LOGIN_FORMAT,
-            ("-login SA12 -pass 123".split(" ")).toTypedArray() to ExitCode.INVALID_LOGIN_FORMAT,
-            ("-login   -pass pass".split(" ")).toTypedArray() to ExitCode.HELP,
-            ("-login abcdqwertyqwerty -pass pass".split(" ")).toTypedArray() to ExitCode.INVALID_LOGIN_FORMAT,
-            ("-login vasya -pass 123".split(" ")).toTypedArray() to ExitCode.UNKNOWN_LOGIN,
-            ("-login admin -pass 1234".split(" ")).toTypedArray() to ExitCode.WRONG_PASSWORD,
-            ("-login admin -pass".split(" ")).toTypedArray() to ExitCode.HELP,
-            ("-login admin -pass qwerty".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#$%^&*!".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login abcdefghij -pass abc".split(" ").toTypedArray()) to ExitCode.SUCCESS
-        ).forEach { (input, expected) ->
-            describe("Check authentication for ${input.joinToString()}") {
-                it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
-                }
+    Feature("Invalid role") {
+        Scenario("return unknown role") {
+            Given("App with args: -login sasha -pass qwerty -role Delete -res A") {
+                app = Application(arrayOf("-login sasha -pass qwerty -role Delete -res A"), containerMock)
             }
-        }
-    }
+            When("container init service") {
 
-    describe("Authorization") {
-        mapOf(
-            ("-login sasha -pass 123 -role READ -res A".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login sasha -pass 123 -role DELETE -res A".split(" ")).toTypedArray() to ExitCode.UNKNOWN_ROLE,
-            ("-login sasha -pass 123 -role WRITE -res A".split(" ")).toTypedArray() to ExitCode.NO_ACCESS,
-            ("-login sasha -pass 123 -role WRITE -res a.b.c".split(" ")).toTypedArray() to ExitCode.NO_ACCESS,
-            ("-login sasha -pass 123 -role READ -res A.B".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login sasha -pass 123 -role READ -res A.B.C.D".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login admin -pass qwerty -role EXECUTE -res A.AA".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login admin -pass qwerty -role EXECUTE -res A.B".split(" ")).toTypedArray() to ExitCode.NO_ACCESS,
-            ("-login q -pass @#$%^&*! -role READ".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass 1234 -role DELETE -res A.B".split(" ")).toTypedArray() to ExitCode.WRONG_PASSWORD,
-            ("-login q -pass @#$%^&*! -role READ -res A.AA.AAA".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#\$%^&*! -role READ -res A.AA".split(" ").toTypedArray()) to ExitCode.NO_ACCESS,
-            ("-role READ -res A -login sasha -pass 123".split(" ").toTypedArray()) to ExitCode.SUCCESS,
-            ("-login sasha -pass 123 -role Write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE,
-            ("-login sasha -pass 123 -role write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE
-        ).forEach { (input, expected) ->
-            describe("Check Authorization for ${input.joinToString()}") {
-                it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
-                }
+                every { containerMock.getValidatingService() } returns validationServiceMock
+                every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
+                every { argHandlerMock.getAuthenticationData() } returns authenticationData
+                every { validationServiceMock.isLoginValid("sasha") } returns true
+                every { containerMock.getDBService().connect() } returns Unit
+                every { containerMock.getAuthenticationService() } returns authenticationServiceMock
+                every { authenticationServiceMock.findUser(ofType()) } returns user
+                every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
+                every { argHandlerMock.getAuthorizationData() } returns authorizationData
+                every { validationServiceMock.isRoleValid(ofType()) } returns false
             }
-        }
-    }
-
-    describe("Accounting") {
-        mapOf(
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol ten"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-00 -de 2000-02-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-32 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-02-15 -de 2000-01-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login sasha -pass 123 -role READ -res A -ds 2120-02-15 -de 2120-01-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.INVALID_ACTIVITY,
-            ("-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15 -vol 20"
-                .split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login admin -pass qwerty -role EXECUTE -res A.AA -ds 2000-01-15 -de 2000-02-15 -vol 100"
-                .split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#$%^&*! -role WRITE -res A.B.C -de 2000-02-15 -vol 10"
-                .split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#$%^&*! -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15"
-                .split(" ").toTypedArray()) to ExitCode.SUCCESS,
-            ("-login q -pass @#$%^&*! -role DELETE -res A.B.C -ds 2000-01-15 -de 2000-02-15"
-                .split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE,
-            ("-login q -pass !@#$% -role WRITE -res A.B.C -ds 2000-01-15 -de 2000-02-15"
-                .split(" ").toTypedArray()) to ExitCode.WRONG_PASSWORD,
-            ("-res A.B.C -ds 2000-01-15 -vol 10 -login q -pass @#$%^&*! -role WRITE"
-                .split(" ").toTypedArray()) to ExitCode.SUCCESS,
-            ("-login sasha -pass 123 -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.6"
-                .split(" ").toTypedArray()) to ExitCode.INVALID_ACTIVITY
-        ).forEach { (input, expected) ->
-            describe("Check Accounting for ${input.joinToString()}") {
-                it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+            Then("Return code UNKNOWN_ROLE") {
+                assertEquals(ExitCode.UNKNOWN_ROLE, app.run())
+                verifyOrder {
+                    containerMock.getArgHandler(ofType())
+                    argHandlerMock.getAuthenticationData()
+                    validationServiceMock.isLoginValid("sasha")
+                    containerMock.getDBService().connect()
+                    containerMock.getAuthenticationService()
+                    authenticationServiceMock.findUser(ofType())
+                    authenticationServiceMock.verifyPass(ofType(), ofType())
+                    argHandlerMock.getAuthorizationData()
+                    validationServiceMock.isRoleValid(ofType())
                 }
             }
         }
