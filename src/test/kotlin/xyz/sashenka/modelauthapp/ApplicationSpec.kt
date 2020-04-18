@@ -61,7 +61,7 @@ object ApplicationSpec : Spek({
             ("-login q -pass @#$%^&*! -role READ".split(" ")).toTypedArray() to ExitCode.SUCCESS,
             ("-login q -pass 1234 -role DELETE -res A.B".split(" ")).toTypedArray() to ExitCode.WRONG_PASSWORD,
             ("-login q -pass @#$%^&*! -role READ -res A.AA.AAA".split(" ")).toTypedArray() to ExitCode.SUCCESS,
-            ("-login q -pass @#\$%^&*! -role READ -res A.AA".split(" ").toTypedArray()) to ExitCode.NO_ACCESS,
+            ("-login q -pass @#$%^&*! -role READ -res A.AA".split(" ").toTypedArray()) to ExitCode.NO_ACCESS,
             ("-role READ -res A -login sasha -pass 123".split(" ").toTypedArray()) to ExitCode.SUCCESS,
             ("-login sasha -pass 123 -role Write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE,
             ("-login sasha -pass 123 -role write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE
