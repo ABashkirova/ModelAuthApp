@@ -1,5 +1,8 @@
 # [ModelAuthApp](https://abashkirova.github.io/model-auth-app/)
 [![Build Status](https://travis-ci.org/ABashkirova/model-auth-app.svg?branch=master)](https://travis-ci.org/ABashkirova/model-auth-app) 
+![LINE](https://img.shields.io/badge/line--coverage-91%25-brightgreen.svg)
+![BRANCH](https://img.shields.io/badge/branch--coverage-82%25-brightgreen.svg)
+![COMPLEXITY](https://img.shields.io/badge/complexity-1,71-brightgreen.svg)
 
 Это учебный проект, моделирующий процесс [Аутентификации, Авторизации и Аккаунтинга пользователя](https://ru.wikipedia.org/wiki/AAA_(информационная_безопасность)).
 Приложение представляет собой консольную утилиту, принимающую на вход аргументы. 
@@ -26,22 +29,21 @@
 3. [План работ по набору требований #4](./docs/Roadmap4.md)
 
 # Build & Run application
-## Build jar
-1. Склонировать репозиторий 
-2. Запустить скрипт сборки — `BUILD.sh`
+## Build 
+Запустить скрипт `./script/BUILD.sh`
 ```bash
-./scripts/BUILD.sh
+./gradlew build
 ```
 
-
-## Run
-Запустить скрипт `RUN.sh`
+## Run 
+Запустить скрипт `./script/Run.sh "-login vasya -pass 123456`
 ```bash
-scripts/RUN.sh -key value
+./gradlew build
 ```
 
 ## Test
-Запустить скрипт `TEST.sh`
+Запустить скрипт `./script/TEST.sh`
+или
 ```bash
-./scripts/TEST.sh
+./gradlew test
 ```
