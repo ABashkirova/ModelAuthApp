@@ -1,6 +1,7 @@
 package xyz.sashenka.modelauthapp.dao
 
 import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.Connection
 
 class ResourceDAO(private val dbConnection: Connection) {
@@ -19,19 +20,16 @@ class ResourceDAO(private val dbConnection: Connection) {
     fun requestAccessByResource(login: String, resource: String, role: String): DBAccess? {
         val statement = dbConnection.prepareStatement(selectUserResourcesByLoginSql)
         return statement.use {
-            it.setString(1, login)
-            it.setString(2, resource)
-            it.setString(3, role)
+            it.setValues(login, resource, role)
             return@use it.executeQuery().use { value ->
-                return@use when {
-                    value.next() -> DBAccess(
+                return@use if (value.next()) {
+                    DBAccess(
                         id = value.getInt("ID"),
                         userId = value.getInt("USER_ID"),
                         resource = value.getString("RESOURCE"),
                         role = value.getString("ROLE")
                     )
-                    else -> null
-                }
+                } else null
             }
         }
     }

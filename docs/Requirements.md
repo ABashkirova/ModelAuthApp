@@ -1,7 +1,8 @@
-# Requirements #1
+# Requirements
 К приложению были предложены требования. Требования необходимо распланировать.
 Нумерация R-Requirements, далее номер занятия, потом номер требования
 
+## Requirements #1
 | Требование | Комментарий |
 |:---|:---|
 | R1.1 Приложение должно иметь возможность аутентифицировать пользователя по логину и паролю | [AAA](https://ru.wikipedia.org/wiki/AAA_(информационная_безопасность)). Логин `[a-z]{1-10}`, пароль любой. |
@@ -23,7 +24,7 @@
 | R1.11 Приложение сначала аутентифицирует (коды 0,1,2,3,4), потом авторизовывает (коды 0,5,6), потом аккаунтить (коды 0,7)| |
 | R1.12 Создайте скрипты, которые компилириуют и собирают jar; выполлняют программу; прогоняют тесты | Можно попробовать расскрасить вывод в тестах |
 
-# Requirements #2
+## Requirements #2
 | Требование | Комментарий 
 |:---|:---| 
 | R2.1 Создать файл `Roadmap2.md` и описать план работы над вторым набором требований	| |
@@ -40,7 +41,7 @@
 | R2.12 Приложение должно автоматически собираться и тестироваться на `travis-ci.org`|При коммите с Windows, не забудьте пометить sh-файлы исполняемым флагом git update-index --chmod=+x *.sh |
 | R2.13 Включите `github pages` в вашем репозитории и выберите какой-нибудь стиль, чтобы сайт сгенерился из вашего `README.md` файла |https://pages.github.com|
 
-# Requirements #3
+## Requirements #3
 | Требование | Комментарий 
 |:---|:---| 
 | R3.1 Приложение должно логировать в stdout все введенные параметры, процесс принятия решения с пояснением причины, возникающие исключения со стректрейсом | Можно использовать [библиотеку](http://logging.apache.org/log4j/2.x/manual/configuration.html) Вывод вида "Пароль ABC для пользователя XYZ неверный" |
@@ -56,7 +57,7 @@
 | R3.11 Доменные классы должны находиться в отдельном пакете| DAO-класс если более одного тоже должны находиться в отдельном пакете  |
 | R3.12 Настройки БД (url, login, pass) должны передаваться через переменные окружения System.getenv() |  |
 
-# Requirements #4
+## Requirements #4
 | Требование | Комментарий |
 |:---|:---| 
 | R4.1 Структура проекта должна соответствовать проекту gradle |
@@ -68,3 +69,17 @@
 | R4.7 Стиль кода должен проверяться при помощи ktlint | https://github.com/pinterest/ktlint |
 | R4.8 Gradle должен генерировать отчет по статическому анализу кода | https://arturbosch.github.io/detekt/ |
 | R4.9 Документация должна быть обновлена для соответствия новой системе сборки |  |
+
+## Requirements #5
+| Требование | Комментарий |
+|:---|:---| 
+| R5.1 Проект должен быть преобразован в web-приложение | [gradle](https://guides.gradle.org/building-java-web-applications/) [maven](http://www.mkyong.com/maven/how-to-create-a-web-application-project-with-maven/)|
+| 5.2 Проект должен запускаться через сервлет контейнер | Не забудьте добавить [jetty-servlet](http://www.eclipse.org/jetty/documentation/current/jetty-maven-plugin.html) в зависимости Запускать нужно через mvn org.eclipse.jetty:jetty-maven-plugin:run |
+| R5.3 Создайте один сервлет слушающий /echo/* и переопределите методы doGet и doPost.| Проверяйте URL из request: если запрос не /echo/get или /echo/post возвращайте ответ 404 |
+| R5.4 Проект должен содержать сервлет слушающий по адресу /echo/get который принимает GET запрос вида ?id=X и выводящий в ответ значение X  | [Пример](http://www.mkyong.com/servlet/a-simple-servlet-example-write-deploy-run/) |
+| R5.5 Проект должен содержать сервлет слушающий по адресу /echo/post который принимает POST запрос с текстом и делает редирект на /echo/get?id=X где X поле введенное в форму | |
+| R5.6 Проект должен содержать страницу index.html с формой, одним полем и кнопкой submit, форма отправляет post запрос на /echo/post сервлет. Сделать ссылку на GET-сервлет с каким-нибудь параметром. | |
+| R5.7 Сделать иерархический проект | [Pom-проект](https://maven.apache.org/plugins/maven-eclipse-plugin/reactor.html) В родительском pov-файле должны быть прописаны два дочерних модуля. А в каждом дочернем модуле должна быть ссылка на родителя.|
+| R5.8 Задеплоить war проект на heroku | [Getting Started on Heroku with Java](https://devcenter.heroku.com/articles/getting-started-with-java#introduction) [Deploying Java Web Applications](https://devcenter.heroku.com/articles/deploy-a-java-web-application-that-launches-with-jetty-runner)|
+| R5.9 Настроить автоматический деплой war проекта на heroku | [github-integration](https://devcenter.heroku.com/articles/github-integration)|
+| 5.10 Для генерации результата get страницы из шаблона используйте JSP | Запрос приходит на get-сервлет, он заполняет переменную и вызывает getRequestDispatcher("...gsp").forward(...) http://java-course.ru/student/book1/jsp/ |

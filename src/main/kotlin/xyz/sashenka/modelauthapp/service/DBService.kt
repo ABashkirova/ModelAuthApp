@@ -15,7 +15,7 @@ class DBService(private val logger: KotlinLogger) {
     var connection: Connection? = null
 
     init {
-        logger.info { ("Инициализируем DBService: url(${envUrl + envDBFile}), login($envLogin)") }
+        logger.info { "Инициализируем DBService: url(${envUrl + envDBFile}), login($envLogin)" }
         migrate()
     }
 

@@ -10,6 +10,7 @@ import org.spekframework.spek2.style.gherkin.Feature
 
 object ValidatingServiceSpec : Spek({
     val validationService = ValidatingService()
+
     Feature("Validation") {
         Scenario("login is valid") {
 
