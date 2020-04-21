@@ -1,7 +1,5 @@
 language: java
 install: true
-#compiler: kotlinc
-#install: sudo snap install --classic kotlin
 os: linux
 dist: trusty
 jdk: oraclejdk8
@@ -9,3 +7,10 @@ env:
   - DBURL=jdbc:h2:./AAA DBLOGIN=sa DBPASS=
 script:
   - ./gradlew build
+deploy:
+  provider: heroku
+  api_key:
+    secure: vtt+NmGLFIapjv9OabuWDbcJI+3PcXVLl4pVy0i/wY96lJ1OaG2WEN9WLc9VYYTs32SN2HOQRm45eZcptvuZursTNuTQkDJAUieZaRAKdcbG0wTPs8HHxKPpm0ngQO7XfwsZLFjgPnmnfldzMFWPI+eIhgeEEMpPdFC3VGI5anseuSEoIzvALl70duxyn5eNmAcT8iATHJfVtsv/74ljy8ZTFBaEqRYQyyn2QVf1y6DZxfHMVDM2dT4JqmExQk111j7r+sNTx8vcdZi4pvAXr6FlkKWHxU5doZIignCUN0MdOeb+arNumRr1wFPmwgNpQVQsnXcRP1ZACrybvKsUZDQXT+M3tE13pw6c8iwWGHGIzV8IxmQ5eD2j7OlBk+9bZo58Jv8hY3ABHn1WK6fZjoUYJUdJ9j6BYPpUIJFgx2LDDex/jNbdJYM1+vvmQWug/ACZHysZLFSFiTvwRVnpOB1DiRRBQpwIGnQH87yiBuaQv3PRVWojTTsI8fskAFUl+WLxp0OVngpdV4KIYKXzwosUKhtoAHcvMpkkXn5nY1WDDLLdWdHETLct3890Hm0OiTEoMghW5pp1bqou9zSHVuspCyH+438XAFXM3oo5E16fJd1yr8KQPmE8bRGSSZBoh23we/v/k7+15njj+uHrvhRTsqZGODMCrPhA4SH9tBE=
+  app: model-auth-app
+  on:
+    repo: ABashkirova/model-auth-app
