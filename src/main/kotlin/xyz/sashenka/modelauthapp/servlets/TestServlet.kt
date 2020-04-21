@@ -11,13 +11,13 @@ class TestServlet : HttpServlet() {
         val id = req.getParameter("id")
         req.setAttribute("id", id)
         req.getRequestDispatcher("response.jsp").forward(req, resp)
-        //resp.writer.write(id)
+        // resp.writer.write(id)
     }
 
     override fun doPost(req: HttpServletRequest, resp: HttpServletResponse) {
         val id = req.getParameter("id")
-        //req.setAttribute("user", name)
+        // req.setAttribute("user", name)
         resp.sendRedirect("echo?id=$id")
-        //req.getRequestDispatcher("response.jsp").forward(req, resp)
+        // req.getRequestDispatcher("response.jsp").forward(req, resp)
     }
 }
