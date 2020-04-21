@@ -1,5 +1,3 @@
-import org.gradle.jvm.tasks.Jar
-
 val aaaVersion: String by project
 // Gradle plugins
 val kotlinVersion: String by project
@@ -69,12 +67,18 @@ detekt {
 }
 
 tasks {
-/*
     build {
-        dependsOn(fatJar)
+        dependsOn(war)
     }
-*/
-
+    val copyToLib by registering(Copy::class) {
+        into("$buildDir/server")
+        from(staging) {
+            include("webapp-runner*")
+        }
+    }
+    val stage by registering {
+        dependsOn(build, copyToLib)
+    }
     test {
         useJUnitPlatform {
             includeEngines("spek2")
@@ -120,9 +124,13 @@ repositories {
         url = uri("https://kotlin.bintray.com/kotlinx")
     }
 }
+val staging: Configuration by configurations.creating
 
 dependencies {
-
+    // heroku app runner
+    staging("com.heroku:webapp-runner-main:9.0.31.0")
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+    // all
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -137,27 +145,11 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
 
-
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
 }
-
-/*
-val fatJar = task("fatJar", type = Jar::class) {
-    baseName = "${project.name}-fat"
-    manifest {
-        attributes["Implementation-Title"] = "AAAJar"
-        attributes["Implementation-Version"] = aaaVersion
-        attributes["Main-Class"] = application.mainClassName
-    }
-    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-    with(tasks.jar.get() as CopySpec)
-}
-*/
 
 flyway {
     url = System.getenv("DBURL" + System.getenv("DBFILE"))
