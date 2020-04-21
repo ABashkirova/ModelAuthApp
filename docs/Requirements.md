@@ -82,4 +82,4 @@
 | R5.7 Сделать иерархический проект | [Pom-проект](https://maven.apache.org/plugins/maven-eclipse-plugin/reactor.html) В родительском pov-файле должны быть прописаны два дочерних модуля. А в каждом дочернем модуле должна быть ссылка на родителя.|
 | R5.8 Задеплоить war проект на heroku | [Getting Started on Heroku with Java](https://devcenter.heroku.com/articles/getting-started-with-java#introduction) [Deploying Java Web Applications](https://devcenter.heroku.com/articles/deploy-a-java-web-application-that-launches-with-jetty-runner)|
 | R5.9 Настроить автоматический деплой war проекта на heroku | [github-integration](https://devcenter.heroku.com/articles/github-integration)|
-| 5.10 Для генерации результата get страницы из шаблона используйте GSP | Запрос приходит на get-сервлет, он заполняет переменную и вызывает getRequestDispatcher("...gsp").forward(...) http://java-course.ru/student/book1/jsp/ |
+| 5.10 Для генерации результата get страницы из шаблона используйте JSP | Запрос приходит на get-сервлет, он заполняет переменную и вызывает getRequestDispatcher("...gsp").forward(...) http://java-course.ru/student/book1/jsp/ |
