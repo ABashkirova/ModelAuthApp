@@ -75,7 +75,7 @@
 |:---|:---| 
 | R5.1 Проект должен быть преобразован в web-приложение | [gradle](https://guides.gradle.org/building-java-web-applications/) [maven](http://www.mkyong.com/maven/how-to-create-a-web-application-project-with-maven/)|
 | 5.2 Проект должен запускаться через сервлет контейнер | Не забудьте добавить [jetty-servlet](http://www.eclipse.org/jetty/documentation/current/jetty-maven-plugin.html) в зависимости Запускать нужно через mvn org.eclipse.jetty:jetty-maven-plugin:run |
-| R5.3  Создайте один сервлет слушающий /echo/* и переопределите методы doGet и doPost.| Проверяйте URL из request: если запрос не /echo/get или /echo/post возвращайте ответ 404 |
+| R5.3 Создайте один сервлет слушающий /echo/* и переопределите методы doGet и doPost.| Проверяйте URL из request: если запрос не /echo/get или /echo/post возвращайте ответ 404 |
 | R5.4 Проект должен содержать сервлет слушающий по адресу /echo/get который принимает GET запрос вида ?id=X и выводящий в ответ значение X  | [Пример](http://www.mkyong.com/servlet/a-simple-servlet-example-write-deploy-run/) |
 | R5.5 Проект должен содержать сервлет слушающий по адресу /echo/post который принимает POST запрос с текстом и делает редирект на /echo/get?id=X где X поле введенное в форму | |
 | R5.6 Проект должен содержать страницу index.html с формой, одним полем и кнопкой submit, форма отправляет post запрос на /echo/post сервлет. Сделать ссылку на GET-сервлет с каким-нибудь параметром. | |
