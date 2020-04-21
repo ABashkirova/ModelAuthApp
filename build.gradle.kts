@@ -74,6 +74,9 @@ tasks {
         dependsOn(fatJar)
     }
 */
+    stage {
+        dependsOn(appRun)
+    }
 
     test {
         useJUnitPlatform {
