@@ -26,6 +26,8 @@ plugins {
     id("org.flywaydb.flyway") version "6.3.2"
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("com.github.dawnwords.jacoco.badge") version "0.2.0"
+    id("org.gretty") version "3.0.2"
+    war
     jacoco
     application
 }
@@ -118,6 +120,9 @@ repositories {
 }
 
 dependencies {
+
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -132,10 +137,13 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
 
+
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+
+
 }
 
 val fatJar = task("fatJar", type = Jar::class) {
