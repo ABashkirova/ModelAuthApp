@@ -25,6 +25,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
     id("com.github.dawnwords.jacoco.badge") version "0.2.0"
     id("org.gretty") version "3.0.2"
+    id("com.github.johnrengelman.shadow") version "5.1.0"
     war
     jacoco
     application
@@ -67,17 +68,17 @@ detekt {
 }
 
 tasks {
-    build {
-        dependsOn(war)
-    }
     val copyToLib by registering(Copy::class) {
         into("$buildDir/server")
         from(staging) {
             include("webapp-runner*")
         }
     }
-    val stage by registering {
-        dependsOn(build, copyToLib)
+    build {
+        dependsOn(war, copyToLib)
+    }
+    register("stage") {
+        dependsOn(clean, shadowJar, war, copyToLib)
     }
     test {
         useJUnitPlatform {
@@ -110,6 +111,10 @@ tasks {
         violationRules {
             rule { limit { minimum = BigDecimal.valueOf(0.2) } }
         }
+    }
+
+    shadowJar {
+        archiveVersion.set(version)
     }
 }
 
