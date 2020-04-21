@@ -1,6 +1,7 @@
 package xyz.sashenka.modelauthapp.dao
 
 import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.Connection
 
 class UserDAO(private val dbConnection: Connection) {
@@ -10,7 +11,7 @@ class UserDAO(private val dbConnection: Connection) {
     fun requestUserByLogin(login: String): User? {
         val statement = dbConnection.prepareStatement(userByLoginSql)
         return statement.use {
-            it.setString(1, login)
+            it.setValues(login)
             return@use it.executeQuery().use { value ->
                 return@use when {
                     value.next() -> User(

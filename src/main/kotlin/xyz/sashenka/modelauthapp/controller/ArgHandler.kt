@@ -49,6 +49,7 @@ class ArgHandler(args: Array<String>) {
         try {
             parser.parse(args)
         } catch (ex: IllegalStateException) {
+            println(ex.localizedMessage)
         }
     }
 
@@ -66,7 +67,7 @@ class ArgHandler(args: Array<String>) {
         val resource = resource
         val role = role
         val login = login
-        return if (resource == null || role == null || login == null) {
+        return if (login == null || role == null || resource == null) {
             null
         } else {
             AuthorizationData(resource, role, login)
