@@ -69,9 +69,11 @@ detekt {
 }
 
 tasks {
+/*
     build {
         dependsOn(fatJar)
     }
+*/
 
     test {
         useJUnitPlatform {
@@ -121,8 +123,6 @@ repositories {
 
 dependencies {
 
-    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
-
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -143,9 +143,10 @@ dependencies {
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
 
-
+    providedCompile("javax.servlet:javax.servlet-api:3.1.0")
 }
 
+/*
 val fatJar = task("fatJar", type = Jar::class) {
     baseName = "${project.name}-fat"
     manifest {
@@ -156,6 +157,7 @@ val fatJar = task("fatJar", type = Jar::class) {
     from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
     with(tasks.jar.get() as CopySpec)
 }
+*/
 
 flyway {
     url = System.getenv("DBURL" + System.getenv("DBFILE"))
