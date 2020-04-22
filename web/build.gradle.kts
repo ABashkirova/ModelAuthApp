@@ -5,20 +5,11 @@ plugins {
     id ("com.heroku.sdk.heroku-gradle") version "1.0.4"
     war
     jacoco
-    application
 }
 
 gretty {
     logDir = "${projectDir}/logs"
     loggingLevel = "TRACE"
-}
-
-application {
-    applicationName = "WebApp"
-}
-
-apply {
-    application
 }
 
 heroku {
