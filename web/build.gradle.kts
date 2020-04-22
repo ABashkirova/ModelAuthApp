@@ -2,6 +2,7 @@
 plugins {
     id("org.gretty") version "3.0.2"
     id("com.github.johnrengelman.shadow") version "5.1.0"
+    id ("com.heroku.sdk.heroku-gradle") version "1.0.4"
     war
     jacoco
     application
@@ -14,6 +15,12 @@ application {
 
 apply {
     application
+}
+
+heroku {
+    includes = listOf("./web/build/server/webapp-runner*.jar", "./web/build/libs/*.war")
+    includeBuildDir = false
+    jdkVersion        = "8"
 }
 
 val staging: Configuration by configurations.creating
