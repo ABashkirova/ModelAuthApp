@@ -1,1 +1,1 @@
-web: ./scripts/RUN_WEB.sh
+web: java  -jar webapp-runner-*.jar build/libs/*.war
