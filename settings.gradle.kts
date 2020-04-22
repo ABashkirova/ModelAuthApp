@@ -8,3 +8,5 @@
  */
 
 rootProject.name = "ModelAuthApp"
+include("app")
+include("web")
