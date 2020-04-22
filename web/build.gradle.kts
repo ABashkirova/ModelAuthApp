@@ -32,11 +32,7 @@ tasks {
         }
     }
 
-    build {
-        dependsOn(war, copyToLib)
-    }
-
     register("stage") {
-        dependsOn(clean, shadowJar, war, copyToLib)
+        dependsOn(war, copyToLib)
     }
 }
