@@ -14,3 +14,4 @@ deploy:
   app: model-auth-app
   on:
     repo: ABashkirova/model-auth-app
+    all_branches: true
