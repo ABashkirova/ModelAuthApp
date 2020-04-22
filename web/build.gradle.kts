@@ -4,6 +4,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "5.1.0"
     id ("com.heroku.sdk.heroku-gradle") version "1.0.4"
     war
+    kotlin("jvm")
     jacoco
 }
 
@@ -24,6 +25,7 @@ dependencies {
     // heroku app runner
     staging("com.heroku:webapp-runner-main:9.0.31.0")
     providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 }
 
 tasks {
