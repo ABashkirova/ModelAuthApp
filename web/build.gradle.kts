@@ -8,9 +8,13 @@ plugins {
     application
 }
 
+gretty {
+    logDir = "${projectDir}/logs"
+    loggingLevel = "TRACE"
+}
+
 application {
-    mainClassName = "xyz.sashenka.modelauthapp.Main"
-    applicationName = "app"
+    applicationName = "WebApp"
 }
 
 apply {
@@ -19,7 +23,7 @@ apply {
 
 heroku {
     includes = listOf("./web/build/server/webapp-runner*.jar", "./web/build/libs/*.war")
-    includeBuildDir = false
+    includeBuildDir = true
     jdkVersion        = "8"
 }
 

@@ -52,28 +52,6 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
-flyway {
-    url = System.getenv("DBURL" + System.getenv("DBFILE"))
-    user = System.getenv("DBLOGIN")
-    password = System.getenv("DBPASS")
-    baselineOnMigrate = true
-    locations = arrayOf("filesystem: resources / db / migration")
-}
-
-application {
-    mainClassName = "xyz.sashenka.modelauthapp.Main"
-    applicationName = "app"
-}
-
-jacoco {
-    toolVersion = "$jacocoVersion"
-    reportsDir = file("$buildDir/reports/jacoco")
-}
-
-jacocoBadgeGenSetting {
-    jacocoReportPath = "$buildDir/reports/jacoco/xml/jacocoTestReport.xml"
-    readmePath = "$projectDir/README.md"
-}
 tasks {
     test {
         useJUnitPlatform {
@@ -136,4 +114,19 @@ flyway {
     password = System.getenv("DBPASS")
     baselineOnMigrate = true
     locations = arrayOf("filesystem: resources / db / migration")
+}
+
+application {
+    mainClassName = "xyz.sashenka.modelauthapp.Main"
+    applicationName = "app"
+}
+
+jacoco {
+    toolVersion = "$jacocoVersion"
+    reportsDir = file("$buildDir/reports/jacoco")
+}
+
+jacocoBadgeGenSetting {
+    jacocoReportPath = "$buildDir/reports/jacoco/xml/jacocoTestReport.xml"
+    readmePath = "$projectDir/README.md"
 }
