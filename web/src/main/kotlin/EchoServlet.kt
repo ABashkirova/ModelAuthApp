@@ -1,4 +1,3 @@
-
 import org.apache.logging.log4j.kotlin.loggerOf
 import java.io.IOException
 import javax.servlet.ServletException
@@ -9,27 +8,26 @@ import javax.servlet.http.HttpServletResponse
 
 @WebServlet(
     name = "EchoServlet",
-    value = ["/echo/post","/echo/post/",
+    value = ["/echo/post", "/echo/post/",
         "/echo/get", "/echo/get/",
         "/echo", "/echo/"
     ]
 )
-class EchoServlet: HttpServlet() {
+class EchoServlet : HttpServlet() {
     val logger = loggerOf(EchoServlet::class.java)
 
     @Throws(ServletException::class, IOException::class)
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug {
             "DoGet ->\n" +
-                "RESPONCE: ${response.toString()}" + "REQUEST: ${request.toString()}"
+                "RESPONCE: $response" + "REQUEST: $request"
         }
 
-        if(request.requestURL.contains("/echo/get")) {
+        if (request.requestURL.contains("/echo/get")) {
             val id = request.getParameter("id")
             request.setAttribute("id", id)
             request.getRequestDispatcher("response.jsp").forward(request, response)
-        }
-        else {
+        } else {
             logger.error { "Page not found error from get" }
             response.sendError(404, "Page not found error from get")
         }
@@ -39,7 +37,7 @@ class EchoServlet: HttpServlet() {
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug {
             "DoPost ->\n" +
-                "RESPONCE: ${response.toString()}" + "REQUEST: ${request.toString()}"
+                "RESPONCE: $response" + "REQUEST: $request"
         }
 
         if (request.requestURI.contains("/echo/post")) {
@@ -48,7 +46,7 @@ class EchoServlet: HttpServlet() {
             println(response.toString())
         } else {
             logger.error { "Page not found error from post" }
-            response.sendError(404, "Page not found error from post");
+            response.sendError(404, "Page not found error from post")
         }
 
     }
