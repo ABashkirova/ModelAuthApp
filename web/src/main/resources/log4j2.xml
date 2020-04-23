@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+    <Appenders>
+        <Console name="LogToConsole">
+            <PatternLayout>
+                <Pattern>%d{HH:mm:ss.SSS} %-5level [%logger]: %msg%n</Pattern>
+            </PatternLayout>
+        </Console>
+
+        <File name="LogToFile" fileName="logs/wep-app.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%-5level] [%logger]: %msg%n"/>
+        </File>
+    </Appenders>
+    <Loggers>
+        <Root level="all">
+            <AppenderRef ref="LogToConsole" level="debug"/>
+            <AppenderRef ref="LogToFile" level="debug"/>
+        </Root>
+    </Loggers>
+</Configuration>
