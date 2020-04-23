@@ -9,6 +9,7 @@ plugins {
 }
 
 gretty {
+    contextPath = "/"
     logDir = "${projectDir}/logs"
     loggingLevel = "TRACE"
 }
