@@ -83,3 +83,12 @@
 | R5.8 Задеплоить war проект на heroku | [Getting Started on Heroku with Java](https://devcenter.heroku.com/articles/getting-started-with-java#introduction) [Deploying Java Web Applications](https://devcenter.heroku.com/articles/deploy-a-java-web-application-that-launches-with-jetty-runner)|
 | R5.9 Настроить автоматический деплой war проекта на heroku | [github-integration](https://devcenter.heroku.com/articles/github-integration)|
 | 5.10 Для генерации результата get страницы из шаблона используйте JSP | Запрос приходит на get-сервлет, он заполняет переменную и вызывает getRequestDispatcher("...gsp").forward(...) http://java-course.ru/student/book1/jsp/ |
+
+## Requirements #6
+| Требование | Комментарий |
+|:---|:---| 
+|R6.1 Пути должны конфигурироваться через guice| [Guice serblets](https://github.com/google/guice/wiki/ServletModule)|
+|R6.2 Логгеры в серверной части должны инжектиться в сервлеты через guice| [Инджекция логгера](https://github.com/google/guice/wiki/CustomInjections)|
+|R6.3 В GuiceServletConfig должен быть прописан UserServlet который будет работать с User /ajax/user| Для этих сервлетов переопределяйте метод service(request, responce) |
+|R6.4 В GuiceServletConfig должен быть прописан AuthorityServlet который будет работать с Authority /ajax/authority| |
+|R6.5 В GuiceServletConfig должен быть прописан ActivityServlet который будет работать с Activity /ajax/activity| |
