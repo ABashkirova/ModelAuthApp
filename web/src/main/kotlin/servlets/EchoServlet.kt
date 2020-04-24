@@ -1,3 +1,5 @@
+package servlets
+
 import org.apache.logging.log4j.kotlin.loggerOf
 import java.io.IOException
 import javax.servlet.ServletException
@@ -7,7 +9,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @WebServlet(
-    name = "EchoServlet",
+    name = "servlets.EchoServlet",
     value = ["/echo/post", "/echo/post/",
         "/echo/get", "/echo/get/",
         "/echo", "/echo/"
