@@ -1,6 +1,5 @@
 package servlets
 
-import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.loggerOf
 import java.io.IOException
