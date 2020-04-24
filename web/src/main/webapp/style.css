@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
 
+// helper
 .center-xy {
   // width: inherit;
   top: 50%;
@@ -60,7 +61,8 @@ p {
   position: absolute;
   overflow: inherit;
   cursor: pointer;
-}
-#cb-replay:hover {
-  fill: #888;
+
+  &:hover {
+    fill: #888;
+  }
 }
