@@ -11,7 +11,7 @@ class MyGuiceServletConfig : GuiceServletContextListener() {
     override fun getInjector(): Injector {
             return Guice.createInjector(object: ServletModule() {
                 override fun configureServlets() {
-                    serve("/*").with(EchoServlet::class.java)
+                    serve("/echo/*").with(EchoServlet::class.java)
                 }
             })
     }
