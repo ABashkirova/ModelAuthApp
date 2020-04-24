@@ -1,32 +1,39 @@
-## Requirements #6
-| Требование | Комментарий |
-|:---|:---| 
-|R6.1 Пути должны конфигурироваться через guice| [Guice serblets](https://github.com/google/guice/wiki/ServletModule)|
-|R6.2 Логгеры в серверной части должны инжектиться в сервлеты через guice| [Инджекция логгера](https://github.com/google/guice/wiki/CustomInjections)|
-|R6.3 В GuiceServletConfig должен быть прописан UserServlet который будет работать с User /ajax/user| Для этих сервлетов переопределяйте метод service(request, responce) |
-|R6.4 В GuiceServletConfig должен быть прописан AuthorityServlet который будет работать с Authority /ajax/authority| |
-|R6.5 В GuiceServletConfig должен быть прописан ActivityServlet который будет работать с Activity /ajax/activity| |
-
 # План R5
-1. Написать MyGuiceServletConfig - R6.1 
-    - создать новый класс MyGuiceServletConfig
+1. Изучить документацию guice - 3h
+    1. ServletModule  - 2h
+        - Как регистрировать сервлеты? Результат: как проинджектить сервлет - 1h
+        - Чем отличается serve от filter? - Результат: знаем зачем использовать serve и когда нужен filter - 1h
+    2. CustomInjections - 30m
+        - Как проинджектить logger? Результат: знаем как добавить иньекцию логгера 30m
+    - Что такое провайдер? - Результат: знаем как использовать в методах и классах - 15m
+    - Что делает метод service? Результат: знаем как переопределить поведение методов doGet/doPost внутри него  - 15m
+2. Добавить зависимость в gradle - guice -5m
+3. Добавить GuiceServlet в web.xml - 5m
+4. Написать GuiceServletConfig - R6.1 - 15m
+    - создать новый класс GuiceServletConfig
     - написать функцию configureServlets с указанием путей
-2. Добавить инджекцию логгера - R6.2
+5. Добавить инджекцию логгера - R6.2 - 30m
     - добавить классы Log4JTypeListener, Log4JMembersInjector
     - добавить аннатацию Ingect в класс сервлета echo
-3. Написать новый сервлет UserServlet - К6.3
-    - добавить слушание configureServlets /ajax/user
-    - написать форму User login/pass с кнопкой login 
-    - переопредлить поведение service с принтом полученных данных
-3. Написать новый сервлет AuthorityServlet - К6.4
-    - добавить слушание configureServlets /ajax/authority
-    - написать форму авторизации с ролью и ресурсом 
-    - переопредлить поведение service с принтом полученных данных
-3. Написать новый сервлет Activity - К6.4
-    - добавить слушание configureServlets /ajax/activity
-    - написать форму аккаунтинга с временем доступа и объемом
-    - переопредлить поведение service с принтом полученных данных
+6. Написать новый сервлет UserServlet - К6.3 - 35m
+    1. добавить слушание configureServlets /ajax/user - 5m
+    2. переопредлить поведение service с принтом полученных данных - 30m
+7. Написать новый сервлет AuthorityServlet - К6.4 - 15m
+    1. добавить слушание configureServlets /ajax/authority - 5m
+    2. переопредлить поведение service с принтом полученных данных - 10m
+8. Написать новый сервлет Activity - К6.5 - 15m
+    1. добавить слушание configureServlets /ajax/activity - 5m
+    2. переопредлить поведение service с принтом полученных данных 10m
 
 | Пункт | Оценка времени(мин) | Фактическое время(мин)|
 | ---| ---  |---|
-| 1  |  15  |   |
+| 1  |  180 |   |
+| 2  |  5   |   |
+| 3  |  5   |   |
+| 4  |  15  |   |
+| 5  |  30  |   |
+| 6  |  35  |   |
+| 7  |  15  |   |
+| 8  |  15  |   |
+
+~ 5h
