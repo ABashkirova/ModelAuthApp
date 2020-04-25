@@ -1,7 +1,9 @@
 package xyz.sashenka.webapplication
 
 import org.eclipse.jetty.server.Server
+import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.webapp.WebAppContext
+import xyz.sashenka.webapplication.servlets.HelloServlet
 
 class JettyServer {
     companion object {
@@ -17,7 +19,7 @@ class JettyServer {
             root.descriptor = "$webappDirLocation/WEB-INF/web.xml"
             root.resourceBase = webappDirLocation
             root.isParentLoaderPriority = true
-
+            root.addServlet(ServletHolder(HelloServlet()), "/hello")
             server.handler = root
 
             server.start()
