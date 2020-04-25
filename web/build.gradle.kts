@@ -2,7 +2,7 @@
 plugins {
     id("org.gretty") version "3.0.2"
     id("com.github.johnrengelman.shadow") version "5.1.0"
-//    id ("com.heroku.sdk.heroku-gradle") version "1.0.4"
+    id("com.heroku.sdk.heroku-gradle") version "1.0.4"
 //    war
     kotlin("jvm")
     jacoco
@@ -25,6 +25,12 @@ gretty {
 val staging: Configuration by configurations.creating
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
+
+heroku {
+    includes = listOf("./web/build/libs/web-all.jar")
+    includeBuildDir = true
+    jdkVersion = "8"
+}
 
 dependencies {
     // heroku app runner
@@ -57,21 +63,6 @@ tasks {
     }
 
     register("stage") {
-//        dependsOn(war, copyToLib)
         dependsOn(clean, build)
     }
 }
-
-//sourceSets {
-//    val tlib by creating {
-//        // The kotlin plugin will by default recognise Kotlin sources in src/tlib/kotlin
-//        compileClasspath += sourceSets["main"].output
-//        runtimeClasspath += sourceSets["main"].output
-//    }
-//}
-//
-//configurations {
-//    val tlibImplementation by getting {
-//        extendsFrom(configurations["compile"])
-//    }
-//}
