@@ -16,7 +16,7 @@
   	</filter-mapping>
 
 	<listener>
-	  <listener-class>MyGuiceServletConfig</listener-class>
+	  <listener-class>GuiceServletConfig</listener-class>
 	</listener>
 
     <error-page>

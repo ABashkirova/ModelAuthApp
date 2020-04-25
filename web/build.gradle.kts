@@ -28,6 +28,7 @@ dependencies {
     staging("com.heroku:webapp-runner-main:9.0.31.0")
     providedCompile("javax.servlet:javax.servlet-api:3.1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
     implementation("com.google.inject:guice:4.2.3")
     implementation("com.google.inject.extensions:guice-servlet:4.2.3")
     
