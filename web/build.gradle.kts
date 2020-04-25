@@ -56,13 +56,15 @@ dependencies {
 
 tasks {
     val copyToLib by registering(Copy::class) {
-        into("$buildDir/server")
-        from(staging) {
-            include("webapp-runner*")
-        }
+        into("${rootProject.buildDir}/libs")
+        from("$buildDir/libs")
+    }
+
+    copyToLib {
+        dependsOn(shadowJar)
     }
 
     register("stage") {
-        dependsOn(clean, build)
+        dependsOn(clean, shadowJar)
     }
 }
