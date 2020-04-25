@@ -1,4 +1,4 @@
-package servlets
+package xyz.sashenka.webapplication.servlets
 
 import com.google.inject.Singleton
 import java.io.IOException
@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Singleton
-class ActivityServlet : HttpServlet() {
+class AuthorityServlet : HttpServlet() {
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        response.writer.write("ActivityServlet. Method: ${request.method}")
+        response.writer.write("AuthorityServlet. Method: ${request.method}")
     }
 }

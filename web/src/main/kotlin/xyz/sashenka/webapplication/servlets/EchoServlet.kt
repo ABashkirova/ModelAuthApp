@@ -1,7 +1,7 @@
-package servlets
+package xyz.sashenka.webapplication.servlets
 
 import com.google.inject.Singleton
-import di.logger.InjectLogger
+import xyz.sashenka.webapplication.di.logger.InjectLogger
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import java.io.IOException
 import javax.servlet.ServletException

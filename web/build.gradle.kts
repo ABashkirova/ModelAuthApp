@@ -6,27 +6,43 @@ plugins {
     war
     kotlin("jvm")
     jacoco
+    application
 }
 
+apply {
+    application
+}
+application {
+    mainClassName = "xyz.sashenka.webapplication.JettyServer"
+    applicationName = "app"
+}
 gretty {
     contextPath = "/"
     logDir = "${projectDir}/logs"
     loggingLevel = "TRACE"
 }
 
-heroku {
-    includes = listOf("./web/build/server/webapp-runner*.jar", "./web/build/libs/*.war")
-    includeBuildDir = true
-    jdkVersion        = "8"
-}
+//heroku {
+//    includes = listOf("./web/build/server/webapp-runner*.jar", "./web/build/libs/*.war")
+//    includeBuildDir = true
+//    jdkVersion        = "8"
+//}
 
 val staging: Configuration by configurations.creating
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
+
 dependencies {
     // heroku app runner
     staging("com.heroku:webapp-runner-main:9.0.31.0")
+
+    providedCompile("org.eclipse.jetty:jetty-server:9.4.28.v20200408")
+    providedCompile("org.eclipse.jetty:jetty-servlet:9.4.28.v20200408")
+    providedCompile("org.eclipse.jetty:jetty-webapp:9.4.28.v20200408")
+    providedCompile("org.eclipse.jetty:jetty-annotations:9.4.28.v20200408")
+
     providedCompile("javax.servlet:javax.servlet-api:3.1.0")
+
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
     implementation("com.google.inject:guice:4.2.3")
@@ -46,6 +62,12 @@ tasks {
     }
 
     register("stage") {
-        dependsOn(war, copyToLib)
+//        dependsOn(war, copyToLib)
+        dependsOn(clean, build)
     }
+//    jar {
+//        manifest {
+//            attributes["Main-Class"] = application.mainClassName
+//        }
+//    }
 }
