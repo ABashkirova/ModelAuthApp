@@ -6,7 +6,7 @@ import org.apache.logging.log4j.kotlin.logger
 import java.lang.reflect.Field
 
 internal class Log4JMembersInjector<T>(private val field: Field) : MembersInjector<T> {
-    private val logger: KotlinLogger = logger(field.declaringClass.name)
+    private val logger: KotlinLogger by lazy { logger(field.declaringClass.name) }
 
     init {
         field.isAccessible = true

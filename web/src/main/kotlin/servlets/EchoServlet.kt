@@ -8,16 +8,15 @@ import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
-
-class EchoServlet: HttpServlet() {
+class EchoServlet : HttpServlet() {
     @InjectLogger
     lateinit var logger: KotlinLogger
 
     @Throws(ServletException::class, IOException::class)
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
-        logger.debug (
+        logger.debug(
             "DoGet ->\n" +
-                    "RESPONCE: $response" + "REQUEST: $request"
+                "RESPONCE: $response" + "REQUEST: $request"
         )
 
         if (request.requestURL.contains("/echo/get")) {
@@ -25,14 +24,14 @@ class EchoServlet: HttpServlet() {
             request.setAttribute("id", id)
             request.getRequestDispatcher("response.jsp").forward(request, response)
         } else {
-            logger.error( "Page not found error from get")
+            logger.error("Page not found error from get")
             response.sendError(404, "Page not found error from get")
         }
     }
 
     @Throws(ServletException::class, IOException::class)
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
-        logger.debug (
+        logger.debug(
             "DoPost ->\n" +
                 "RESPONCE: $response" + "REQUEST: $request"
         )
@@ -42,7 +41,7 @@ class EchoServlet: HttpServlet() {
             response.sendRedirect("get?id=$id")
             println(response.toString())
         } else {
-            logger.error ( "Page not found error from post" )
+            logger.error("Page not found error from post")
             response.sendError(404, "Page not found error from post")
         }
     }
