@@ -29,6 +29,9 @@ dependencies {
     providedCompile("javax.servlet:javax.servlet-api:3.1.0")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+    implementation("com.google.inject:guice:4.2.3")
+    implementation("com.google.inject.extensions:guice-servlet:4.2.3")
+    
     implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
