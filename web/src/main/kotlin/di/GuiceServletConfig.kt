@@ -22,10 +22,6 @@ class GuiceServletConfig : GuiceServletContextListener() {
                 serve("/ajax/user").with(UserServlet::class.java)
                 serve("/ajax/authority").with(AuthorityServlet::class.java)
                 serve("/ajax/activity").with(ActivityServlet::class.java)
-                bind(EchoServlet::class.java).`in`(Singleton::class.java)
-                bind(AuthorityServlet::class.java).`in`(Singleton::class.java)
-                bind(UserServlet::class.java).`in`(Singleton::class.java)
-                bind(ActivityServlet::class.java).`in`(Singleton::class.java)
             }
         })
     }
