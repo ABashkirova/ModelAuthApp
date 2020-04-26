@@ -3,6 +3,7 @@ package xyz.sashenka.webapplication.di
 import com.google.inject.matcher.Matchers
 import com.google.inject.servlet.ServletModule
 import xyz.sashenka.webapplication.di.logger.Log4JTypeListener
+import xyz.sashenka.webapplication.filters.GeneralFilter
 import xyz.sashenka.webapplication.servlets.*
 
 class GuiceServletModule : ServletModule() {
@@ -12,6 +13,7 @@ class GuiceServletModule : ServletModule() {
             Matchers.any(),
             Log4JTypeListener()
         )
+        filter("/*").through(GeneralFilter::class.java)
         serve("/hello").with(HelloServlet::class.java)
         serve("/echo/get").with(EchoServlet::class.java)
         serve("/echo/post").with(EchoServlet::class.java)
