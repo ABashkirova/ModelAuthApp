@@ -8,7 +8,6 @@ import xyz.sashenka.webapplication.di.GuiceServletConfig
 import java.util.EnumSet.allOf
 import javax.servlet.DispatcherType
 
-
 class JettyServer {
     companion object {
         @JvmStatic
