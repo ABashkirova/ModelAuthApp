@@ -1,4 +1,4 @@
-package servlets
+package xyz.sashenka.webapplication.servlets
 
 import com.google.inject.Singleton
 import java.io.IOException

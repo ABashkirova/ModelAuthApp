@@ -1,4 +1,4 @@
-package di.logger
+package xyz.sashenka.webapplication.di.logger
 
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.FIELD
