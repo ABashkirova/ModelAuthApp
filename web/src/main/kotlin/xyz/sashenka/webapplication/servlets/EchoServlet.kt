@@ -4,6 +4,7 @@ import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
+import java.net.URLEncoder.encode
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
@@ -22,7 +23,6 @@ class EchoServlet : HttpServlet() {
         )
 
         if (request.requestURL.contains("/echo/get")) {
-            request.characterEncoding = "UTF-8"
             val id = request.getParameter("id")
             request.setAttribute("id", id)
             request.getRequestDispatcher("response.jsp").forward(request, response)
@@ -41,13 +41,9 @@ class EchoServlet : HttpServlet() {
         )
 
         if (request.requestURI.contains("/echo/post")) {
-            request.characterEncoding = "UTF-8"
-            response.characterEncoding = "UTF-8"
             val id = request.getParameter("id")
-            response.contentType = "text/html; charset=UTF-8"
+            response.sendRedirect("get?id=${encode(id, "UTF-8")}")
 
-            response.sendRedirect("get?id=$id")
-            println(response.toString())
         } else {
             logger.error("Page not found error from post ${request.requestURL}")
             response.sendError(404, "Page not found error from post")
