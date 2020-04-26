@@ -1,8 +1,8 @@
 package xyz.sashenka.webapplication.servlets
 
 import com.google.inject.Singleton
-import xyz.sashenka.webapplication.di.logger.InjectLogger
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -18,7 +18,7 @@ class EchoServlet : HttpServlet() {
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug(
             "DoGet ->\n" +
-                "RESPONCE: $response" + "REQUEST: $request"
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
         )
 
         if (request.requestURL.contains("/echo/get")) {
@@ -26,7 +26,7 @@ class EchoServlet : HttpServlet() {
             request.setAttribute("id", id)
             request.getRequestDispatcher("response.jsp").forward(request, response)
         } else {
-            logger.error("Page not found error from get")
+            logger.error("Page not found error from get ${request.requestURL}")
             response.sendError(404, "Page not found error from get")
         }
     }
@@ -35,7 +35,7 @@ class EchoServlet : HttpServlet() {
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug(
             "DoPost ->\n" +
-                "RESPONCE: $response" + "REQUEST: $request"
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
         )
 
         if (request.requestURI.contains("/echo/post")) {
@@ -43,7 +43,7 @@ class EchoServlet : HttpServlet() {
             response.sendRedirect("get?id=$id")
             println(response.toString())
         } else {
-            logger.error("Page not found error from post")
+            logger.error("Page not found error from post ${request.requestURL}")
             response.sendError(404, "Page not found error from post")
         }
     }

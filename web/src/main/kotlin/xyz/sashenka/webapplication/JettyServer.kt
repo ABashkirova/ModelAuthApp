@@ -1,38 +1,22 @@
 package xyz.sashenka.webapplication
 
+import com.google.inject.servlet.GuiceFilter
 import org.eclipse.jetty.server.Server
-import org.eclipse.jetty.server.ServerConnector
-import org.eclipse.jetty.servlet.DefaultServlet
-import org.eclipse.jetty.servlet.ServletHolder
 import org.eclipse.jetty.webapp.Configuration
 import org.eclipse.jetty.webapp.WebAppContext
 import xyz.sashenka.webapplication.di.GuiceServletConfig
-import xyz.sashenka.webapplication.servlets.HelloServlet
+import java.util.EnumSet.allOf
+import javax.servlet.DispatcherType
 
 
 class JettyServer {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
-            val webappDirLocation = "src/main/webapp/"
             val webPort = System.getenv("PORT") ?: "8080"
+            val server = Server(webPort.toInt())
 
-            val server = Server()
-
-            val connector = ServerConnector(server)
-            connector.port = Integer.valueOf(webPort)
-            server.addConnector(connector)
-            val context = WebAppContext()
-
-            context.contextPath = "/"
-            context.descriptor = "$webappDirLocation/WEB-INF/web.xml"
-            context.resourceBase = webappDirLocation
-            context.isParentLoaderPriority = true
-            context.addServlet(ServletHolder(HelloServlet()), "/hello")
-            context.addServlet(DefaultServlet::class.java, "/")
-            context.addEventListener(GuiceServletConfig())
-            context.isParentLoaderPriority = true
-            server.handler = context
+            server.handler = getContextHandler()
 
             val classList: Configuration.ClassList = Configuration.ClassList
                 .setServerDefault(server)
@@ -41,9 +25,27 @@ class JettyServer {
                 "org.eclipse.jetty.annotations.AnnotationConfiguration"
             )
 
-            println("${server.uri}")
-            server.start()
-            server.join()
+            try {
+                server.start()
+                server.join()
+            } catch (ex: Exception) {
+                ex.printStackTrace()
+            }
+        }
+
+        fun getContextHandler(): WebAppContext {
+            val webappDirLocation = "web/src/main/webapp/"
+
+            val servletContext = WebAppContext()
+            servletContext.contextPath = "/"
+            servletContext.resourceBase = webappDirLocation
+            servletContext.descriptor = "$webappDirLocation/WEB-INF/web.xml"
+
+            val guiceServletConfig = GuiceServletConfig()
+            servletContext.addEventListener(guiceServletConfig)
+            servletContext.addFilter(GuiceFilter::class.java, "/*", allOf(DispatcherType::class.java))
+
+            return servletContext
         }
     }
 }
