@@ -92,3 +92,25 @@
 |R6.3 В GuiceServletConfig должен быть прописан UserServlet который будет работать с User /ajax/user| Для этих сервлетов переопределяйте метод service(request, responce) |
 |R6.4 В GuiceServletConfig должен быть прописан AuthorityServlet который будет работать с Authority /ajax/authority| |
 |R6.5 В GuiceServletConfig должен быть прописан ActivityServlet который будет работать с Activity /ajax/activity| |
+
+## Requirements #7
+| Требование | Комментарий |
+|:---|:---| 
+|R7.1 В сервлетах объекты должны сериализоваться при помощи GSON|[gson](https://github.com/google/gson/blob/master/UserGuide.md)| 
+|R7.2 Для получения сериализатора должен использоваться провайдер|[inject providers](https://github.com/google/guice/wiki/InjectingProviders)| 
+|R7.3 В UserServler должен инжектиться провайдер GSON|| 
+|R7.4 В AuthorityServler должен инжектиться провайдер GSON|| 
+|R7.5 В ActivityServlet должен инжектиться провайдер GSON|| 
+|R7.6 Выполнение http get по адресу /ajax/user должен возвращать json список пользователей|Для получения списка пользователей нужно использовать соответствующий Dao из проекта app| 
+|R7.7 Выполнение http get по адресу /ajax/user?id=xxx должен возвращать json пользователя с указанным идентификатором|| 
+|R7.8 Выполнение http get по адресу /ajax/authority должен возвращать json список прав доступа|| 
+|R7.9 Выполнение http get по адресу /ajax/authority?id=xxx должен возвращать json право пользователя с указанным идентификатором|| 
+|R7.10 Выполнение http get по адресу /ajax/authority?userId=xxx должен возвращать json права указанного пользователя|| 
+|R7.11 Выполнение http get по адресу /ajax/activity должен возвращать json список действий|Для получения списка действий нужно использовать соответствующи Dao из проекта client| 
+|R7.12 Выполнение http get по адресу /ajax/activity?id=xxx должен возвращать json действие с указанным идентификатором|| 
+|R7.13 Выполнение http get по адресу /ajax/activity?authorityId=xxx должен возвращать json действия с указанными правами доступа|| 
+|R7.14 Сериализоваться должны только поля помеченные @Expose | [gson expose](https://google-gson.googlecode.com/svn/trunk/gson/docs/javadocs/com/google/gson/annotations/Expose.html)| 
+|R7.15 В объекте User не должны сериализоваться пароль и хеш|| 
+|R7.18 В объекте Authority не должны сериализоваться User || 
+|R7.19 В объекте Activity не должны сериализваться Authority|| 
+|R7.20 Коннект к базе данных данных должен инжектиться в Dao классы при помощи DI|Миграцию бд можно провести в DI конфиге| 
