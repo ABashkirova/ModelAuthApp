@@ -1,9 +1,10 @@
-package servlets
+package xyz.sashenka.webapplication.servlets
 
 import com.google.inject.Singleton
-import di.logger.InjectLogger
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
+import java.net.URLEncoder.encode
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
 import javax.servlet.http.HttpServletRequest
@@ -18,15 +19,16 @@ class EchoServlet : HttpServlet() {
     override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug(
             "DoGet ->\n" +
-                "RESPONCE: $response" + "REQUEST: $request"
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
         )
 
         if (request.requestURL.contains("/echo/get")) {
             val id = request.getParameter("id")
             request.setAttribute("id", id)
             request.getRequestDispatcher("response.jsp").forward(request, response)
+
         } else {
-            logger.error("Page not found error from get")
+            logger.error("Page not found error from get ${request.requestURL}")
             response.sendError(404, "Page not found error from get")
         }
     }
@@ -35,15 +37,15 @@ class EchoServlet : HttpServlet() {
     override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
         logger.debug(
             "DoPost ->\n" +
-                "RESPONCE: $response" + "REQUEST: $request"
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
         )
 
         if (request.requestURI.contains("/echo/post")) {
             val id = request.getParameter("id")
-            response.sendRedirect("get?id=$id")
-            println(response.toString())
+            response.sendRedirect("get?id=${encode(id, "UTF-8")}")
+
         } else {
-            logger.error("Page not found error from post")
+            logger.error("Page not found error from post ${request.requestURL}")
             response.sendError(404, "Page not found error from post")
         }
     }

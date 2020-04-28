@@ -1,4 +1,4 @@
-package di.logger
+package xyz.sashenka.webapplication.di.logger
 
 import com.google.inject.TypeLiteral
 import com.google.inject.spi.TypeEncounter
@@ -12,7 +12,11 @@ internal class Log4JTypeListener : TypeListener {
             clazz.declaredFields
                 .asSequence()
                 .filter { it.type === KotlinLogger::class.java && it.isAnnotationPresent(InjectLogger::class.java) }
-                .forEach { typeEncounter.register(Log4JMembersInjector(it)) }
+                .forEach { typeEncounter.register(
+                    Log4JMembersInjector(
+                        it
+                    )
+                ) }
             clazz = clazz.superclass
         }
     }

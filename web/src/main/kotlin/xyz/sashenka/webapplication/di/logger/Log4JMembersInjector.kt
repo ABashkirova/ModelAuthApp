@@ -1,4 +1,4 @@
-package di.logger
+package xyz.sashenka.webapplication.di.logger
 
 import com.google.inject.MembersInjector
 import org.apache.logging.log4j.kotlin.KotlinLogger
