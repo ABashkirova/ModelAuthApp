@@ -46,6 +46,7 @@ dependencies {
 
     implementation("com.google.inject:guice:4.2.3")
     implementation("com.google.inject.extensions:guice-servlet:4.2.3")
+    implementation("com.google.code.gson:gson:2.8.6")
 
     implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")

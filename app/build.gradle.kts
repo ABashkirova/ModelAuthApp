@@ -47,7 +47,7 @@ dependencies {
     implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
     implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
-
+    implementation("com.google.inject:guice:4.2.3")
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
