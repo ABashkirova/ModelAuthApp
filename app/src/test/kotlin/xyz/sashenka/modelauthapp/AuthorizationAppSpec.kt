@@ -45,7 +45,6 @@ object AuthorizationAppSpec : Spek({
                 every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
                 every { argHandlerMock.getAuthenticationData() } returns authenticationData
                 every { validationServiceMock.isLoginValid("sasha") } returns true
-                every { containerMock.getDBService().connect() } returns Unit
                 every { containerMock.getAuthenticationService() } returns authenticationServiceMock
                 every { authenticationServiceMock.findUser(ofType()) } returns user
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
@@ -61,7 +60,6 @@ object AuthorizationAppSpec : Spek({
                     containerMock.getArgHandler(ofType())
                     argHandlerMock.getAuthenticationData()
                     validationServiceMock.isLoginValid("sasha")
-                    containerMock.getDBService().connect()
                     containerMock.getAuthenticationService()
                     authenticationServiceMock.findUser(ofType())
                     authenticationServiceMock.verifyPass(ofType(), ofType())
@@ -81,7 +79,6 @@ object AuthorizationAppSpec : Spek({
                 every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
                 every { argHandlerMock.getAuthenticationData() } returns authenticationData
                 every { validationServiceMock.isLoginValid("sasha") } returns true
-                every { containerMock.getDBService().connect() } returns Unit
                 every { containerMock.getAuthenticationService() } returns authenticationServiceMock
                 every { authenticationServiceMock.findUser(ofType()) } returns user
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
@@ -96,7 +93,6 @@ object AuthorizationAppSpec : Spek({
                     containerMock.getArgHandler(ofType())
                     argHandlerMock.getAuthenticationData()
                     validationServiceMock.isLoginValid("sasha")
-                    containerMock.getDBService().connect()
                     containerMock.getAuthenticationService()
                     authenticationServiceMock.findUser(ofType())
                     authenticationServiceMock.verifyPass(ofType(), ofType())
@@ -116,7 +112,6 @@ object AuthorizationAppSpec : Spek({
                 every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
                 every { argHandlerMock.getAuthenticationData() } returns authenticationData
                 every { validationServiceMock.isLoginValid("sasha") } returns true
-                every { containerMock.getDBService().connect() } returns Unit
                 every { containerMock.getAuthenticationService() } returns authenticationServiceMock
                 every { authenticationServiceMock.findUser(ofType()) } returns user
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
@@ -130,7 +125,6 @@ object AuthorizationAppSpec : Spek({
                     containerMock.getArgHandler(ofType())
                     argHandlerMock.getAuthenticationData()
                     validationServiceMock.isLoginValid("sasha")
-                    containerMock.getDBService().connect()
                     containerMock.getAuthenticationService()
                     authenticationServiceMock.findUser(ofType())
                     authenticationServiceMock.verifyPass(ofType(), ofType())

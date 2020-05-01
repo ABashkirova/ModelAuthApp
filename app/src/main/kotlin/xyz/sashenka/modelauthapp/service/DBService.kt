@@ -6,7 +6,7 @@ import org.flywaydb.core.Flyway
 import java.sql.Connection
 import java.sql.DriverManager
 
-class DBService() {
+class DBService {
     private val logger: KotlinLogger = logger()
     private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:"
     private val envDBFile: String? = System.getenv("DBFILE") ?: "./AAA"
