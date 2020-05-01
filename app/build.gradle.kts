@@ -1,5 +1,4 @@
 // app
-
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt") version "1.7.4"
@@ -9,10 +8,6 @@ plugins {
     id("com.github.dawnwords.jacoco.badge") version "0.2.0"
     id("com.github.johnrengelman.shadow") version "5.1.0"
     jacoco
-    application
-}
-
-apply {
     application
 }
 
@@ -40,21 +35,13 @@ val mockkVersion: String by project
 
 dependencies {
     // app:
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
     implementation("com.h2database:h2:$h2databaseVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
-    implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
-    implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
-    implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
-    implementation("com.google.inject:guice:4.2.3")
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-    testImplementation("junit:junit:4.12")
 }
 
 tasks {
