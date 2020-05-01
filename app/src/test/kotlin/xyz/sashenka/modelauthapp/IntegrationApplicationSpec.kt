@@ -62,7 +62,8 @@ object IntegrationApplicationSpec : Spek({
             ("-login q -pass @#$%^&*! -role READ -res A.AA".split(" ").toTypedArray()) to ExitCode.NO_ACCESS,
             ("-role READ -res A -login sasha -pass 123".split(" ").toTypedArray()) to ExitCode.SUCCESS,
             ("-login sasha -pass 123 -role Write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE,
-            ("-login sasha -pass 123 -role write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE
+            ("-login sasha -pass 123 -role write -res A".split(" ").toTypedArray()) to ExitCode.UNKNOWN_ROLE,
+            ("-login sasha -pass 123 -role READ -res AA".split(" ").toTypedArray()) to ExitCode.NO_ACCESS
         ).forEach { (input, expected) ->
             describe("Check Authorization for ${input.joinToString()}") {
                 it("Correctly returns $expected") {

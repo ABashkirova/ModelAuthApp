@@ -1,10 +1,10 @@
 // web
 plugins {
+    kotlin("jvm")
     id("org.gretty") version "3.0.2"
     id("com.github.johnrengelman.shadow") version "5.1.0"
     id("com.heroku.sdk.heroku-gradle") version "1.0.4"
 //    war
-    kotlin("jvm")
     jacoco
     application
 }
@@ -35,10 +35,8 @@ heroku {
 dependencies {
     // heroku app runner
     staging("com.heroku:webapp-runner-main:9.0.31.0")
-
     compile("org.eclipse.jetty:jetty-server:9.4.25.v20191220")
     compile("org.eclipse.jetty:jetty-servlet:9.4.25.v20191220")
-
     compile("org.eclipse.jetty:jetty-webapp:9.4.25.v20191220")
     compile("org.eclipse.jetty:jetty-annotations:9.4.25.v20191220")
     compile("org.eclipse.jetty:apache-jsp:9.4.25.v20191220")
