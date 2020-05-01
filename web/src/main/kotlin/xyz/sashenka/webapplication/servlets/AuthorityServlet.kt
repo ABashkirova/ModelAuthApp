@@ -3,6 +3,8 @@ package xyz.sashenka.webapplication.servlets
 import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
+import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletResponse
 class AuthorityServlet : HttpServlet() {
     @Inject
     lateinit var gson: Gson
+    @InjectLogger
+    lateinit var logger: KotlinLogger
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
