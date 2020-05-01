@@ -98,8 +98,8 @@
 |:---|:---| 
 |R7.1 В сервлетах объекты должны сериализоваться при помощи GSON|[gson](https://github.com/google/gson/blob/master/UserGuide.md)| 
 |R7.2 Для получения сериализатора должен использоваться провайдер|[inject providers](https://github.com/google/guice/wiki/InjectingProviders)| 
-|R7.3 В UserServler должен инжектиться провайдер GSON|| 
-|R7.4 В AuthorityServler должен инжектиться провайдер GSON|| 
+|R7.3 В UserServlet должен инжектиться провайдер GSON|| 
+|R7.4 В AuthorityServlet должен инжектиться провайдер GSON|| 
 |R7.5 В ActivityServlet должен инжектиться провайдер GSON|| 
 |R7.6 Выполнение http get по адресу /ajax/user должен возвращать json список пользователей|Для получения списка пользователей нужно использовать соответствующий Dao из проекта app| 
 |R7.7 Выполнение http get по адресу /ajax/user?id=xxx должен возвращать json пользователя с указанным идентификатором|| 
