@@ -1,6 +1,7 @@
 // app
 
 plugins {
+    kotlin("jvm")
     id("io.gitlab.arturbosch.detekt") version "1.7.4"
     id("org.jetbrains.dokka") version "0.10.0"
     id("org.flywaydb.flyway") version "6.3.2"
@@ -39,6 +40,7 @@ val mockkVersion: String by project
 
 dependencies {
     // app:
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
     implementation("com.h2database:h2:$h2databaseVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
@@ -50,6 +52,9 @@ dependencies {
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("junit:junit:4.12")
 }
 
 tasks {

@@ -23,6 +23,7 @@ class ResourceDAO(private val dbConnection: Connection) {
             it.setValues(login, resource, role)
             return@use it.executeQuery().use { value ->
                 return@use if (value.next()) {
+
                     DBAccess(
                         id = value.getInt("ID"),
                         userId = value.getInt("USER_ID"),
