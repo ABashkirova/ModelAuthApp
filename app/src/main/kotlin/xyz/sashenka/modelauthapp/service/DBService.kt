@@ -1,11 +1,13 @@
 package xyz.sashenka.modelauthapp.service
 
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import org.apache.logging.log4j.kotlin.logger
 import org.flywaydb.core.Flyway
 import java.sql.Connection
 import java.sql.DriverManager
 
-class DBService(private val logger: KotlinLogger) {
+class DBService() {
+    private val logger: KotlinLogger = logger()
     private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:"
     private val envDBFile: String? = System.getenv("DBFILE") ?: "./AAA"
     private val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
@@ -16,10 +18,9 @@ class DBService(private val logger: KotlinLogger) {
 
     init {
         logger.info { "Инициализируем DBService: url(${envUrl + envDBFile}), login($envLogin)" }
-        migrate()
     }
 
-    private fun migrate() {
+    fun migrate() {
         logger.info { "Загрузка миграций flyway" }
         try {
             Flyway
@@ -37,10 +38,15 @@ class DBService(private val logger: KotlinLogger) {
         if (connection == null) {
             logger.info { "Инициализируем подключение к БД" }
             try {
-                connection = DriverManager.getConnection(envUrl + envDBFile, envLogin, envPass)
+                connection = getConnect()
             } catch (ex: Exception) {
                 logger.error { ex.stackTrace }
             }
         }
+    }
+
+    fun getConnect(): Connection {
+        logger.info { "Получаем подключение через драйвер" }
+        return DriverManager.getConnection(envUrl + envDBFile, envLogin, envPass)
     }
 }
