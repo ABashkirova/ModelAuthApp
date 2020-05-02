@@ -6,6 +6,6 @@ import javax.inject.Provider
 
 class GsonProvider: Provider<Gson> {
     override fun get(): Gson {
-        return GsonBuilder().setPrettyPrinting().create()
+        return GsonBuilder().setPrettyPrinting().excludeFieldsWithoutExposeAnnotation().create()
     }
 }
