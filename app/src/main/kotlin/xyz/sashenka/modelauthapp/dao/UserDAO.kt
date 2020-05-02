@@ -12,43 +12,6 @@ class UserDAO(private val dbConnection: Connection) {
     private val allUsersSql: String
         get() = "SELECT * FROM USER"
 
-    fun requestUserByLogin(login: String): User? {
-        val statement = dbConnection.prepareStatement(userByLoginSql)
-        return statement.use {
-            it.setValues(login)
-            return@use it.executeQuery().use { value ->
-                return@use when {
-                    value.next() -> User(
-                        value.getInt("ID"),
-                        value.getString("LOGIN"),
-                        value.getString("HASH_PASSWORD"),
-                        value.getString("SALT")
-                    )
-                    else -> null
-                }
-            }
-        }
-    }
-
-    //TODO: подумать над своим поведением и дублированием кода
-    fun requestUserById(id: Int): User? {
-        val statement = dbConnection.prepareStatement(userByIdSql)
-        return statement.use {
-            it.setValues(id)
-            return@use it.executeQuery().use { value ->
-                return@use when {
-                    value.next() -> User(
-                        value.getInt("ID"),
-                        value.getString("LOGIN"),
-                        value.getString("HASH_PASSWORD"),
-                        value.getString("SALT")
-                    )
-                    else -> null
-                }
-            }
-        }
-    }
-
     fun requestAllUsers(): List<User> {
         val statement = dbConnection.createStatement()
         val result: MutableList<User> = mutableListOf()
@@ -67,4 +30,31 @@ class UserDAO(private val dbConnection: Connection) {
         }
         return result.toList()
     }
+
+    private fun requestUser(sql:String, parameter: Any): User?{
+        val statement = dbConnection.prepareStatement(sql)
+        return statement.use {
+            it.setValues(parameter)
+            return@use it.executeQuery().use { value ->
+                return@use when {
+                    value.next() -> User(
+                        value.getInt("ID"),
+                        value.getString("LOGIN"),
+                        value.getString("HASH_PASSWORD"),
+                        value.getString("SALT")
+                    )
+                    else -> null
+                }
+            }
+        }
+    }
+
+    fun requestUserByLogin(login: String): User? {
+        return requestUser(userByLoginSql, login)
+    }
+
+    fun requestUserById(id: Int): User? {
+        return requestUser(userByIdSql, id)
+    }
+
 }
