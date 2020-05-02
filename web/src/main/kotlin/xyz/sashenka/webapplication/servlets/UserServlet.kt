@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.modelauthapp.dao.UserDAO
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
@@ -15,12 +16,15 @@ import javax.servlet.http.HttpServletResponse
 class UserServlet : HttpServlet() {
     @Inject
     lateinit var gson: Gson
+    @Inject
+    lateinit var userDAO: UserDAO
     @InjectLogger
     lateinit var logger: KotlinLogger
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        val json = gson.toJson("UserServlet. Method: ${request.method}".split(" "))
+        //val json = gson.toJson("UserServlet. Method: ${request.method}".split(" "))
+        val json = gson.toJson(userDAO.requestUserById(request.getParameter("id").toInt()))
         response.writer.write(json)
     }
 }
