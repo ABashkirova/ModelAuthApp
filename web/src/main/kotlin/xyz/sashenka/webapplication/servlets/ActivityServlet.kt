@@ -23,8 +23,23 @@ class ActivityServlet : HttpServlet() {
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        val json = gson.toJson(sessionDAO.selectAll())
-        response.writer.write(json)
+
+
+        val query = request.queryString
+        if(query.isNullOrEmpty()){
+            val json = gson.toJson(sessionDAO.selectAll())
+            response.writer.write(json)
+        } else if (query.contains("id")) {
+            try {
+                val id = request.getParameter("id").toInt()
+                val json = gson.toJson(sessionDAO.selectById(id))
+                response.writer.write(json)
+            } catch (e: NumberFormatException) {
+                response.sendError(400, e.message)
+            }
+        } else {
+            response.sendError(404)
+        }
 
     }
 }
