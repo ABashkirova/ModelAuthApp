@@ -30,8 +30,12 @@ class UserServlet : HttpServlet() {
         } else {
             val id = request.getParameter("id")
             if (id != null) {
-                json = gson.toJson(userDAO.requestUserById(id.toInt()))
-                response.writer.write(json)
+                try {
+                    json = gson.toJson(userDAO.requestUserById(id.toInt()))
+                    response.writer.write(json)
+                } catch (e: NumberFormatException) {
+                    response.sendError(400, e.message)
+                }
             } else {
                 response.sendError(404)
             }
