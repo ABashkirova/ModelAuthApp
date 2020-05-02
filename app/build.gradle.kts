@@ -11,12 +11,6 @@ plugins {
     application
 }
 
-repositories {
-    maven {
-        url = uri("https://kotlin.bintray.com/kotlinx")
-    }
-}
-
 val aaaVersion: String by project
 // Gradle plugins
 val kotlinVersion: String by project

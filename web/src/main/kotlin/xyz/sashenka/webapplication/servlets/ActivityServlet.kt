@@ -46,6 +46,5 @@ class ActivityServlet : HttpServlet() {
             }
             else -> response.sendError(404)
         }
-
     }
 }
