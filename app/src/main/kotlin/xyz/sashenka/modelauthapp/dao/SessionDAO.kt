@@ -28,7 +28,7 @@ class SessionDAO(private val dbConnection: Connection) {
         }
     }
 
-    fun selectAll(): List<UserSession>{
+    fun selectAll(): List<UserSession> {
         val result: MutableList<UserSession> = mutableListOf()
         var statement = dbConnection.createStatement()
         statement.use {
@@ -39,7 +39,7 @@ class SessionDAO(private val dbConnection: Connection) {
                 var userId: Int? = null
                 var stmt = dbConnection.createStatement()
                 stmt.use {
-                    val access =  it.executeQuery("SELECT USER_ID, RESOURCE FROM ACCESS WHERE ID=$accessId")
+                    val access = it.executeQuery("SELECT USER_ID, RESOURCE FROM ACCESS WHERE ID=$accessId")
                     access.next()
                     resource = access.getString("RESOURCE")
                     userId = access.getInt("USER_ID")
@@ -54,7 +54,7 @@ class SessionDAO(private val dbConnection: Connection) {
                 result.add(
                     UserSession(
                         userLogin,
-                        resource,
+                        resource.substring(0, resource.length - 1),
                         resultSet.getDate("START_DATE").toString(),
                         resultSet.getDate("END_DATE").toString(),
                         resultSet.getInt("VOLUME")
@@ -64,4 +64,6 @@ class SessionDAO(private val dbConnection: Connection) {
         }
         return result.toList()
     }
+
+
 }
