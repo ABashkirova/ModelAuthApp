@@ -23,8 +23,18 @@ class UserServlet : HttpServlet() {
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        //val json = gson.toJson("UserServlet. Method: ${request.method}".split(" "))
-        val json = gson.toJson(userDAO.requestUserById(request.getParameter("id").toInt()))
-        response.writer.write(json)
+        val json: String
+        if (request.queryString == null) {
+            json = gson.toJson(listOf(1, 2, 3, 4))
+            response.writer.write(json)
+        } else {
+            val id = request.getParameter("id")
+            if (id != null) {
+                json = gson.toJson(userDAO.requestUserById(id.toInt()))
+                response.writer.write(json)
+            } else {
+                response.sendError(404)
+            }
+        }
     }
 }
