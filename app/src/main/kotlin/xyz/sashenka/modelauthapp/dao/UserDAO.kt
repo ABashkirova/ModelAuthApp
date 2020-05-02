@@ -9,6 +9,8 @@ class UserDAO(private val dbConnection: Connection) {
         get() = "SELECT * FROM USER WHERE LOGIN=?;"
     private val userByIdSql: String
         get() = "SELECT * FROM USER WHERE ID=?;"
+    private val allUsersSql: String
+        get() = "SELECT * FROM USER"
 
     fun requestUserByLogin(login: String): User? {
         val statement = dbConnection.prepareStatement(userByLoginSql)
@@ -27,7 +29,7 @@ class UserDAO(private val dbConnection: Connection) {
             }
         }
     }
-    
+
     //TODO: подумать над своим поведением и дублированием кода
     fun requestUserById(id: Int): User? {
         val statement = dbConnection.prepareStatement(userByIdSql)
@@ -45,5 +47,24 @@ class UserDAO(private val dbConnection: Connection) {
                 }
             }
         }
+    }
+
+    fun requestAllUsers(): List<User> {
+        val statement = dbConnection.createStatement()
+        val result: MutableList<User> = mutableListOf()
+        statement.use {
+            val resultSet = statement.executeQuery(allUsersSql)
+            while (resultSet.next()) {
+                result.add(
+                    User(
+                        resultSet.getInt("ID"),
+                        resultSet.getString("LOGIN"),
+                        resultSet.getString("HASH_PASSWORD"),
+                        resultSet.getString("SALT")
+                    )
+                )
+            }
+        }
+        return result.toList()
     }
 }

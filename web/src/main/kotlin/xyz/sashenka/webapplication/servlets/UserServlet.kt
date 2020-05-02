@@ -25,7 +25,7 @@ class UserServlet : HttpServlet() {
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         val json: String
         if (request.queryString == null) {
-            json = gson.toJson(listOf(1, 2, 3, 4))
+            json = gson.toJson(userDAO.requestAllUsers())
             response.writer.write(json)
         } else {
             val id = request.getParameter("id")
