@@ -20,7 +20,34 @@ class AuthorityServlet : HttpServlet() {
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        val json = gson.toJson("AuthorityServlet. Method: ${request.method}".split(" "))
-        response.writer.write(json)
+        //val json = gson.toJson("AuthorityServlet. Method: ${request.method}".split(" "))
+        //response.writer.write(json)
+        val query = request.queryString
+        var json:String? = null
+        when {
+            query.isNullOrEmpty() -> {
+                json = "empty"
+            }
+            query.contains("id") -> {
+                try {
+                    val id = request.getParameter("id").toInt()
+                    json = "id"
+                } catch (e: NumberFormatException) {
+                    response.sendError(400, e.message)
+                }
+            }
+            query.contains("userId") -> {
+                try {
+                    val id = request.getParameter("userId").toInt()
+                    json = "userId"
+                } catch (e: NumberFormatException) {
+                    response.sendError(400, e.message)
+                }
+            }
+            else -> {
+                response.sendError(404)
+            }
+        }
+        if(json != null) response.writer.write(json)
     }
 }
