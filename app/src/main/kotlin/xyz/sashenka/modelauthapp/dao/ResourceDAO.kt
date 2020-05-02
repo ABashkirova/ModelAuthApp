@@ -16,6 +16,8 @@ class ResourceDAO(private val dbConnection: Connection) {
                 AND ACCESS.RESOURCE=SUBSTRING(?,1,LENGTH(ACCESS.RESOURCE)) 
                 AND ACCESS.ROLE=?;
                 """
+    private val selectUserResourceByIdSql: String
+        get() = "SELECT * FROM ACCESS WHERE ID = ?"
 
     fun requestAccessByResource(login: String, resource: String, role: String): DBAccess? {
         val statement = dbConnection.prepareStatement(selectUserResourcesByLoginSql)
@@ -34,4 +36,24 @@ class ResourceDAO(private val dbConnection: Connection) {
             }
         }
     }
+
+    fun requestAllAccesses(): List<DBAccess> {
+        val result: MutableList<DBAccess> = mutableListOf()
+        val statement = dbConnection.createStatement()
+        statement.use {
+            val resultSet = it.executeQuery("SELECT * FROM ACCESS")
+            while (resultSet.next()) {
+                result.add(
+                    DBAccess(
+                        id = resultSet.getInt("ID"),
+                        userId = resultSet.getInt("USER_ID"),
+                        resource = resultSet.getString("RESOURCE"),
+                        role = resultSet.getString("ROLE")
+                    )
+                )
+            }
+            return result.toList()
+        }
+    }
+
 }
