@@ -19,7 +19,7 @@ class ResourceDAO(private val dbConnection: Connection) {
     private val selectUserResourceByIdSql: String
         get() = "SELECT * FROM ACCESS WHERE ID = ?"
     private val selectUserResourceByUserIdSql: String
-        get() = "SELECT * FROM ACCESS WHERE ID = ?"
+        get() = "SELECT * FROM ACCESS WHERE USER_ID = ?"
     private val selectAllUserResourcesSql: String
         get() = "SELECT * FROM ACCESS"
 

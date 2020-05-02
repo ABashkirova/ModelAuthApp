@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.modelauthapp.dao.ResourceDAO
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
@@ -15,6 +16,8 @@ import javax.servlet.http.HttpServletResponse
 class AuthorityServlet : HttpServlet() {
     @Inject
     lateinit var gson: Gson
+    @Inject
+    lateinit var resourceDAO: ResourceDAO
     @InjectLogger
     lateinit var logger: KotlinLogger
 
@@ -26,20 +29,20 @@ class AuthorityServlet : HttpServlet() {
         var json:String? = null
         when {
             query.isNullOrEmpty() -> {
-                json = "empty"
+                json = gson.toJson(resourceDAO.requestAllAccesses())
             }
             query.contains("id") -> {
                 try {
                     val id = request.getParameter("id").toInt()
-                    json = "id"
+                    json = gson.toJson(resourceDAO.requestAccessById(id))
                 } catch (e: NumberFormatException) {
                     response.sendError(400, e.message)
                 }
             }
             query.contains("userId") -> {
                 try {
-                    val id = request.getParameter("userId").toInt()
-                    json = "userId"
+                    val userId = request.getParameter("userId").toInt()
+                    json = gson.toJson(resourceDAO.requestAccessByUserId(userId))
                 } catch (e: NumberFormatException) {
                     response.sendError(400, e.message)
                 }
