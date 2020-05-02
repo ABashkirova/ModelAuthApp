@@ -12,6 +12,8 @@ class SessionDAO(private val dbConnection: Connection) {
             INSERT INTO USER_SESSION(ID, START_DATE, END_DATE, VOLUME, ACCESS_ID)
             VALUES(default, ?, ?, ?, ?)
             """
+    private val sessionSelectAllSql: String
+        get() = "SELECT * FROM USER_SESSION"
 
     fun insert(access: DBAccess, session: UserSession): Int {
         val statement = dbConnection.prepareStatement(sessionInsertSql)
@@ -24,5 +26,42 @@ class SessionDAO(private val dbConnection: Connection) {
             )
             return@use it.executeUpdate()
         }
+    }
+
+    fun selectAll(): List<UserSession>{
+        val result: MutableList<UserSession> = mutableListOf()
+        var statement = dbConnection.createStatement()
+        statement.use {
+            val resultSet = it.executeQuery(sessionSelectAllSql)
+            while (resultSet.next()) {
+                val accessId = resultSet.getInt("ACCESS_ID")
+                lateinit var resource: String
+                var userId: Int? = null
+                var stmt = dbConnection.createStatement()
+                stmt.use {
+                    val access =  it.executeQuery("SELECT USER_ID, RESOURCE FROM ACCESS WHERE ID=$accessId")
+                    access.next()
+                    resource = access.getString("RESOURCE")
+                    userId = access.getInt("USER_ID")
+                }
+                lateinit var userLogin: String
+                stmt = dbConnection.createStatement()
+                stmt.use {
+                    val user = it.executeQuery("SELECT LOGIN FROM USER WHERE ID=$userId")
+                    user.next()
+                    userLogin = user.getString("LOGIN")
+                }
+                result.add(
+                    UserSession(
+                        userLogin,
+                        resource,
+                        resultSet.getDate("START_DATE").toString(),
+                        resultSet.getDate("END_DATE").toString(),
+                        resultSet.getInt("VOLUME")
+                    )
+                )
+            }
+        }
+        return result.toList()
     }
 }
