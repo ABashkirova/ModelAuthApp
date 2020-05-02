@@ -16,6 +16,8 @@ class SessionDAO(private val dbConnection: Connection) {
         get() = "SELECT * FROM USER_SESSION"
     private val selectByIdSql: String
         get() = "SELECT * FROM USER_SESSION WHERE ID=?"
+    private val selectByAccessIdSql: String
+        get() = "SELECT * FROM USER_SESSION WHERE ACCESS_ID=?"
 
     fun insert(access: DBAccess, session: UserSession): Int {
         val statement = dbConnection.prepareStatement(sessionInsertSql)
@@ -101,5 +103,41 @@ class SessionDAO(private val dbConnection: Connection) {
             }
         }
         return result
+    }
+
+    fun selectByAccessId(accessId: Int): UserSession? {
+        var result: UserSession? = null
+        val statement = dbConnection.prepareStatement(selectByAccessIdSql)
+        statement.use {
+            it.setValues(accessId)
+            val resultSet = it.executeQuery()
+            while (resultSet.next()) {
+                lateinit var resource: String
+                var userId: Int? = null
+                var stmt = dbConnection.createStatement()
+                stmt.use {
+                    val access = it.executeQuery("SELECT USER_ID, RESOURCE FROM ACCESS WHERE ID=$accessId")
+                    access.next()
+                    resource = access.getString("RESOURCE")
+                    userId = access.getInt("USER_ID")
+                }
+                lateinit var userLogin: String
+                stmt = dbConnection.createStatement()
+                stmt.use {
+                    val user = it.executeQuery("SELECT LOGIN FROM USER WHERE ID=$userId")
+                    user.next()
+                    userLogin = user.getString("LOGIN")
+                }
+                result = UserSession(
+                    userLogin,
+                    resource.substring(0, resource.length - 1),
+                    resultSet.getDate("START_DATE").toString(),
+                    resultSet.getDate("END_DATE").toString(),
+                    resultSet.getInt("VOLUME")
+                )
+            }
+        }
+        return result
+
     }
 }
