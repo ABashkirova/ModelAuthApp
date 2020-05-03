@@ -34,7 +34,7 @@ class UserServlet : HttpServlet() {
         }
     }
 
-    fun handleRequestWithUserId(request: HttpServletRequest, response: HttpServletResponse) {
+    private fun handleRequestWithUserId(request: HttpServletRequest, response: HttpServletResponse) {
         val idParameter = request.getParameter("id")
         if (idParameter.isNullOrEmpty()) {
             sendErrorParameterIsEmpty(response)
