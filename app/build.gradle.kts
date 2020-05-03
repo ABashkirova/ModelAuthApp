@@ -21,7 +21,6 @@ val dokkaVersion: String by project
 
 // Project dependencies
 val flywayVersion: String by project
-val kotlinxCliVersion: String by project
 val h2databaseVersion: String by project
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
@@ -29,7 +28,6 @@ val mockkVersion: String by project
 
 dependencies {
     // app:
-    implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
     implementation("com.h2database:h2:$h2databaseVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     // test:

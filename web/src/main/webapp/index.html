@@ -7,9 +7,28 @@
 <body>
 
 <form method="post" action="echo/post">
-    <label>id:</label>
+    <label>Say your id:</label>
     <input title="id" type="text" id="say-id-text-input" name="id"/>
     <input type="submit" id="say-id-button" value="Submit"/>
 </form>
+<br>
+<label>Type GET: User methods</label>
+<p><a href="ajax/user">Get list of users</a></p>
+<p><a href="ajax/user?id=1">Get user by id</a></p>
+<p><a href="ajax/user?id=5">User not found</a></p>
+<br>
+<label>Type GET: Authority methods</label>
+<p><a href="ajax/authority">Get all users resource with access level</a></p>
+<p><a href="ajax/authority?id=1">Get user resource with access-id</a></p>
+<p><a href="ajax/authority?id=100">Access not found</a></p>
+<p><a href="ajax/authority?userId=1">Get access by user id</a></p>
+<p><a href="ajax/authority?userId=4">Not found user access</a></p>
+<br>
+<label>Type GET: Activity methods</label>
+<p><a href="ajax/activity">Get activity list</a></p>
+<p><a href="ajax/activity?id=1">Get activity by id</a></p>
+<p><a href="ajax/activity?id=1">Not found activity</a></p>
+<p><a href="ajax/activity?authorityId=1">Get activity by access-id</a></p>
+<p><a href="ajax/activity?authorityId=100">Not found access by id</a></p>
 </body>
 </html>

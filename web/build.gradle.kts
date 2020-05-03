@@ -10,7 +10,7 @@ plugins {
 
 application {
     mainClassName = "xyz.sashenka.webapplication.JettyServer"
-    applicationName = "app"
+    applicationName = "webapp"
 }
 
 val staging: Configuration by configurations.creating
@@ -39,6 +39,17 @@ dependencies {
 }
 
 tasks {
+    shadowJar {
+        manifest {
+            attributes["Main-Class"] = application.mainClassName
+        }
+    }
+
+    jar {
+        enabled = false
+        dependsOn(shadowJar)
+    }
+
     val copyToLib by registering(Copy::class) {
         into("${rootProject.buildDir}/libs")
         from("$buildDir/libs")

@@ -19,13 +19,22 @@ plugins {
 }
 
 subprojects {
+
+    val kotlinxCliVersion: String by project
     val kotlinLog4j2Version: String by project
     val log4j2Version: String by project
     apply(plugin = "java")
     apply(plugin = "application")
 
+    repositories {
+        maven {
+            url = uri("https://kotlin.bintray.com/kotlinx")
+        }
+    }
+
     dependencies {
         // all
+        "implementation"("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
         "implementation"(platform("org.jetbrains.kotlin:kotlin-bom"))
         "implementation"("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
