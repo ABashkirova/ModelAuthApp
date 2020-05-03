@@ -7,7 +7,6 @@ import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.SessionDAO
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
-import xyz.sashenka.webapplication.servlets.HandleError.Companion.sendErrorNotFound
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -26,23 +25,31 @@ class ActivityServlet : HttpServlet() {
     lateinit var logger: KotlinLogger
 
     private val ID = "id"
-    private val ACCESS_ID = "accessId"
+    private val ACCESS_ID = "authorityId"
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-
+        logger.info("Get activity info: ${request.requestURI} with ${request.queryString}")
         val query = request.queryString
         when {
-            query.isNullOrEmpty() -> response.writer.write(allSessionToJson())
+            query.isNullOrEmpty() -> handleRequestWithEmptyParameters(response)
             query.contains(ID) -> handleRequestWithIdParameter(request, response)
             query.contains(ACCESS_ID) -> handleRequestWithAccessIdParameter(request, response)
-            else -> sendErrorNotFound(response)
+            else -> HandleError().sendErrorNotFound(response)
         }
     }
 
+    private fun handleRequestWithEmptyParameters(response: HttpServletResponse) {
+        logger.info("Handle case all activity")
+        logger.info("Write activity info")
+        response.writer.write(allSessionToJson())
+    }
+
     private fun handleRequestWithAccessIdParameter(request: HttpServletRequest, response: HttpServletResponse) {
+        logger.info("Handle case with id activity")
         val idParameter = request.getParameter(ACCESS_ID)
-        if (!HandleError.sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+        if (!HandleError().sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+            logger.info("Write activity info")
             writeActivityResponseWithAccessId(idParameter.toInt(), response)
         }
     }
@@ -50,15 +57,17 @@ class ActivityServlet : HttpServlet() {
     private fun writeActivityResponseWithAccessId(accessId: Int, response: HttpServletResponse) {
         val activitySession = sessionDAO.selectByAccessId(accessId)
         if (activitySession == null) {
-            sendErrorNotFound(response)
+            logger.error("Activities not found with access id $accessId")
+            HandleError().sendErrorNotFound(response)
         } else {
             response.writer.write(sessionToJson(activitySession))
         }
     }
 
     private fun handleRequestWithIdParameter(request: HttpServletRequest, response: HttpServletResponse) {
+        logger.info("Handle case with id")
         val idParameter = request.getParameter(ID)
-        if (!HandleError.sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+        if (!HandleError().sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
             writeActivityResponse(idParameter.toInt(), response)
         }
     }
@@ -66,7 +75,8 @@ class ActivityServlet : HttpServlet() {
     private fun writeActivityResponse(activityId: Int, response: HttpServletResponse) {
         val activitySession = sessionDAO.selectById(activityId)
         if (activitySession == null) {
-            sendErrorNotFound(response)
+            logger.error("Activity not found with id $activityId")
+            HandleError().sendErrorNotFound(response)
         } else {
             response.writer.write(sessionToJson(activitySession))
         }

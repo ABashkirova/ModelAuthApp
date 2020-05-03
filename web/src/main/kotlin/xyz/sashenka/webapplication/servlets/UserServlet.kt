@@ -7,7 +7,6 @@ import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.UserDAO
 import xyz.sashenka.modelauthapp.model.domain.User
 import xyz.sashenka.webapplication.di.logger.InjectLogger
-import xyz.sashenka.webapplication.servlets.HandleError.Companion.sendErrorNotFound
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -25,19 +24,30 @@ class UserServlet : HttpServlet() {
     @InjectLogger
     lateinit var logger: KotlinLogger
 
+    private val ID = "id"
+
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
+        logger.info("Get user info: ${request.requestURI} with ${request.queryString}")
         val query = request.queryString
         when {
-            query.isNullOrEmpty() -> response.writer.write(allUsersToJson())
-            query.contains("id") -> handleRequestWithUserId(request, response)
-            else -> sendErrorNotFound(response)
+            query.isNullOrEmpty() -> handleRequestEmptyParameter(response)
+            query.contains(ID) -> handleRequestWithUserId(request, response)
+            else -> HandleError().sendErrorNotFound(response)
         }
     }
 
+    private fun handleRequestEmptyParameter(response: HttpServletResponse) {
+        logger.info("Handle case all users")
+        logger.info("Write users info")
+        response.writer.write(allUsersToJson())
+    }
+
     private fun handleRequestWithUserId(request: HttpServletRequest, response: HttpServletResponse) {
-        val idParameter = request.getParameter("id")
-        if (!HandleError.sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+        logger.info("Handle case with id user")
+        val idParameter = request.getParameter(ID)
+        if (!HandleError().sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+            logger.info("Write user info")
             writeUserResponse(idParameter.toInt(), response)
         }
     }
@@ -45,7 +55,8 @@ class UserServlet : HttpServlet() {
     private fun writeUserResponse(userId: Int, response: HttpServletResponse) {
         val user = userDAO.requestUserById(userId)
         if (user == null) {
-            sendErrorNotFound(response)
+            logger.error("User not found with id $userId")
+            HandleError().sendErrorNotFound(response)
         } else {
             response.writer.write(useToJson(user))
         }

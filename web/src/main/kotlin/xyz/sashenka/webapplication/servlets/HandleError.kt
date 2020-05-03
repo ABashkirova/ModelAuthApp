@@ -1,31 +1,36 @@
 package xyz.sashenka.webapplication.servlets
 
+import org.apache.logging.log4j.kotlin.KotlinLogger
+import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.webapplication.isInteger
 import javax.servlet.http.HttpServletResponse
 
 class HandleError {
-    companion object {
-        fun sendErrorParameterIsEmpty(response: HttpServletResponse) {
-            response.sendError(400, "Parameter is empty")
-        }
+    var logger: KotlinLogger = loggerOf(HandleError::class.java)
 
-        fun sendErrorParameterIsNotInteger(response: HttpServletResponse) {
-            response.sendError(400, "Parameter is not integer")
-        }
+    fun sendErrorNotFound(response: HttpServletResponse) {
+        logger.error("sendErrorNotFound")
+        response.sendError(404)
+    }
 
-        fun sendErrorNotFound(response: HttpServletResponse) {
-            response.sendError(404)
+    fun sendErrorForIntegerParameterIfIsNeeded(parameter: String?, response: HttpServletResponse): Boolean {
+        if (parameter.isNullOrEmpty()) {
+            sendErrorParameterIsEmpty(response)
+            return true
+        } else if (!parameter.isInteger()) {
+            sendErrorParameterIsNotInteger(response)
+            return true
         }
+        return false
+    }
 
-        fun sendErrorForIntegerParameterIfIsNeeded(parameter: String, response: HttpServletResponse): Boolean {
-            if (parameter.isNullOrEmpty()) {
-                sendErrorParameterIsEmpty(response)
-                return true
-            } else if (!parameter.isInteger()) {
-                sendErrorParameterIsNotInteger(response)
-                return true
-            }
-            return false
-        }
+    private fun sendErrorParameterIsEmpty(response: HttpServletResponse) {
+        logger.error("sendErrorParameterIsEmpty")
+        response.sendError(400, "Parameter is empty")
+    }
+
+    private fun sendErrorParameterIsNotInteger(response: HttpServletResponse) {
+        logger.error("sendErrorParameterIsNotInteger")
+        response.sendError(400, "Parameter is not integer")
     }
 }
