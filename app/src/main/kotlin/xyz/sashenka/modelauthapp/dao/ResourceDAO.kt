@@ -59,6 +59,7 @@ class ResourceDAO(private val dbConnection: Connection) {
             return result.toList()
         }
     }
+
     fun requestAccessByUserId(userId: Int): List<DBAccess> {
         val result: MutableList<DBAccess> = mutableListOf()
         val statement = dbConnection.prepareStatement(selectUserResourceByUserIdSql)

@@ -31,7 +31,7 @@ class UserDAO(private val dbConnection: Connection) {
         return result.toList()
     }
 
-    private fun requestUser(sql:String, parameter: Any): User?{
+    private fun requestUser(sql: String, parameter: Any): User? {
         val statement = dbConnection.prepareStatement(sql)
         return statement.use {
             it.setValues(parameter)
