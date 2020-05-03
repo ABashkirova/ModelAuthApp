@@ -26,6 +26,7 @@ object AuthorizationAppSpec : Spek({
     val authorizationServiceMock = mockk<AuthorizationService>()
 
     val user = User(
+        1,
         "sasha",
         "bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3",
         "V9Me2nx"
