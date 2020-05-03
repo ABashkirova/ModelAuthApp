@@ -7,7 +7,7 @@ import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.UserDAO
 import xyz.sashenka.modelauthapp.model.domain.User
 import xyz.sashenka.webapplication.di.logger.InjectLogger
-import xyz.sashenka.webapplication.isInteger
+import xyz.sashenka.webapplication.servlets.HandleError.Companion.sendErrorNotFound
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.http.HttpServlet
@@ -36,35 +36,18 @@ class UserServlet : HttpServlet() {
 
     private fun handleRequestWithUserId(request: HttpServletRequest, response: HttpServletResponse) {
         val idParameter = request.getParameter("id")
-        if (idParameter.isNullOrEmpty()) {
-            sendErrorParameterIsEmpty(response)
-        } else if (!idParameter.isInteger()) {
-            sendErrorParameterIsNotInteger(response)
-        } else {
-            val id = idParameter.toInt()
-            writeUserResponse(id, response)
+        if (!HandleError.sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
+            writeUserResponse(idParameter.toInt(), response)
         }
     }
 
     private fun writeUserResponse(userId: Int, response: HttpServletResponse) {
         val user = userDAO.requestUserById(userId)
         if (user == null) {
-            sendErrorNotFoundUserWithId(response)
+            sendErrorNotFound(response)
         } else {
             response.writer.write(useToJson(user))
         }
-    }
-
-    private fun sendErrorParameterIsEmpty(response: HttpServletResponse) {
-        response.sendError(400, "Parameter is empty")
-    }
-
-    private fun sendErrorParameterIsNotInteger(response: HttpServletResponse) {
-        response.sendError(400, "Parameter is not integer")
-    }
-
-    private fun sendErrorNotFoundUserWithId(response: HttpServletResponse) {
-        response.sendError(404)
     }
 
     private fun allUsersToJson(): String {
