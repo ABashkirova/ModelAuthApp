@@ -1,8 +1,10 @@
 package xyz.sashenka.modelauthapp.dao
 
 import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.model.dto.DBUser
 import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.Connection
+import java.sql.ResultSet
 
 class UserDAO(private val dbConnection: Connection) {
     private val userByLoginSql: String
@@ -12,48 +14,50 @@ class UserDAO(private val dbConnection: Connection) {
     private val allUsersSql: String
         get() = "SELECT * FROM USER"
 
-    fun requestAllUsers(): List<User> {
+    private val id = "ID"
+    private val login = "LOGIN"
+    private val hashPassword = "HASH_PASSWORD"
+    private val salt = "SALT"
+
+    fun requestAllUsers(): List<DBUser> {
         val statement = dbConnection.createStatement()
-        val result: MutableList<User> = mutableListOf()
+        val result: MutableList<DBUser> = mutableListOf()
         statement.use {
             val resultSet = statement.executeQuery(allUsersSql)
             while (resultSet.next()) {
-                result.add(
-                    User(
-                        resultSet.getInt("ID"),
-                        resultSet.getString("LOGIN"),
-                        resultSet.getString("HASH_PASSWORD"),
-                        resultSet.getString("SALT")
-                    )
-                )
+                result.add(createUser(resultSet))
             }
         }
         return result.toList()
     }
 
-    private fun requestUser(sql: String, parameter: Any): User? {
+    private fun requestUser(sql: String, parameter: Any): DBUser? {
         val statement = dbConnection.prepareStatement(sql)
         return statement.use {
             it.setValues(parameter)
             return@use it.executeQuery().use { value ->
                 return@use when {
-                    value.next() -> User(
-                        value.getInt("ID"),
-                        value.getString("LOGIN"),
-                        value.getString("HASH_PASSWORD"),
-                        value.getString("SALT")
-                    )
+                    value.next() -> createUser(value)
                     else -> null
                 }
             }
         }
     }
 
-    fun requestUserByLogin(login: String): User? {
-        return requestUser(userByLoginSql, login)
+    private fun createUser(value: ResultSet): DBUser {
+        return DBUser(
+            value.getInt(id),
+            value.getString(login),
+            value.getString(hashPassword),
+            value.getString(salt)
+        )
     }
 
-    fun requestUserById(id: Int): User? {
+    fun requestUserByLogin(login: String): User? {
+        return requestUser(userByLoginSql, login)?.toPlain()
+    }
+
+    fun requestUserById(id: Int): DBUser? {
         return requestUser(userByIdSql, id)
     }
 
