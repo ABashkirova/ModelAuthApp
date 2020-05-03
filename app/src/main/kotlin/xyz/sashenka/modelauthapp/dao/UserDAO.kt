@@ -1,7 +1,7 @@
 package xyz.sashenka.modelauthapp.dao
 
 import xyz.sashenka.modelauthapp.model.domain.User
-import xyz.sashenka.modelauthapp.model.dto.DBUser
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.Connection
 import java.sql.ResultSet

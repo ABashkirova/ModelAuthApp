@@ -2,7 +2,7 @@ package xyz.sashenka.modelauthapp.repository
 
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 
 class ResourceRepository(private val dao: ResourceDAO) {
     fun getResourcesByUserLogin(usersResource: UsersResources): DBAccess? {

@@ -5,7 +5,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.SessionDAO
-import xyz.sashenka.modelauthapp.model.domain.UserSession
+import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
@@ -55,13 +55,8 @@ class ActivityServlet : HttpServlet() {
     }
 
     private fun writeActivityResponseWithAccessId(accessId: Int, response: HttpServletResponse) {
-        val activitySession = sessionDAO.selectByAccessId(accessId)
-        if (activitySession == null) {
-            logger.error("Activities not found with access id $accessId")
-            HandleError().sendErrorNotFound(response)
-        } else {
-            response.writer.write(sessionToJson(activitySession))
-        }
+        val activitySessions = sessionDAO.requestByAccessId(accessId)
+        response.writer.write(sessionsToJson(activitySessions))
     }
 
     private fun handleRequestWithIdParameter(request: HttpServletRequest, response: HttpServletResponse) {
@@ -73,7 +68,7 @@ class ActivityServlet : HttpServlet() {
     }
 
     private fun writeActivityResponse(activityId: Int, response: HttpServletResponse) {
-        val activitySession = sessionDAO.selectById(activityId)
+        val activitySession = sessionDAO.requestById(activityId)
         if (activitySession == null) {
             logger.error("Activity not found with id $activityId")
             HandleError().sendErrorNotFound(response)
@@ -82,11 +77,15 @@ class ActivityServlet : HttpServlet() {
         }
     }
 
-    private fun sessionToJson(session: UserSession): String {
+    private fun sessionsToJson(sessions: List<DBUserSession>): String {
+        return gson.toJson(sessions)
+    }
+
+    private fun sessionToJson(session: DBUserSession): String {
         return gson.toJson(session)
     }
 
     private fun allSessionToJson(): String {
-        return gson.toJson(sessionDAO.selectAll())
+        return gson.toJson(sessionDAO.requestAll())
     }
 }

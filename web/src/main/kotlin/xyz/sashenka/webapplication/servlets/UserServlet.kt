@@ -5,7 +5,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.UserDAO
-import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException
@@ -66,7 +66,7 @@ class UserServlet : HttpServlet() {
         return gson.toJson(userDAO.requestAllUsers())
     }
 
-    private fun useToJson(user: User): String {
+    private fun useToJson(user: DBUser): String {
         return gson.toJson(user)
     }
 }

@@ -14,7 +14,7 @@ import xyz.sashenka.modelauthapp.model.ExitCode.WRONG_PASSWORD
 import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
-import xyz.sashenka.modelauthapp.model.dto.AccountingData
+import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.ValidatingService
 
 class Application(private val args: Array<String>, private val container: Container) {

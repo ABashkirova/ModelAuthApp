@@ -9,10 +9,10 @@ import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.di.Container
 import xyz.sashenka.modelauthapp.model.ExitCode
 import xyz.sashenka.modelauthapp.model.domain.User
-import xyz.sashenka.modelauthapp.model.dto.AccountingData
-import xyz.sashenka.modelauthapp.model.dto.AuthenticationData
-import xyz.sashenka.modelauthapp.model.dto.AuthorizationData
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
+import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
+import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.modelauthapp.service.AccountingService
 import xyz.sashenka.modelauthapp.service.AuthenticationService
 import xyz.sashenka.modelauthapp.service.AuthorizationService
@@ -34,9 +34,17 @@ object AccountingAppSpec : Spek({
         "bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3",
         "V9Me2nx"
     )
-    val authenticationData = AuthenticationData("sasha", "qwerty")
-    val authorizationData = AuthorizationData("A", "READ", "sasha")
-    val accountingData = AccountingData("sasha", "A", "2000-01-15", "2000-02-15", "10")
+    val authenticationData =
+        AuthenticationData("sasha", "qwerty")
+    val authorizationData =
+        AuthorizationData("A", "READ", "sasha")
+    val accountingData = AccountingData(
+        "sasha",
+        "A",
+        "2000-01-15",
+        "2000-02-15",
+        "10"
+    )
     val access = DBAccess(0, 0, "A", "READ")
     every { containerMock.getLogger(Application::class.java) } returns loggerOf(ApplicationSpec::class.java)
 

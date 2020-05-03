@@ -6,7 +6,7 @@ import io.mockk.verify
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.domain.UserSession
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 
 object AccountingServiceSpec : Spek({

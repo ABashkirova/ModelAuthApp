@@ -5,7 +5,7 @@ import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
 import javax.servlet.ServletException

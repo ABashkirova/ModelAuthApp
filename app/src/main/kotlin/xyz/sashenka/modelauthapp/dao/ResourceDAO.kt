@@ -1,8 +1,9 @@
 package xyz.sashenka.modelauthapp.dao
 
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.Connection
+import java.sql.ResultSet
 
 class ResourceDAO(private val dbConnection: Connection) {
     private val selectUserResourcesByLoginSql: String
@@ -23,79 +24,69 @@ class ResourceDAO(private val dbConnection: Connection) {
     private val selectAllUserResourcesSql: String
         get() = "SELECT * FROM ACCESS"
 
+    private val id = "ID"
+    private val userId = "USER_ID"
+    private val resource = "RESOURCE"
+    private val role = "ROLE"
+
     fun requestAccessByResource(login: String, resource: String, role: String): DBAccess? {
         val statement = dbConnection.prepareStatement(selectUserResourcesByLoginSql)
-        return statement.use {
+        var access: DBAccess? = null
+        statement.use {
             it.setValues(login, resource, role)
-            return@use it.executeQuery().use { value ->
-                return@use if (value.next()) {
-
-                    DBAccess(
-                        id = value.getInt("ID"),
-                        userId = value.getInt("USER_ID"),
-                        resource = value.getString("RESOURCE"),
-                        role = value.getString("ROLE")
-                    )
-                } else null
+            it.executeQuery().use { value ->
+                if (value.next()) {
+                    access = createAccess(value)
+                }
             }
         }
+        return access
     }
 
     fun requestAllAccesses(): List<DBAccess> {
-        val result: MutableList<DBAccess> = mutableListOf()
+        val listAccess: MutableList<DBAccess> = mutableListOf()
         val statement = dbConnection.createStatement()
         statement.use {
             val resultSet = it.executeQuery(selectAllUserResourcesSql)
             while (resultSet.next()) {
-                result.add(
-                    DBAccess(
-                        id = resultSet.getInt("ID"),
-                        userId = resultSet.getInt("USER_ID"),
-                        resource = resultSet.getString("RESOURCE"),
-                        role = resultSet.getString("ROLE")
-                    )
-                )
+                listAccess.add(createAccess(resultSet))
             }
-            return result.toList()
+            return listAccess.toList()
         }
     }
 
     fun requestAccessByUserId(userId: Int): List<DBAccess> {
-        val result: MutableList<DBAccess> = mutableListOf()
+        val listAccess: MutableList<DBAccess> = mutableListOf()
         val statement = dbConnection.prepareStatement(selectUserResourceByUserIdSql)
         statement.use {
             it.setValues(userId)
             val resultSet = it.executeQuery()
             while (resultSet.next()) {
-                result.add(
-                    DBAccess(
-                        id = resultSet.getInt("ID"),
-                        userId = resultSet.getInt("USER_ID"),
-                        resource = resultSet.getString("RESOURCE"),
-                        role = resultSet.getString("ROLE")
-                    )
-                )
+                listAccess.add(createAccess(resultSet))
             }
-            return result.toList()
+            return listAccess.toList()
         }
     }
 
     fun requestAccessById(id: Int): DBAccess? {
-        var result: DBAccess? = null
+        var access: DBAccess? = null
         val statement = dbConnection.prepareStatement(selectUserResourceByIdSql)
         statement.use {
             it.setValues(id)
             val resultSet = it.executeQuery()
             if (resultSet.next()) {
-                result = DBAccess(
-                    id = resultSet.getInt("ID"),
-                    userId = resultSet.getInt("USER_ID"),
-                    resource = resultSet.getString("RESOURCE"),
-                    role = resultSet.getString("ROLE")
-                )
+                access = createAccess(resultSet)
             }
         }
-        return result
+        return access
     }
 
+    private fun createAccess(value: ResultSet): DBAccess {
+        return DBAccess(
+            id = value.getInt(id),
+            userId = value.getInt(userId),
+            resource = value.getString(resource),
+            role = value.getString(role)
+        )
+    }
 }

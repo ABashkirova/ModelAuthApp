@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.model.dto
+package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
 import xyz.sashenka.modelauthapp.model.domain.User

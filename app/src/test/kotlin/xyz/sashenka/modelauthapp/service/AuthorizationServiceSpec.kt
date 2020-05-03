@@ -11,7 +11,7 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
-import xyz.sashenka.modelauthapp.model.dto.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import kotlin.test.assertEquals
 
