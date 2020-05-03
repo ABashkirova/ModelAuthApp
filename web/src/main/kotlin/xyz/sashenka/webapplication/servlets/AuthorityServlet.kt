@@ -17,8 +17,10 @@ import javax.servlet.http.HttpServletResponse
 class AuthorityServlet : HttpServlet() {
     @Inject
     lateinit var gson: Gson
+
     @Inject
     lateinit var resourceDAO: ResourceDAO
+
     @InjectLogger
     lateinit var logger: KotlinLogger
 
