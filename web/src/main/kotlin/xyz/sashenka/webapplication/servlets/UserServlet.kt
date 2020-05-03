@@ -27,10 +27,11 @@ class UserServlet : HttpServlet() {
 
     @Throws(ServletException::class, IOException::class)
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
-        if (request.queryString == null) {
-            response.writer.write(allUsersToJson())
-        } else {
-            handleRequestWithUserId(request, response)
+        val query = request.queryString
+        when {
+            query.isNullOrEmpty() -> response.writer.write(allUsersToJson())
+            query.contains("id") -> handleRequestWithUserId(request, response)
+            else -> sendErrorNotFound(response)
         }
     }
 
