@@ -60,5 +60,4 @@ class UserDAO(private val dbConnection: Connection) {
     fun requestUserById(id: Int): DBUser? {
         return requestUser(userByIdSql, id)
     }
-
 }
