@@ -2,9 +2,9 @@ package xyz.sashenka.modelauthapp.controller
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
-import xyz.sashenka.modelauthapp.model.dto.AccountingData
-import xyz.sashenka.modelauthapp.model.dto.AuthenticationData
-import xyz.sashenka.modelauthapp.model.dto.AuthorizationData
+import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
+import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
+import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
 
 class ArgHandler(args: Array<String>) {
     private val parser = ArgParser("app.jar", true)
@@ -83,7 +83,13 @@ class ArgHandler(args: Array<String>) {
         return if (login == null || resource == null || dateStart == null || dateEnd == null || volume == null) {
             null
         } else {
-            AccountingData(login, resource, dateStart, dateEnd, volume)
+            AccountingData(
+                login,
+                resource,
+                dateStart,
+                dateEnd,
+                volume
+            )
         }
     }
 }

@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.model.dto
+package xyz.sashenka.modelauthapp.model.dto.args
 
 data class AuthorizationData(
     val path: String,
