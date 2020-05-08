@@ -12,6 +12,7 @@ import xyz.sashenka.modelauthapp.repository.UserRepository
 import xyz.sashenka.modelauthapp.service.*
 
 class Container {
+    private val injector: Injector = Guice.createInjector(DatabaseModule())
     private lateinit var dbService: DBService
     private lateinit var validatingService: ValidatingService
 

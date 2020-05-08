@@ -24,4 +24,21 @@ class UserDAO(private val dbConnection: Connection) {
             }
         }
     }
+
+    private fun createUser(value: ResultSet): DBUser {
+        return DBUser(
+            value.getInt(id),
+            value.getString(login),
+            value.getString(hashPassword),
+            value.getString(salt)
+        )
+    }
+
+    fun requestUserByLogin(login: String): User? {
+        return requestUser(userByLoginSql, login)?.toPlain()
+    }
+
+    fun requestUserById(id: Int): DBUser? {
+        return requestUser(userByIdSql, id)
+    }
 }

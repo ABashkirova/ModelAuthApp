@@ -34,6 +34,7 @@ val dokkaVersion: String by project
 val flywayVersion: String by project
 val kotlinxCliVersion: String by project
 val h2databaseVersion: String by project
+val c3poVersion: String by project
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
 val mockkVersion: String by project
@@ -43,6 +44,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
     implementation("com.h2database:h2:$h2databaseVersion")
+    implementation("com.mchange:c3p0:$c3poVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
     implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
