@@ -10,7 +10,7 @@ import xyz.sashenka.modelauthapp.dao.UserDAO
 import xyz.sashenka.modelauthapp.service.DBService
 import java.sql.Connection
 
-class AppModule : AbstractModule() {
+class DatabaseModule : AbstractModule() {
 
     @Inject
     @Provides
