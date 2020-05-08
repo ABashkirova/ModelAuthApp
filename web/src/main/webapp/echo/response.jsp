@@ -4,9 +4,8 @@
 <head>
     <title>ID Page</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<p>Id: ${id}</p>
-</body>
+<h3>id: ${id}</h3>
+    </body>
 </html>

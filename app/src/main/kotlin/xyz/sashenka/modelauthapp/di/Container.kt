@@ -1,7 +1,5 @@
 package xyz.sashenka.modelauthapp.di
 
-import com.google.inject.Guice
-import com.google.inject.Injector
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
@@ -22,7 +20,7 @@ class Container {
 
     fun getDBService(): DBService {
         if (!::dbService.isInitialized) {
-            dbService = DBService()
+            dbService = DBService(getLogger(DBService::class.java))
         }
         return dbService
     }
@@ -50,9 +48,9 @@ class Container {
 
     fun getSessionRepository(): SessionRepository? = getSessionDAO()?.let { SessionRepository(it) }
 
-    fun getUserDAO(): UserDAO? = injector.getInstance(UserDAO::class.java)
+    fun getUserDAO(): UserDAO? = getDBService().connection?.let { UserDAO(it) }
 
-    fun getResourceDao(): ResourceDAO? = injector.getInstance(ResourceDAO::class.java)
+    fun getResourceDao(): ResourceDAO? = getDBService().connection?.let { ResourceDAO(it) }
 
-    fun getSessionDAO(): SessionDAO? = injector.getInstance(SessionDAO::class.java)
+    fun getSessionDAO(): SessionDAO? = getDBService().connection?.let { SessionDAO(it) }
 }

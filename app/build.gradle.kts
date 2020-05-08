@@ -1,4 +1,5 @@
 // app
+
 plugins {
     kotlin("jvm")
     id("io.gitlab.arturbosch.detekt") version "1.7.4"
@@ -11,6 +12,16 @@ plugins {
     application
 }
 
+apply {
+    application
+}
+
+repositories {
+    maven {
+        url = uri("https://kotlin.bintray.com/kotlinx")
+    }
+}
+
 val aaaVersion: String by project
 // Gradle plugins
 val kotlinVersion: String by project
@@ -21,6 +32,7 @@ val dokkaVersion: String by project
 
 // Project dependencies
 val flywayVersion: String by project
+val kotlinxCliVersion: String by project
 val h2databaseVersion: String by project
 val c3poVersion: String by project
 val kotlinLog4j2Version: String by project
@@ -29,13 +41,22 @@ val mockkVersion: String by project
 
 dependencies {
     // app:
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
     implementation("com.h2database:h2:$h2databaseVersion")
     implementation("com.mchange:c3p0:$c3poVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
+    implementation("org.apache.logging.log4j:log4j-api:$log4j2Version")
+    implementation("org.apache.logging.log4j:log4j-core:$log4j2Version")
+
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("junit:junit:4.12")
 }
 
 tasks {

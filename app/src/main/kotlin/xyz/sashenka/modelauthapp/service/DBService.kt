@@ -2,13 +2,11 @@ package xyz.sashenka.modelauthapp.service
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import org.apache.logging.log4j.kotlin.logger
 import org.flywaydb.core.Flyway
 import java.sql.Connection
 import java.util.*
 
-class DBService {
-    private val logger: KotlinLogger = logger()
+class DBService(private val logger: KotlinLogger) {
     private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:"
     private val envDBFile: String? = System.getenv("DBFILE") ?: "./AAA"
     private val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
@@ -22,7 +20,7 @@ class DBService {
         initPoolDataSource()
     }
 
-    fun migrate() {
+    private fun migrate() {
         logger.info { "Загрузка миграций flyway" }
         try {
             Flyway
@@ -62,13 +60,13 @@ class DBService {
         if (connection == null) {
             logger.info { "Инициализируем подключение к БД" }
             try {
-                connection = getConnect()
+                connection = DriverManager.getConnection(envUrl + envDBFile, envLogin, envPass)
             } catch (ex: Exception) {
                 logger.error { ex.stackTrace }
             }
         }
     }
-
+  
     fun getConnect(): Connection {
         val connection = cpds.connection
         logger.info(
