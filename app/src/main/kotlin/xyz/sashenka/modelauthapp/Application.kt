@@ -14,7 +14,7 @@ import xyz.sashenka.modelauthapp.model.ExitCode.WRONG_PASSWORD
 import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
-import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
+import xyz.sashenka.modelauthapp.model.dto.AccountingData
 import xyz.sashenka.modelauthapp.service.ValidatingService
 
 class Application(private val args: Array<String>, private val container: Container) {
@@ -40,6 +40,7 @@ class Application(private val args: Array<String>, private val container: Contai
             return INVALID_LOGIN_FORMAT
         }
 
+        container.getDBService().connect()
         // Authentication
         logger.info { "Попытка аутентификации" }
         var currentExitCode = startAuthentication(authenticationData.login, authenticationData.password)
@@ -68,6 +69,7 @@ class Application(private val args: Array<String>, private val container: Contai
             authorizationData.login
         )
         logger.info { "Попытка авторизации" }
+        container.getDBService().connect()
         currentExitCode = startAuthorization(usersResources)
         if (isExitNeeded(
                 currentExitCode != SUCCESS,
@@ -82,6 +84,7 @@ class Application(private val args: Array<String>, private val container: Contai
             return currentExitCode
         }
         logger.info { "Попытка аккаунтинга" }
+        container.getDBService().connect()
         currentExitCode = startAccounting(usersResources, accountingData)
         if (isExitNeeded(
                 currentExitCode != SUCCESS,
@@ -182,7 +185,7 @@ class Application(private val args: Array<String>, private val container: Contai
             logger.error { diErrorMessage }
             return DI_ERROR
         }
-
+        container.getDBService().connect()
         val userAccess = authorizationService.getResourceAccess(usersResources)
         if (userAccess == null) {
             logger.error { "Нет доступа, на попытке аккаунтиться" }

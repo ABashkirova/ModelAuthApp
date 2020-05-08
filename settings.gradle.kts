@@ -7,4 +7,6 @@
  * in the user manual at https://docs.gradle.org/6.3/userguide/multi_project_builds.html
  */
 
-include("app","web")
+rootProject.name = "ModelAuthApp"
+include("app")
+include("web")
