@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.model.dto.args
+package xyz.sashenka.modelauthapp.model.dto
 
 data class AuthenticationData(
     val login: String,

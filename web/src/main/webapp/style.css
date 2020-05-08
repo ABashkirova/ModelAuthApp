@@ -1,46 +1,67 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
 
+.center-xy {
+  // width: inherit;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  position: absolute;
+}
+
 html, body {
-    font-family: 'Roboto Mono', monospace;
-    font-size: 16px;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 16px;
 }
 
-.form-inline {
-    display: flex;
-    flex-flow: row wrap;
-    align-items: center;
+html {
+  box-sizing: border-box;
+  user-select: none;
 }
 
-.form-inline label {
-    margin: 5px 10px 5px 0;
+body {
+  background-color: #000;
 }
 
-.form-inline input {
-    vertical-align: middle;
-    margin: 5px 10px 5px 0;
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ddd;
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
-.form-inline button {
-    padding: 10px 20px;
-    background-color: dodgerblue;
-    border: 1px solid #ddd;
-    color: white;
+.container {
+  width: 100%;
 }
 
-.form-inline button:hover {
-    background-color: royalblue;
+.copy-container {
+  text-align: center;
 }
 
-@media (max-width: 800px) {
-    .form-inline input {
-        margin: 10px 0;
-    }
+p {
+  color: #fff;
+  font-size: 24px;
+  letter-spacing: .2px;
+  margin: 0;
+}
 
-    .form-inline {
-        flex-direction: column;
-        align-items: stretch;
-    }
+.handle {
+  background: #ffe500;
+  width: 14px;
+  height: 30px;
+  top: 0;
+  left: 0;
+  margin-top: 1px;
+  position: absolute;
+}
+
+#cb-replay {
+  fill: #666;
+  width: 20px;
+  margin: 15px;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  overflow: inherit;
+  cursor: pointer;
+}
+
+#cb-replay:hover {
+  fill: #888;
 }
