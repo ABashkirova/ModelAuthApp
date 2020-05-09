@@ -1,7 +1,7 @@
 package xyz.sashenka.modelauthapp.di
 
 import com.google.inject.Provider
-import xyz.sashenka.modelauthapp.service.db.DBService
+import xyz.sashenka.modelauthapp.service.DBService
 
 class DatabaseProvider : Provider<DBService?> {
     override fun get(): DBService? {

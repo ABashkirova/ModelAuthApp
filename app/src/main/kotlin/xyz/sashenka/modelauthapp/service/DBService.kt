@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.service.db
+package xyz.sashenka.modelauthapp.service
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import org.apache.logging.log4j.kotlin.KotlinLogger
@@ -15,7 +15,6 @@ class DBService {
     private val envPass: String = System.getenv("DBPASS") ?: ""
     private val migrationLocation = "db/migration"
     private lateinit var cpds: ComboPooledDataSource
-    var connection: Connection? = null
 
     init {
         logger.info { "Инициализируем DBService: url(${envUrl + envDBFile}), login($envLogin)" }

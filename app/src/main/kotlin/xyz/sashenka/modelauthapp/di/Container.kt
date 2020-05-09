@@ -16,7 +16,7 @@ import xyz.sashenka.modelauthapp.service.AuthorizationService
 import xyz.sashenka.modelauthapp.service.HelpService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 import xyz.sashenka.modelauthapp.service.AccountingService
-import xyz.sashenka.modelauthapp.service.db.DBService
+import xyz.sashenka.modelauthapp.service.DBService
 
 class Container {
     private val injector: Injector = Guice.createInjector(DatabaseModule())

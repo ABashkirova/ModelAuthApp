@@ -3,7 +3,7 @@ package xyz.sashenka.modelauthapp.dao
 import com.google.inject.Inject
 import xyz.sashenka.modelauthapp.model.domain.User
 import xyz.sashenka.modelauthapp.model.dto.db.DBUser
-import xyz.sashenka.modelauthapp.service.db.DBService
+import xyz.sashenka.modelauthapp.service.DBService
 import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.ResultSet
 

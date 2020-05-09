@@ -2,7 +2,7 @@ package xyz.sashenka.modelauthapp.dao
 
 import com.google.inject.Inject
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
-import xyz.sashenka.modelauthapp.service.db.DBService
+import xyz.sashenka.modelauthapp.service.DBService
 import xyz.sashenka.modelauthapp.utils.setValues
 import java.sql.ResultSet
 

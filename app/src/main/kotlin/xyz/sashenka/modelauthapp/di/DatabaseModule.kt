@@ -7,7 +7,7 @@ import com.google.inject.Singleton
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
 import xyz.sashenka.modelauthapp.dao.SessionDAO
 import xyz.sashenka.modelauthapp.dao.UserDAO
-import xyz.sashenka.modelauthapp.service.db.DBService
+import xyz.sashenka.modelauthapp.service.DBService
 
 class DatabaseModule : AbstractModule() {
     override fun configure() {
