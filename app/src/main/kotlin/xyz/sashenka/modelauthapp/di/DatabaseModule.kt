@@ -7,32 +7,26 @@ import com.google.inject.Singleton
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
 import xyz.sashenka.modelauthapp.dao.SessionDAO
 import xyz.sashenka.modelauthapp.dao.UserDAO
-import xyz.sashenka.modelauthapp.service.DBService
-import java.sql.Connection
+import xyz.sashenka.modelauthapp.service.db.DBService
 
 class DatabaseModule : AbstractModule() {
-
-    @Inject
-    @Provides
-    @Singleton
-    fun createConnection(): Connection {
-        val dbService = DBService()
-        dbService.migrate()
-        return dbService.getConnect()
+    override fun configure() {
+        super.configure()
+        bind(DBService::class.java).toProvider(DatabaseProvider::class.java).`in`(Singleton::class.java)
     }
 
     @Inject
     @Provides
     @Singleton
-    fun createUserDao(connection: Connection): UserDAO = UserDAO(connection)
+    fun createUserDao(dbService: DBService): UserDAO = UserDAO(dbService)
 
     @Inject
     @Provides
     @Singleton
-    fun createResourceDao(connection: Connection): ResourceDAO = ResourceDAO(connection)
+    fun createResourceDao(dbService: DBService): ResourceDAO = ResourceDAO(dbService)
 
     @Inject
     @Provides
     @Singleton
-    fun createSessionDao(connection: Connection): SessionDAO = SessionDAO(connection)
+    fun createSessionDao(dbService: DBService): SessionDAO = SessionDAO(dbService)
 }

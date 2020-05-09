@@ -1,12 +1,17 @@
 package xyz.sashenka.modelauthapp.dao
 
+import com.google.inject.Inject
 import xyz.sashenka.modelauthapp.model.domain.User
 import xyz.sashenka.modelauthapp.model.dto.db.DBUser
+import xyz.sashenka.modelauthapp.service.db.DBService
 import xyz.sashenka.modelauthapp.utils.setValues
-import java.sql.Connection
 import java.sql.ResultSet
 
-class UserDAO(private val dbConnection: Connection) {
+class UserDAO(
+    @Inject
+    var dbService: DBService
+) {
+
     private val userByLoginSql: String
         get() = "SELECT * FROM USER WHERE LOGIN=?;"
     private val userByIdSql: String
@@ -20,27 +25,32 @@ class UserDAO(private val dbConnection: Connection) {
     private val salt = "SALT"
 
     fun requestAllUsers(): List<DBUser> {
-        val statement = dbConnection.createStatement()
-        val result: MutableList<DBUser> = mutableListOf()
-        statement.use {
-            val resultSet = statement.executeQuery(allUsersSql)
-            while (resultSet.next()) {
-                result.add(createUser(resultSet))
+        dbService.provideConnect().use { connect ->
+            val statement = connect.createStatement()
+            val result: MutableList<DBUser> = mutableListOf()
+            statement.use {
+                val resultSet = statement.executeQuery(allUsersSql)
+                while (resultSet.next()) {
+                    result.add(createUser(resultSet))
+                }
             }
+            return result.toList()
         }
-        return result.toList()
     }
 
     private fun requestUser(sql: String, parameter: Any): DBUser? {
-        val statement = dbConnection.prepareStatement(sql)
-        return statement.use {
-            it.setValues(parameter)
-            return@use it.executeQuery().use { value ->
-                return@use when {
-                    value.next() -> createUser(value)
-                    else -> null
+        dbService.provideConnect().use { connect ->
+            val statement = connect.prepareStatement(sql)
+            return statement.use {
+                it.setValues(parameter)
+                return@use it.executeQuery().use { value ->
+                    return@use when {
+                        value.next() -> createUser(value)
+                        else -> null
+                    }
                 }
             }
+            return null
         }
     }
 

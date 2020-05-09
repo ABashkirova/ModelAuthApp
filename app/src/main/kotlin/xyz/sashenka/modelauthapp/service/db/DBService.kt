@@ -1,4 +1,4 @@
-package xyz.sashenka.modelauthapp.service
+package xyz.sashenka.modelauthapp.service.db
 
 import com.mchange.v2.c3p0.ComboPooledDataSource
 import org.apache.logging.log4j.kotlin.KotlinLogger
@@ -58,18 +58,7 @@ class DBService {
         cpds.maxIdleTime = 30
     }
 
-    fun connect() {
-        if (connection == null) {
-            logger.info { "Инициализируем подключение к БД" }
-            try {
-                connection = getConnect()
-            } catch (ex: Exception) {
-                logger.error { ex.stackTrace }
-            }
-        }
-    }
-
-    fun getConnect(): Connection {
+    fun provideConnect(): Connection {
         val connection = cpds.connection
         logger.info(
             "Запрошен коннект у пула: ${connection.metaData}, " +
