@@ -30,7 +30,7 @@ val mockkVersion: String by project
 dependencies {
     // app:
     implementation("com.h2database:h2:$h2databaseVersion")
-    implementation("com.mchange:c3p0:$c3poVersion")
+    implementation("org.hibernate:hibernate-c3p0:$c3poVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
