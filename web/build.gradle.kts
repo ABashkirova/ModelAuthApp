@@ -34,7 +34,6 @@ dependencies {
     compile("javax.servlet:javax.servlet-api:3.1.0")
 
     implementation("com.google.inject.extensions:guice-servlet:4.2.3")
-    implementation("com.google.code.gson:gson:2.8.6")
     compile(project(":app"))
 }
 
