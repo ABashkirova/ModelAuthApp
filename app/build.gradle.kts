@@ -26,12 +26,13 @@ val c3poVersion: String by project
 val kotlinLog4j2Version: String by project
 val log4j2Version: String by project
 val mockkVersion: String by project
-
+val entitymanagerVersion: String by project
 dependencies {
     // app:
     implementation("com.h2database:h2:$h2databaseVersion")
     implementation("org.hibernate:hibernate-c3p0:$c3poVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("org.hibernate:hibernate-entitymanager:$entitymanagerVersion")
     // test:
     testRuntimeOnly("org.spekframework.spek2:spek-runner-junit5:$spekVersion")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:$spekVersion")
