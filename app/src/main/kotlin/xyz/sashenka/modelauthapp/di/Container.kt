@@ -7,7 +7,7 @@ import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.dao.ResourceDAO
 import xyz.sashenka.modelauthapp.dao.SessionDAO
-import xyz.sashenka.modelauthapp.dao.UserDAO
+import xyz.sashenka.modelauthapp.dao.UserDaoImpl
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 import xyz.sashenka.modelauthapp.repository.UserRepository
@@ -55,7 +55,7 @@ class Container {
 
     fun getSessionRepository(): SessionRepository? = getSessionDAO()?.let { SessionRepository(it) }
 
-    fun getUserDAO(): UserDAO? = injector.getInstance(UserDAO::class.java)
+    fun getUserDAO(): UserDaoImpl? = injector.getInstance(UserDaoImpl::class.java)
 
     fun getResourceDao(): ResourceDAO? = injector.getInstance(ResourceDAO::class.java)
 

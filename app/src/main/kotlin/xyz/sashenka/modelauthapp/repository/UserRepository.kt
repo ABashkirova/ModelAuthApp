@@ -1,7 +1,7 @@
 package xyz.sashenka.modelauthapp.repository
 
-import xyz.sashenka.modelauthapp.dao.UserDAO
+import xyz.sashenka.modelauthapp.dao.UserDaoImpl
 
-class UserRepository(private val dao: UserDAO) {
-    fun getUserByLogin(login: String) = dao.requestUserByLogin(login)
+class UserRepository(private val daoImpl: UserDaoImpl) {
+    fun getUserByLogin(login: String) = daoImpl.requestUserByLogin(login)
 }
