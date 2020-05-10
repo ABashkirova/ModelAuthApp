@@ -9,15 +9,19 @@ import java.util.*
 
 class DBService {
     private val logger: KotlinLogger = logger()
-    private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:"
-    private val envDBFile: String? = System.getenv("DBFILE") ?: "./AAA"
+    private val envDriver: String = System.getenv("DBDRIVER") ?: "org.h2.Driver"
+    private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:./AAA"
     private val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
     private val envPass: String = System.getenv("DBPASS") ?: ""
     private val migrationLocation = "db/migration"
     private lateinit var cpds: ComboPooledDataSource
 
     init {
-        logger.info { "Инициализируем DBService: url(${envUrl + envDBFile}), login($envLogin)" }
+        logger.info {
+            "Переменные окружения: " +
+                "[${System.getenv("DBDRIVER")}, ${System.getenv("DBURL")}]"
+        }
+        logger.info { "Инициализируем DBService: url(${envUrl}), login($envLogin)" }
         initPoolDataSource()
     }
 
@@ -26,7 +30,7 @@ class DBService {
         try {
             Flyway
                 .configure()
-                .dataSource(envUrl + envDBFile, envLogin, envPass)
+                .dataSource(envUrl , envLogin, envPass)
                 .locations(migrationLocation)
                 .load()
                 .migrate()
@@ -37,8 +41,8 @@ class DBService {
 
     private fun initPoolDataSource() {
         cpds = ComboPooledDataSource()
-        cpds.driverClass = "org.h2.Driver"
-        cpds.jdbcUrl = envUrl + envDBFile
+        cpds.driverClass = envDriver
+        cpds.jdbcUrl = envUrl
         cpds.user = envLogin
         cpds.password = envPass
 
