@@ -16,6 +16,7 @@ allprojects {
 plugins {
     base
     kotlin("jvm") version "1.3.72" apply false
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.3.72"
 }
 
 subprojects {
@@ -33,7 +34,7 @@ subprojects {
     val kotlinLog4j2Version: String by project
     val log4j2Version: String by project
     val guiceVersion: String by project
-
+    val hibernateVersion: String by project
     dependencies {
         // all
         "implementation"("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
@@ -43,6 +44,12 @@ subprojects {
         "implementation"("com.google.inject:guice:$guiceVersion")
         "implementation"("com.google.inject.extensions:guice-throwingproviders:$guiceVersion")
         "implementation"("com.google.inject.extensions:guice-persist:$guiceVersion")
+
+        "implementation"("com.google.code.gson:gson:2.8.6")
+
+        "implementation"("org.hibernate:hibernate-entitymanager:$hibernateVersion")
+        "implementation"("org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final")
+        "implementation"("org.hibernate:hibernate-core:$hibernateVersion")
 
         "implementation"("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
         "implementation"("org.apache.logging.log4j:log4j-api:$log4j2Version")
