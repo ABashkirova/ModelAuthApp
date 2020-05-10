@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import xyz.sashenka.modelauthapp.dao.UserDAO
+import xyz.sashenka.modelauthapp.dao.UserDaoImpl
 import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
@@ -19,7 +19,7 @@ class UserServlet : HttpServlet() {
     lateinit var gson: Gson
 
     @Inject
-    lateinit var userDAO: UserDAO
+    lateinit var userDaoImpl: UserDaoImpl
 
     @InjectLogger
     lateinit var logger: KotlinLogger
@@ -53,7 +53,7 @@ class UserServlet : HttpServlet() {
     }
 
     private fun writeUserResponse(userId: Int, response: HttpServletResponse) {
-        val user = userDAO.requestUserById(userId)
+        val user = userDaoImpl.requestUserById(userId)
         if (user == null) {
             logger.error("User not found with id $userId")
             HandleError().sendErrorNotFound(response)
@@ -63,7 +63,7 @@ class UserServlet : HttpServlet() {
     }
 
     private fun allUsersToJson(): String {
-        return gson.toJson(userDAO.requestAllUsers())
+        return gson.toJson(userDaoImpl.requestAllUsers())
     }
 
     private fun useToJson(user: DBUser): String {
