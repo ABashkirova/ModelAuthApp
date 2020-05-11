@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import xyz.sashenka.modelauthapp.dao.SessionDAO
+import xyz.sashenka.modelauthapp.dao.SessionDao
 import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
@@ -19,7 +19,7 @@ class ActivityServlet : HttpServlet() {
     lateinit var gson: Gson
 
     @Inject
-    lateinit var sessionDAO: SessionDAO
+    lateinit var sessionDao: SessionDao
 
     @InjectLogger
     lateinit var logger: KotlinLogger
@@ -55,7 +55,7 @@ class ActivityServlet : HttpServlet() {
     }
 
     private fun writeActivityResponseWithAccessId(accessId: Int, response: HttpServletResponse) {
-        val activitySessions = sessionDAO.requestByAccessId(accessId)
+        val activitySessions = sessionDao.findByAccessId(accessId)
         response.writer.write(sessionsToJson(activitySessions))
     }
 
@@ -68,7 +68,7 @@ class ActivityServlet : HttpServlet() {
     }
 
     private fun writeActivityResponse(activityId: Int, response: HttpServletResponse) {
-        val activitySession = sessionDAO.requestById(activityId)
+        val activitySession = sessionDao.findById(activityId)
         if (activitySession == null) {
             logger.error("Activity not found with id $activityId")
             HandleError().sendErrorNotFound(response)
@@ -86,6 +86,6 @@ class ActivityServlet : HttpServlet() {
     }
 
     private fun allSessionToJson(): String {
-        return gson.toJson(sessionDAO.requestAll())
+        return gson.toJson(sessionDao.getAll())
     }
 }
