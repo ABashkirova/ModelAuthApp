@@ -20,10 +20,9 @@ plugins {
 }
 
 subprojects {
-
     apply(plugin = "java")
     apply(plugin = "application")
-
+    apply(plugin = "kotlin-jpa")
     repositories {
         maven {
             url = uri("https://kotlin.bintray.com/kotlinx")
@@ -35,6 +34,7 @@ subprojects {
     val log4j2Version: String by project
     val guiceVersion: String by project
     val hibernateVersion: String by project
+
     dependencies {
         // all
         "implementation"("org.jetbrains.kotlinx:kotlinx-cli:$kotlinxCliVersion")
