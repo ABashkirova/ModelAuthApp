@@ -48,7 +48,7 @@ subprojects {
         "implementation"("com.google.code.gson:gson:2.8.6")
 
         "implementation"("org.hibernate:hibernate-entitymanager:$hibernateVersion")
-        "implementation"("org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final")
+        "implementation"("org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.2.Final")
         "implementation"("org.hibernate:hibernate-core:$hibernateVersion")
 
         "implementation"("org.apache.logging.log4j:log4j-api-kotlin:$kotlinLog4j2Version")
