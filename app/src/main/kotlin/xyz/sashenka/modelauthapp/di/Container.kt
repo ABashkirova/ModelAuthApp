@@ -5,9 +5,9 @@ import com.google.inject.Injector
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
-import xyz.sashenka.modelauthapp.dao.ResourceDAO
-import xyz.sashenka.modelauthapp.dao.SessionDAO
-import xyz.sashenka.modelauthapp.dao.UserDaoImpl
+import xyz.sashenka.modelauthapp.dao.UserDao
+import xyz.sashenka.modelauthapp.dao.SessionDao
+import xyz.sashenka.modelauthapp.dao.ResourceDao
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 import xyz.sashenka.modelauthapp.repository.UserRepository
@@ -16,21 +16,12 @@ import xyz.sashenka.modelauthapp.service.AuthorizationService
 import xyz.sashenka.modelauthapp.service.HelpService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 import xyz.sashenka.modelauthapp.service.AccountingService
-import xyz.sashenka.modelauthapp.service.DBService
 
 class Container {
     private val injector: Injector = Guice.createInjector(DatabaseModule())
-    private lateinit var dbService: DBService
     private lateinit var validatingService: ValidatingService
 
     fun getLogger(ofClass: Class<*>): KotlinLogger = loggerOf(ofClass)
-
-    fun getDBService(): DBService {
-        if (!::dbService.isInitialized) {
-            dbService = injector.getInstance(DBService::class.java)
-        }
-        return dbService
-    }
 
     fun getArgHandler(args: Array<String>): ArgHandler = ArgHandler(args)
 
@@ -49,15 +40,15 @@ class Container {
 
     fun getAccountingService(): AccountingService? = getSessionRepository()?.let { AccountingService(it) }
 
-    fun getUserRepository(): UserRepository? = getUserDAO()?.let { UserRepository(it) }
+    fun getUserRepository(): UserRepository? = getUserDao()?.let { UserRepository(it) }
 
     fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepository(it) }
 
-    fun getSessionRepository(): SessionRepository? = getSessionDAO()?.let { SessionRepository(it) }
+    fun getSessionRepository(): SessionRepository? = getSessionDao()?.let { SessionRepository(it) }
 
-    fun getUserDAO(): UserDaoImpl? = injector.getInstance(UserDaoImpl::class.java)
+    fun getUserDao(): UserDao? = injector.getInstance(UserDao::class.java)
 
-    fun getResourceDao(): ResourceDAO? = injector.getInstance(ResourceDAO::class.java)
+    fun getResourceDao(): ResourceDao? = injector.getInstance(ResourceDao::class.java)
 
-    fun getSessionDAO(): SessionDAO? = injector.getInstance(SessionDAO::class.java)
+    fun getSessionDao(): SessionDao? = injector.getInstance(SessionDao::class.java)
 }
