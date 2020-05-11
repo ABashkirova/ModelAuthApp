@@ -9,6 +9,6 @@ import javax.servlet.annotation.WebListener
 @WebListener
 class GuiceServletConfig : GuiceServletContextListener() {
     override fun getInjector(): Injector {
-        return Guice.createInjector(GuiceServletModule(), DatabaseModule())
+        return Guice.createInjector(DatabaseModule(), GuiceServletModule())
     }
 }
