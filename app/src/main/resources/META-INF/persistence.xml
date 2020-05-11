@@ -9,14 +9,26 @@
         <class>xyz.sashenka.modelauthapp.model.dto.db.DBAccess</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./AAA" />
+            <!-- Configuring JDBC properties -->
+            <property name="javax.persistence.jdbc.driver"  value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:/Users/bshkrva/Projects/Courses/Kotlin/model-auth-app/app/AAA" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="show_sql" value="true" />
             <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
             <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
+
+            <!-- Configuring Connection Pool -->
+            <property name="hibernate.connection.provider_class"
+                      value="org.hibernate.connection.C3P0ConnectionProvider" />
+            <property name="hibernate.c3p0.max_size" value="60" />
+            <property name="hibernate.c3p0.min_size" value="50" />
+            <property name="hibernate.c3p0.acquire_increment" value="10" />
+            <property name="hibernate.c3p0.idle_test_period" value="300" />
+            <property name="hibernate.c3p0.max_statements" value="180" />
+            <property name="hibernate.c3p0.timeout" value="100" />
         </properties>
     </persistence-unit>
 </persistence>
