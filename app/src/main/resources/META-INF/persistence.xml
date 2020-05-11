@@ -3,14 +3,17 @@
 
     <persistence-unit name="AaaPersistenceUnit">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
         <class>xyz.sashenka.modelauthapp.model.dto.db.DBUser</class>
+        <class>xyz.sashenka.modelauthapp.model.dto.db.DBUserSession</class>
+        <class>xyz.sashenka.modelauthapp.model.dto.db.DBAccess</class>
+
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./AAA" />
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <property name="show_sql" value="true" />
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
