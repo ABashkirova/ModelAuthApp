@@ -6,28 +6,23 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
+import javax.persistence.GeneratedValue
 
 @Entity
 @Table(name = "USER_SESSION")
-data class DBUserSession(
-    @Id
-    @Column(name = "ID")
-    @Expose
-    val id: Int,
+data class DBUserSession @JvmOverloads constructor(
+    @Expose @Id @GeneratedValue @Column(name = "ID")
+    val id: Int = 0,
 
-    @Column(name = "ACCESS_ID")
-    @Expose
+    @Expose @Column(name = "ACCESS_ID")
     val accessId: Int,
 
-    @Column(name = "START_DATE")
-    @Expose
+    @Expose @Column(name = "START_DATE")
     val dateStart: Date,
 
-    @Column(name = "END_DATE")
-    @Expose
+    @Expose @Column(name = "END_DATE")
     val dateEnd: Date,
 
-    @Column(name = "VOLUME")
-    @Expose
+    @Expose @Column(name = "VOLUME")
     val volume: Int
 )

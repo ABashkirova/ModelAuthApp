@@ -1,19 +1,20 @@
 package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.persistence.GeneratedValue
 import xyz.sashenka.modelauthapp.model.domain.User
-import javax.persistence.*
 
 @Entity
 @Table(name = "USER")
-data class DBUser(
-    @Expose
-    @Id
-    @Column(name = "ID")
-    val id: Int,
+data class DBUser @JvmOverloads constructor(
+    @Expose @Id @GeneratedValue @Column(name = "ID")
+    val id: Int = 0,
 
-    @Expose
-    @Column(name = "LOGIN")
+    @Expose @Column(name = "LOGIN")
     val login: String,
 
     @Column(name = "HASH_PASSWORD")

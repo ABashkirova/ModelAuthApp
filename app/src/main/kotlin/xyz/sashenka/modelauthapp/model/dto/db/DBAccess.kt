@@ -1,26 +1,24 @@
 package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
-import javax.persistence.*
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Table
+import javax.persistence.GeneratedValue
 
 @Entity
 @Table(name = "ACCESS")
-data class DBAccess(
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
-    @Expose
-    val id: Int,
+data class DBAccess @JvmOverloads constructor(
+    @Expose @Id @GeneratedValue @Column(name = "ID")
+    val id: Int = 0,
 
-    @Column(name = "USER_ID")
-    @Expose
+    @Expose @Column(name = "USER_ID")
     val userId: Int,
 
-    @Column(name = "RESOURCE")
-    @Expose
+    @Expose @Column(name = "RESOURCE")
     val resource: String,
 
-    @Column(name = "ROLE")
-    @Expose
+    @Expose @Column(name = "ROLE")
     val role: String
 )
