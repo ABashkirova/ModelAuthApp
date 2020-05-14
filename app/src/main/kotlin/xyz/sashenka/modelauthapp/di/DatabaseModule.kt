@@ -8,7 +8,7 @@ import java.util.HashMap
 
 class DatabaseModule : AbstractModule() {
     val persistenceUnitName = "AaaPersistenceUnit"
-    private val envDriver: String = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.postgresql.Driver" // "org.h2.Driver"
+    private val envDriver: String = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
     private val envUrl: String = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:file:./AAA"
     private val envLogin: String = System.getenv("JDBC_DATABASE_USERNAME") ?: "sa"
     private val envPass: String = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
