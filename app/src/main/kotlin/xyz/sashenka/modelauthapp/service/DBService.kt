@@ -21,7 +21,7 @@ class DBService {
             "Переменные окружения: " +
                 "[${System.getenv("DBDRIVER")}, ${System.getenv("DBURL")}]"
         }
-        logger.info { "Инициализируем DBService: url(${envUrl}), login($envLogin)" }
+        logger.info { "Инициализируем DBService: url($envUrl), login($envLogin)" }
         initPoolDataSource()
     }
 
@@ -30,7 +30,7 @@ class DBService {
         try {
             Flyway
                 .configure()
-                .dataSource(envUrl , envLogin, envPass)
+                .dataSource(envUrl, envLogin, envPass)
                 .locations(migrationLocation)
                 .load()
                 .migrate()

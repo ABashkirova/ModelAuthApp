@@ -35,4 +35,3 @@ class UserDaoImpl @Inject constructor(
         return entityManager.get().createQuery(createQuery).singleResult
     }
 }
-

@@ -26,7 +26,7 @@ class SessionDaoImpl @Inject constructor(
     }
 
     override fun getAll(): List<DBUserSession> {
-        val criteriaQuery= entityManager.get().criteriaBuilder.createQuery(DBUserSession::class.java)
+        val criteriaQuery = entityManager.get().criteriaBuilder.createQuery(DBUserSession::class.java)
         val rootEntry: Root<DBUserSession> = criteriaQuery.from(DBUserSession::class.java)
         val all: CriteriaQuery<DBUserSession> = criteriaQuery.select(rootEntry)
         val allQuery: TypedQuery<DBUserSession> = entityManager.get().createQuery(all)
