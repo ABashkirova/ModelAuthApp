@@ -6,12 +6,13 @@ import com.google.inject.persist.jpa.JpaPersistModule
 import xyz.sashenka.modelauthapp.dao.*
 import java.util.HashMap
 
+
 class DatabaseModule : AbstractModule() {
     val persistenceUnitName = "AaaPersistenceUnit"
-    private val envDriver: String = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
-    private val envUrl: String = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:file:./AAA"
-    private val envLogin: String = System.getenv("JDBC_DATABASE_USERNAME") ?: "sa"
-    private val envPass: String = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
+    private val envDriver: String = System.getenv("DBDRIVER") ?: "org.h2.Driver"
+    private val envUrl: String = System.getenv("DBURL") ?: "jdbc:h2:file:./AAA"
+    private val envLogin: String = System.getenv("DBLOGIN") ?: "sa"
+    private val envPass: String = System.getenv("DBPASS") ?: ""
 
     override fun configure() {
         super.configure()
@@ -20,9 +21,7 @@ class DatabaseModule : AbstractModule() {
         jpaModule.properties(getDatabaseEnvironments())
         install(jpaModule)
          */
-        val jpaPersistModule = JpaPersistModule("AaaPersistenceUnit")
-        jpaPersistModule.properties(getDatabaseEnvironments())
-        install(jpaPersistModule)
+        install(JpaPersistModule("AaaPersistenceUnit"))
         bind(PersistenceInitializer::class.java).asEagerSingleton()
         bind(UserDao::class.java).to(UserDaoImpl::class.java).`in`(Singleton::class.java)
         bind(ResourceDao::class.java).to(ResourceDaoImpl::class.java).`in`(Singleton::class.java)
