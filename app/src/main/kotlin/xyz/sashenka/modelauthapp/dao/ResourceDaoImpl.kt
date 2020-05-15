@@ -3,6 +3,7 @@ package xyz.sashenka.modelauthapp.dao
 import com.google.inject.Inject
 import com.google.inject.Provider
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import javax.persistence.EntityManager
 import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaQuery
@@ -13,14 +14,14 @@ class ResourceDaoImpl @Inject constructor(
 ) : ResourceDao {
     private val selectUserResourcesByLoginSql: String
         get() = """
-                SELECT ACCESS.USER_ID, ACCESS.RESOURCE, ACCESS.ROLE, ACCESS.ID
-                FROM ACCESS
-                LEFT JOIN USER 
-                    ON ACCESS.USER_ID=USER.ID  
+                SELECT a
+                FROM DBAccess a
+                LEFT OUTER JOIN DBUser u
+                    ON a.userId=u.id 
                 WHERE 
-                    USER.LOGIN=?1 
-                AND ACCESS.RESOURCE=SUBSTRING(?2,1,LENGTH(ACCESS.RESOURCE)) 
-                AND ACCESS.ROLE=?3
+                    u.login=?1 
+                AND a.resource=SUBSTRING(?2,1,LENGTH(a.resource)) 
+                AND a.role=?3
                 """
 
     override fun save(user: DBAccess) {
