@@ -2,11 +2,7 @@ package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
 import java.util.*
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.persistence.GeneratedValue
+import javax.persistence.*
 
 @Entity
 @Table(name = "USER_SESSION")
@@ -24,5 +20,8 @@ data class DBUserSession @JvmOverloads constructor(
     val dateEnd: Date,
 
     @Expose @Column(name = "VOLUME")
-    val volume: Int
+    val volume: Int,
+
+    @Version
+    val version: Long
 )
