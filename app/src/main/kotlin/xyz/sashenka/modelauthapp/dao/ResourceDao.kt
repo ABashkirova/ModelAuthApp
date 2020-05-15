@@ -1,4 +1,3 @@
-// ktlint-disable filename
 package xyz.sashenka.modelauthapp.dao
 
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
