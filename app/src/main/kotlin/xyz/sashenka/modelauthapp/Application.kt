@@ -15,6 +15,7 @@ import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
+import xyz.sashenka.modelauthapp.service.DBService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 
 class Application(private val args: Array<String>, private val container: Container) {
@@ -25,6 +26,8 @@ class Application(private val args: Array<String>, private val container: Contai
     private val nonCorrectActivity = "Неверная активность: "
 
     fun run(): ExitCode {
+
+        DBService().migrate()
         val argHandler = container.getArgHandler(args)
 
         val authenticationData = argHandler.getAuthenticationData()
