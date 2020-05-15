@@ -1,12 +1,8 @@
 package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
-import javax.persistence.GeneratedValue
 import xyz.sashenka.modelauthapp.model.domain.User
+import javax.persistence.*
 
 @Entity
 @Table(name = "USER")
@@ -21,7 +17,10 @@ data class DBUser @JvmOverloads constructor(
     val hash: String,
 
     @Column(name = "SALT")
-    val salt: String
+    val salt: String,
+
+    @Version
+    val version: Long
 ) {
     fun toPlain(): User {
         return User(login, hash, salt)
