@@ -1,6 +1,6 @@
 # [ModelAuthApp](https://abashkirova.github.io/model-auth-app/)
 [![Build Status](https://travis-ci.org/ABashkirova/model-auth-app.svg?branch=master)](https://travis-ci.org/ABashkirova/model-auth-app) 
-![Heroku](https://heroku-badge.herokuapp.com/?app=model-auth-app)
+[![Heroku App Status](http://heroku-shields.herokuapp.com/model-auth-app)](https://model-auth-app.herokuapp.com)
 [![Website abashkirova.github.io/model-auth-app/](https://img.shields.io/website-up-down-green-red/https/abashkirova.github.io/model-auth-app/.svg)](https://abashkirova.github.io/model-auth-app/)
 [![GitHub release](https://img.shields.io/github/release/ABashkirova/model-auth-app.svg)](https://GitHub.com/ABashkirova/model-auth-app/releases/)
 
