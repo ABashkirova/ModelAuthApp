@@ -3,8 +3,8 @@ package xyz.sashenka.modelauthapp.dao
 import com.google.inject.Inject
 import com.google.inject.Provider
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
-import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import javax.persistence.EntityManager
+import javax.persistence.NoResultException
 import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
@@ -51,11 +51,14 @@ class ResourceDaoImpl @Inject constructor(
     override fun find(login: String, resource: String, role: String): DBAccess? {
         val query: TypedQuery<DBAccess> =
             entityManager.get().createQuery(selectUserResourcesByLoginSql, DBAccess::class.java)
-
-        return query
-            .setParameter(1, login)
-            .setParameter(2, resource)
-            .setParameter(3, role)
-            .singleResult
+        return try {
+            query
+                .setParameter(1, login)
+                .setParameter(2, resource)
+                .setParameter(3, role)
+                .singleResult
+        } catch (e: NoResultException) {
+            null
+        }
     }
 }

@@ -8,13 +8,10 @@ import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 class ResourceRepository(@Inject private val dao: ResourceDao) {
 
     fun getResourcesByUserLogin(usersResource: UsersResources): DBAccess? {
-        val access = dao.find(
+        return dao.find(
             usersResource.login,
             usersResource.path.plus("."),
             usersResource.role.name
         )
-
-        return if (access == null) null
-        else DBAccess(access.id, access.userId, access.resource, access.role)
     }
 }

@@ -6,7 +6,6 @@ import com.google.inject.persist.jpa.JpaPersistModule
 import xyz.sashenka.modelauthapp.dao.*
 import java.util.HashMap
 
-
 class DatabaseModule : AbstractModule() {
     val persistenceUnitName = "AaaPersistenceUnit"
     private val envDriver: String = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
@@ -17,7 +16,7 @@ class DatabaseModule : AbstractModule() {
     override fun configure() {
         super.configure()
 
-         val jpaModule = JpaPersistModule(persistenceUnitName)
+        val jpaModule = JpaPersistModule(persistenceUnitName)
         jpaModule.properties(getDatabaseEnvironments())
         install(jpaModule)
 

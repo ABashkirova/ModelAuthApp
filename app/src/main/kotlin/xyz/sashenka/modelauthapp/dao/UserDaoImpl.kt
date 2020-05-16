@@ -4,6 +4,7 @@ import com.google.inject.Inject
 import com.google.inject.Provider
 import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import javax.persistence.EntityManager
+import javax.persistence.NoResultException
 import javax.persistence.TypedQuery
 import javax.persistence.criteria.CriteriaQuery
 import javax.persistence.criteria.Root
@@ -32,6 +33,10 @@ class UserDaoImpl @Inject constructor(
             entityManager.get().criteriaBuilder.createQuery(DBUser::class.java)
         val root: Root<DBUser> = createQuery.from(DBUser::class.java)
         createQuery.where(root.get<Any>("login").`in`(login))
-        return entityManager.get().createQuery(createQuery).singleResult
+        return try {
+            entityManager.get().createQuery(createQuery).singleResult
+        } catch (e: NoResultException) {
+            null
+        }
     }
 }
