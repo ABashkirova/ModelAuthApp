@@ -1,6 +1,6 @@
-create table user
+create table "user"
 (
-    id            int primary key,
+    id            int not null primary key,
     login         varchar(10) unique,
     hash_password varchar(255),
     salt          varchar(255)
@@ -8,16 +8,16 @@ create table user
 
 create table access
 (
-    id       int primary key,
+    id       int not null primary key,
     user_id  int,
     resource varchar(255),
     role     varchar(255),
-    foreign key (user_id) references user (id)
+    foreign key (user_id) references "user" (id)
 );
 
 create table user_session
 (
-    id         int primary key,
+    id         int not null primary key,
     start_date date,
     end_date   date,
     volume     int,
@@ -25,4 +25,4 @@ create table user_session
     foreign key (access_id) references access (id)
 );
 
-create index user_resource_role_index on access (resource, role);
+create index USER_RESOURCE_RESOURCE_ROLE_index on access (resource, role);
