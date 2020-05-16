@@ -13,6 +13,7 @@ class DatabaseModule : AbstractModule() {
     private var envUrl: String = ""
     private var envLogin: String = ""
     private var envPass: String = ""
+    private var hibernateDialect = ""
     private val migrationLocation = "db/migration"
 
     override fun configure() {
@@ -34,6 +35,7 @@ class DatabaseModule : AbstractModule() {
         envConfig["javax.persistence.jdbc.user"] = envLogin
         envConfig["javax.persistence.jdbc.password"] = envPass
         envConfig["javax.persistence.jdbc.driver"] = envDriver
+        envConfig["hibernate.dialect"] = hibernateDialect
         return envConfig
     }
 
@@ -45,12 +47,14 @@ class DatabaseModule : AbstractModule() {
             envLogin = "sa"
             envPass = ""
             envDriver = "org.h2.Driver"
+            hibernateDialect = "org.hibernate.dialect.H2Dialect"
         } else {
             print("HELLO FROM SET ENV $url")
             envUrl = System.getenv("JDBC_DATABASE_URL")
             envLogin = System.getenv("JDBC_DATABASE_USERNAME")
             envPass = System.getenv("JDBC_DATABASE_PASSWORD")
             envDriver = "org.postgresql.Driver"
+            hibernateDialect = "org.hibernate.dialect.PostgreSQLDialect"
         }
     }
 
