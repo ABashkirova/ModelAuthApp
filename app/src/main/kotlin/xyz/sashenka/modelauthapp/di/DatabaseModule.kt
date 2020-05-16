@@ -3,30 +3,30 @@ package xyz.sashenka.modelauthapp.di
 import com.google.inject.AbstractModule
 import com.google.inject.Singleton
 import com.google.inject.persist.jpa.JpaPersistModule
+import org.flywaydb.core.Flyway
 import xyz.sashenka.modelauthapp.dao.*
-import xyz.sashenka.modelauthapp.service.DBService
-import java.util.HashMap
+import java.net.URI
+import java.util.*
 
 class DatabaseModule : AbstractModule() {
-    val persistenceUnitName = "AaaPersistenceUnit"
-    private val envDriver: String = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
-    private val envUrl: String = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:file:./AAA"
-    private val envLogin: String = System.getenv("JDBC_DATABASE_USERNAME") ?: "sa"
-    private val envPass: String = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
+    private val persistenceUnitName = "AaaPersistenceUnit"
+    private var envDriver: String = ""
+    private var envUrl: String = ""
+    private var envLogin: String = ""
+    private var envPass: String = ""
+    private val migrationLocation = "db/migration"
 
     override fun configure() {
         super.configure()
-
+        setEnv()
         val jpaModule = JpaPersistModule(persistenceUnitName)
         jpaModule.properties(getDatabaseEnvironments())
         install(jpaModule)
-
-//        install(JpaPersistModule("AaaPersistenceUnit"))
         bind(PersistenceInitializer::class.java).asEagerSingleton()
         bind(UserDao::class.java).to(UserDaoImpl::class.java).`in`(Singleton::class.java)
         bind(ResourceDao::class.java).to(ResourceDaoImpl::class.java).`in`(Singleton::class.java)
         bind(SessionDao::class.java).to(SessionDaoImpl::class.java).`in`(Singleton::class.java)
-        DBService().migrate()
+        migrate()
     }
 
     private fun getDatabaseEnvironments(): MutableMap<String, Any> {
@@ -36,5 +36,30 @@ class DatabaseModule : AbstractModule() {
         envConfig["javax.persistence.jdbc.password"] = envPass
         envConfig["javax.persistence.jdbc.driver"] = envDriver
         return envConfig
+    }
+
+    private fun setEnv() {
+        val url = System.getenv("DATABASE_URL")
+        if (url == null || url == "") {
+            envUrl = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:file:./AAA"
+            envLogin = System.getenv("JDBC_DATABASE_USERNAME") ?: "sa"
+            envPass = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
+            envDriver = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
+        } else {
+            val dbUri = URI(url)
+            envLogin = dbUri.userInfo.split(":")[0]
+            envPass = dbUri.userInfo.split(":")[1]
+            envUrl = "jdbc:postgresql://" + dbUri.host + ':' + dbUri.port + dbUri.path
+            envDriver = "org.postgresql.Driver"
+        }
+    }
+
+    private fun migrate() {
+        Flyway
+            .configure()
+            .dataSource(envUrl, envLogin, envPass)
+            .locations(migrationLocation)
+            .load()
+            .migrate()
     }
 }

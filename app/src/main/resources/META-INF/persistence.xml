@@ -10,7 +10,6 @@
 
         <properties>
             <!-- Configuring JDBC properties -->
-
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
             <property name="show_sql" value="true" />
             <property name="hibernate.show_sql" value="true" />
