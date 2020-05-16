@@ -5,7 +5,6 @@ dist: trusty
 jdk: oraclejdk8
 env:
   - DBURL=jdbc:h2:./AAA DBLOGIN=sa DBPASS=
-if: type = pull_request
 script:
   - ./gradlew build
 deploy:
