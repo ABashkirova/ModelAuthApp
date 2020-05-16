@@ -5,7 +5,7 @@ import xyz.sashenka.modelauthapp.model.domain.User
 import javax.persistence.*
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 data class DBUser @JvmOverloads constructor(
     @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id")
     val id: Int = 0,

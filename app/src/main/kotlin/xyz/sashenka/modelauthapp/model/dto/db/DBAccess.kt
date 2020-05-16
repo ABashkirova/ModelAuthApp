@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import javax.persistence.*
 
 @Entity
-@Table(name = "access")
+@Table(name = "accesses")
 data class DBAccess @JvmOverloads constructor(
     @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id")
     val id: Int = 0,
