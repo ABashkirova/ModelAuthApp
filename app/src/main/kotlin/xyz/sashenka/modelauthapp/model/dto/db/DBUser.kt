@@ -7,7 +7,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "USER")
 data class DBUser @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue @Column(name = "ID")
+    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
     val id: Int = 0,
 
     @Expose @Column(name = "LOGIN")
@@ -20,7 +20,7 @@ data class DBUser @JvmOverloads constructor(
     val salt: String,
 
     @Version
-    val version: Long
+    val version: Long = 1
 ) {
     fun toPlain(): User {
         return User(login, hash, salt)

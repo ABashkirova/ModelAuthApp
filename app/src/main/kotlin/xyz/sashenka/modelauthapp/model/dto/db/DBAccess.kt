@@ -6,7 +6,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "ACCESS")
 data class DBAccess @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue @Column(name = "ID")
+    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
     val id: Int = 0,
 
     @Expose @Column(name = "USER_ID")
@@ -19,5 +19,5 @@ data class DBAccess @JvmOverloads constructor(
     val role: String,
 
     @Version
-    val version: Long
+    val version: Long = 1
 )

@@ -7,7 +7,7 @@ import javax.persistence.*
 @Entity
 @Table(name = "USER_SESSION")
 data class DBUserSession @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue @Column(name = "ID")
+    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
     val id: Int = 0,
 
     @Expose @Column(name = "ACCESS_ID")
@@ -23,5 +23,5 @@ data class DBUserSession @JvmOverloads constructor(
     val volume: Int,
 
     @Version
-    val version: Long
+    val version: Long = 1
 )
