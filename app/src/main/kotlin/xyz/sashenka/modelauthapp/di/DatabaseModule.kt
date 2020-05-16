@@ -5,7 +5,6 @@ import com.google.inject.Singleton
 import com.google.inject.persist.jpa.JpaPersistModule
 import org.flywaydb.core.Flyway
 import xyz.sashenka.modelauthapp.dao.*
-import java.net.URI
 import java.util.*
 
 class DatabaseModule : AbstractModule() {
