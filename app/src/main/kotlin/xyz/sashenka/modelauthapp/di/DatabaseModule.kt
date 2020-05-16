@@ -40,16 +40,15 @@ class DatabaseModule : AbstractModule() {
 
     private fun setEnv() {
         val url = System.getenv("DATABASE_URL")
-        if (url == null || url == "") {
-            envUrl = System.getenv("JDBC_DATABASE_URL") ?: "jdbc:h2:file:./AAA"
-            envLogin = System.getenv("JDBC_DATABASE_USERNAME") ?: "sa"
-            envPass = System.getenv("JDBC_DATABASE_PASSWORD") ?: ""
-            envDriver = System.getenv("JDBC_DATABASE_DRIVER") ?: "org.h2.Driver"
+        if (url.isNullOrEmpty()) {
+            envUrl = "jdbc:h2:file:./AAA"
+            envLogin = "sa"
+            envPass = ""
+            envDriver = "org.h2.Driver"
         } else {
-            val dbUri = URI(url)
-            envLogin = dbUri.userInfo.split(":")[0]
-            envPass = dbUri.userInfo.split(":")[1]
-            envUrl = "jdbc:postgresql://" + dbUri.host + ':' + dbUri.port + dbUri.path
+            envUrl = System.getenv("JDBC_DATABASE_URL")
+            envLogin = System.getenv("JDBC_DATABASE_USERNAME")
+            envPass = System.getenv("JDBC_DATABASE_PASSWORD")
             envDriver = "org.postgresql.Driver"
         }
     }
