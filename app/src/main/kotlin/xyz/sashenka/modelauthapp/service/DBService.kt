@@ -22,7 +22,6 @@ class DBService {
                 "[${System.getenv("DBDRIVER")}, ${System.getenv("DBURL")}]"
         }
         logger.info { "Инициализируем DBService: url($envUrl), login($envLogin)" }
-        initPoolDataSource()
     }
 
     fun migrate() {
