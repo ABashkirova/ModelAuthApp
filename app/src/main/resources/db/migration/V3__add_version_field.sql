@@ -1,3 +1,3 @@
-alter table USER add column VERSION int default 1;
-alter table USER_SESSION add column VERSION int default 1;
-alter table ACCESS add column VERSION int default 1;
+alter table user add column version int default 1;
+alter table user_session add column version int default 1;
+alter table access add column version int default 1;

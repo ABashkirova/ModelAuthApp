@@ -1,28 +1,28 @@
-create table USER
+create table user
 (
-    ID            int auto_increment not null primary key,
-    LOGIN         varchar(10) unique,
-    HASH_PASSWORD varchar(255),
-    SALT          varchar(255)
+    id            int auto_increment not null primary key,
+    login         varchar(10) unique,
+    hash_password varchar(255),
+    salt          varchar(255)
 );
 
-create table ACCESS
+create table access
 (
-    ID       int auto_increment not null primary key,
-    USER_ID  int,
-    RESOURCE varchar(255),
-    ROLE     varchar(255),
-    foreign key (USER_ID) references USER (ID)
+    id       int auto_increment not null primary key,
+    user_id  int,
+    resource varchar(255),
+    role     varchar(255),
+    foreign key (user_id) references user (id)
 );
 
-create table USER_SESSION
+create table user_session
 (
-    ID         int auto_increment not null primary key,
-    START_DATE date,
-    END_DATE   date,
-    VOLUME     int,
-    ACCESS_ID  int,
-    foreign key (ACCESS_ID) references ACCESS (ID)
+    id         int auto_increment not null primary key,
+    start_date date,
+    end_date   date,
+    volume     int,
+    access_id  int,
+    foreign key (access_id) references access (id)
 );
 
-create index USER_RESOURCE_RESOURCE_ROLE_index on ACCESS (RESOURCE, ROLE);
+create index user_resource_role_index on access (resource, role);

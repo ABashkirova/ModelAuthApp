@@ -5,18 +5,18 @@ import xyz.sashenka.modelauthapp.model.domain.User
 import javax.persistence.*
 
 @Entity
-@Table(name = "USER")
+@Table(name = "user")
 data class DBUser @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
+    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id")
     val id: Int = 0,
 
-    @Expose @Column(name = "LOGIN")
+    @Expose @Column(name = "login")
     val login: String,
 
-    @Column(name = "HASH_PASSWORD")
+    @Column(name = "hash_password")
     val hash: String,
 
-    @Column(name = "SALT")
+    @Column(name = "salt")
     val salt: String,
 
     @Version

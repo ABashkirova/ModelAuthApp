@@ -5,21 +5,21 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@Table(name = "USER_SESSION")
+@Table(name = "user_session")
 data class DBUserSession @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "ID")
+    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id")
     val id: Int = 0,
 
-    @Expose @Column(name = "ACCESS_ID")
+    @Expose @Column(name = "access_id")
     val accessId: Int,
 
-    @Expose @Column(name = "START_DATE")
+    @Expose @Column(name = "start_date")
     val dateStart: Date,
 
-    @Expose @Column(name = "END_DATE")
+    @Expose @Column(name = "end_date")
     val dateEnd: Date,
 
-    @Expose @Column(name = "VOLUME")
+    @Expose @Column(name = "volume")
     val volume: Int,
 
     @Version

@@ -1,11 +1,11 @@
-insert into USER (ID, LOGIN, HASH_PASSWORD, SALT)
+insert into user (id, login, hash_password, salt)
 values (1, 'sasha', 'bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3', 'V9Me2nx'),
        (2, 'admin', 'e0feb157dadff817c0f11b48d0441e56b475a27289117c6cb1ca7fd0b108b13c', '6xInN0l'),
        (3, 'q', '2002c9e01093b6d8b7d3699d6b7bd1a5fb8200340b1275f52ae5794d59854849', '4bxdOU7'),
        (4, 'abcdefghij', 'd880929e469c4a2c19352f76460853be52ee581f7fcdd3097f86f670f690e910', 'TM36tOy');
 
 
-insert into ACCESS (ID, USER_ID, RESOURCE, ROLE)
+insert into access (id, user_id, resource, role)
 values (1, 1, 'A.', 'READ'),
        (2, 1, 'A.AA.', 'WRITE'),
        (3, 1, 'A.AA.AAA.', 'EXECUTE'),
@@ -24,7 +24,7 @@ values (1, 1, 'A.', 'READ'),
        (16, 1, 'A.B.', 'EXECUTE'),
        (17, 1, 'A.B.C.', 'EXECUTE');
 
-insert into USER_SESSION(ID, START_DATE, END_DATE, VOLUME, ACCESS_ID)
+insert into user_session(id, start_date, end_date, volume, access_id)
 values (1, '20200501', '20200502', 100, 1),
     (2, '20200502', '20200503', 300, 4),
     (3, '20200502', '20200503', 150, 4),
