@@ -1,7 +1,8 @@
 package xyz.sashenka.modelauthapp.repository
 
-import xyz.sashenka.modelauthapp.dao.UserDAO
+import com.google.inject.Inject
+import xyz.sashenka.modelauthapp.dao.UserDao
 
-class UserRepository(private val dao: UserDAO) {
-    fun getUserByLogin(login: String) = dao.requestUserByLogin(login)
+class UserRepository(@Inject private val dao: UserDao) {
+    fun getUserByLogin(login: String) = dao.findUser(login)?.toPlain()
 }
