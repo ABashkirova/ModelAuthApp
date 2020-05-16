@@ -40,11 +40,13 @@ class DatabaseModule : AbstractModule() {
     private fun setEnv() {
         val url = System.getenv("DATABASE_URL")
         if (url.isNullOrEmpty()) {
+            print("HELLO FROM SET ENV isNullOrEmpty")
             envUrl = "jdbc:h2:file:./AAA"
             envLogin = "sa"
             envPass = ""
             envDriver = "org.h2.Driver"
         } else {
+            print("HELLO FROM SET ENV $url")
             envUrl = System.getenv("JDBC_DATABASE_URL")
             envLogin = System.getenv("JDBC_DATABASE_USERNAME")
             envPass = System.getenv("JDBC_DATABASE_PASSWORD")
