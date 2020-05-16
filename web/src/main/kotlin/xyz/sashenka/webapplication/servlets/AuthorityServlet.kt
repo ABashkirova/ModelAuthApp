@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import xyz.sashenka.modelauthapp.dao.ResourceDAO
+import xyz.sashenka.modelauthapp.dao.ResourceDao
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
@@ -19,7 +19,7 @@ class AuthorityServlet : HttpServlet() {
     lateinit var gson: Gson
 
     @Inject
-    lateinit var resourceDAO: ResourceDAO
+    lateinit var resourceDAO: ResourceDao
 
     @InjectLogger
     lateinit var logger: KotlinLogger
@@ -55,7 +55,7 @@ class AuthorityServlet : HttpServlet() {
     }
 
     private fun writeAccessResponse(accessId: Int, response: HttpServletResponse) {
-        val access = resourceDAO.requestAccessById(accessId)
+        val access = resourceDAO.findById(accessId)
         if (access == null) {
             logger.error("Access not found with id $accessId")
             HandleError().sendErrorNotFound(response)
@@ -70,7 +70,7 @@ class AuthorityServlet : HttpServlet() {
         if (!HandleError().sendErrorForIntegerParameterIfIsNeeded(idParameter, response)) {
             val accessUserId = idParameter.toInt()
             logger.info("Write accesses for user id $accessUserId")
-            val access = resourceDAO.requestAccessByUserId(accessUserId)
+            val access = resourceDAO.findByUserId(accessUserId)
             response.writer.write(gson.toJson(access))
         }
     }
@@ -80,7 +80,7 @@ class AuthorityServlet : HttpServlet() {
     }
 
     private fun allAccessesToJson(): String {
-        return gson.toJson(resourceDAO.requestAllAccesses())
+        return gson.toJson(resourceDAO.getAll())
     }
 
 }
