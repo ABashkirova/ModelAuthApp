@@ -36,7 +36,7 @@ class Accesses extends React.Component {
         return (
         <div className="container">
             <button className="btn btn-outline-primary" onClick={() => {this.props.handleClick('Users')}}>Назад</button>
-            <table className="table">
+            <table className="table table-bordered">
                 {result}
             </table>
         </div>

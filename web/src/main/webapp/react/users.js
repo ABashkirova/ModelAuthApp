@@ -36,7 +36,7 @@ class Users extends React.Component {
 
     return (
     <div className="container">
-        <table className="table">{result}</table>
+        <table className="table table-bordered">{result}</table>
     </div>
     )
   }
