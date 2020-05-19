@@ -39,6 +39,14 @@ class Accesses extends React.Component {
         <div className="container">
             <button className="btn btn-outline-primary" onClick={() => {this.props.handleClick('Users')}}>Назад</button>
             <table className="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                      <th scope="col">id</th>
+                      <th scope="col">userId</th>
+                      <th scope="col">resource</th>
+                      <th scope="col">role</th>
+                    </tr>
+                </thead>
                 {result}
             </table>
         </div>

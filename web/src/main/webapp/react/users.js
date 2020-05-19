@@ -38,7 +38,15 @@ class Users extends React.Component {
 
     return (
     <div className="container">
-        <table className="table table-bordered table-hover">{result}</table>
+        <table className="table table-bordered table-hover">
+            <thead>
+                <tr>
+                  <th scope="col">id</th>
+                  <th scope="col">login</th>
+                </tr>
+            </thead>
+            {result}
+        </table>
     </div>
     )
   }
