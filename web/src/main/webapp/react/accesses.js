@@ -25,18 +25,20 @@ class Accesses extends React.Component {
         const result = accesses.map(access => {
             return (
                 //событие onclick обрабатывает родительский метод, который передается через props
-                <tr onClick={() => {this.props.handleClick('Activities', access.id)}} key={access.id}>
-                    <td>{access.id}</td>
-                    <td>{access.userId}</td>
-                    <td>{access.resource}</td>
-                    <td>{access.role}</td>
-                </tr>
+                <tbody>
+                    <tr role="button" onClick={() => {this.props.handleClick('Activities', access.id)}} key={access.id}>
+                        <td>{access.id}</td>
+                        <td>{access.userId}</td>
+                        <td>{access.resource}</td>
+                        <td>{access.role}</td>
+                    </tr>
+                </tbody>
             )
         })
         return (
         <div className="container">
             <button className="btn btn-outline-primary" onClick={() => {this.props.handleClick('Users')}}>Назад</button>
-            <table className="table table-bordered">
+            <table className="table table-bordered table-hover">
                 {result}
             </table>
         </div>

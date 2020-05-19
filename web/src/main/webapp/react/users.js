@@ -27,16 +27,18 @@ class Users extends React.Component {
     const result = users.map(user => {
         return (
             //событие onclick обрабатывает родительский метод, который передается через props
-            <tr onClick={() => {this.props.handleClick('Accesses', user.id)}} key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.login}</td>
-            </tr>
+            <tbody>
+                <tr role="button" onClick={() => {this.props.handleClick('Accesses', user.id)}} key={user.id}>
+                    <td>{user.id}</td>
+                    <td>{user.login}</td>
+                </tr>
+            </tbody>
         )
     })
 
     return (
     <div className="container">
-        <table className="table table-bordered">{result}</table>
+        <table className="table table-bordered table-hover">{result}</table>
     </div>
     )
   }
