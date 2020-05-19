@@ -13,7 +13,7 @@ class Table extends React.Component {
     render() {
         const ct = this.state.contentType;
         if(ct == 'Activities') {
-           return <Activities />
+           return <Activities handleClick={this.handleClick} accessId={this.state.id} />
         } else if (ct == 'Accesses') {
            return <Accesses handleClick={this.handleClick} userId={this.state.id}/>
         } else {
