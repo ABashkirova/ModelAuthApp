@@ -1,7 +1,13 @@
 class Table extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {contentType: 'Users'};
+      this.state = {contentType: 'Users', id: null};
+      this.handleClick = this.handleClick.bind(this)
+    }
+
+
+    handleClick(type, id) {
+        this.setState({contentType: type, id: id})
     }
 
     render() {
@@ -9,9 +15,9 @@ class Table extends React.Component {
         if(ct == 'Activities') {
            return <Activities />
         } else if (ct == 'Accesses') {
-           return <Accesses />
+           return <Accesses handleClick={this.handleClick} userId={this.state.id}/>
         } else {
-           return <Users />;
+           return <Users handleClick={this.handleClick} />;
         }
     }
 }
