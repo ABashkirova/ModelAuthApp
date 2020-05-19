@@ -1,5 +1,10 @@
 class Accesses extends React.Component {
     render() {
-        return <p>Accesses</p>
+        return (
+        <div>
+            <button className="btn btn-light" onClick={() => {this.props.handleClick('Users')}}>Назад</button>
+            <p>id: {this.props.userId}</p>
+        </div>
+        )
     }
 }

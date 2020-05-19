@@ -17,7 +17,7 @@ class Table extends React.Component {
         } else if (ct == 'Accesses') {
            return <Accesses handleClick={this.handleClick} userId={this.state.id}/>
         } else {
-           return <Users handleClick={this.handleClick} />;
+           return <Users handleClick={this.handleClick} />
         }
     }
 }
