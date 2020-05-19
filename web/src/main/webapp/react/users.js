@@ -26,7 +26,8 @@ class Users extends React.Component {
 
     const result = users.map(user => {
         return (
-            <tr key={user.id}>
+            //событие onclick обрабатывает родительский метод, который передается через props
+            <tr onClick={() => {this.props.handleClick('Accesses', user.id)}} key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.login}</td>
             </tr>
