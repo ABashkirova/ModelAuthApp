@@ -31,11 +31,39 @@ class ActivityServlet : HttpServlet() {
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Get activity info: ${request.requestURI} with ${request.queryString}")
         val query = request.queryString
-        when {
-            query.isNullOrEmpty() -> handleRequestWithEmptyParameters(response)
-            query.contains(ID) -> handleRequestWithIdParameter(request, response)
-            query.contains(ACCESS_ID) -> handleRequestWithAccessIdParameter(request, response)
-            else -> HandleError().sendErrorNotFound(response)
+        if (request.method == "GET") {
+            when {
+                query.isNullOrEmpty() -> handleRequestWithEmptyParameters(response)
+                query.contains(ID) -> handleRequestWithIdParameter(request, response)
+                query.contains(ACCESS_ID) -> handleRequestWithAccessIdParameter(request, response)
+                else -> HandleError().sendErrorNotFound(response)
+            }
+        } else if (request.method == "POST") {
+            onPost(request, response)
+        }
+    }
+
+    @Throws(ServletException::class, IOException::class)
+    fun onPost(request: HttpServletRequest, response: HttpServletResponse) {
+        logger.debug(
+            "Activity DoPost ->\n" +
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
+        )
+
+        if (request.requestURI.contains("/ajax/activity")) {
+            val args = arrayOf(
+                "-login", request.getParameter("login"),
+                "-pass", request.getParameter("password"),
+                "-res", request.getParameter("resource"),
+                "-role", request.getParameter("role"),
+                "-ds", request.getParameter("dateStart"),
+                "-de", request.getParameter("dateEnd"),
+                "-vol", request.getParameter("volume")
+            )
+//            val result = Application(args).run()
+//            println("result ----> $result")
+//
+//            response.writer.write(gson.toJson(result))
         }
     }
 
