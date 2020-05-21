@@ -2,8 +2,9 @@ class Page extends React.Component {
     render() {
         return (
             <div>
-                <Form/>
+                <p>Hello from Model Auth App</p>
                 <Table/>
+                <Form/>
             </div>
         )
     }
