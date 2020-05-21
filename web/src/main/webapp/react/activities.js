@@ -33,6 +33,7 @@ class Activities extends React.Component {
                 </tbody>
             )
         })
+
         return (
             <div className="container">
                 <button className="btn btn-outline-primary" onClick={() => {
