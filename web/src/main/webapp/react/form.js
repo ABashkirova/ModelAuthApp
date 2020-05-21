@@ -90,7 +90,7 @@ class Form extends React.Component {
                     placeholder: 'Ресурс, A.B.C',
                     valid: false,
                     validationRules: {
-                        minLength: 1,
+                        minLength: 1   ,
                         isRequired: true
                     }
                 },
@@ -161,15 +161,35 @@ class Form extends React.Component {
         });
     }
 
-    formSubmitHandler = () => {
+//    convertToJson(data) {
+//        var object = {};
+//        data.forEach((value, key) => {object[key] = value});
+//        return JSON.stringify(object);
+//    }
+
+    formSubmitHandler = (event) => {
+        event.preventDefault();
         console.log(this.state.formControls);
+
         // создать объект для формы
         var formData = new FormData(document.forms.activity);
 
+        var object = {};
+        formData.forEach((value, key) => {object[key] = value});
+        var json = JSON.stringify(object);
+
         // отослать
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "/ajax/activity");
-        xhr.send(formData);
+        fetch("/ajax/activity", {
+                    method: "POST",
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: json
+        })
+            .then(result => result.json())
+            .then(result => {
+                  alert(JSON.stringify(result))
+            })
 
     }
 
