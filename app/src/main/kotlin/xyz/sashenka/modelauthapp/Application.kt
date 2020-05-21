@@ -1,6 +1,8 @@
 package xyz.sashenka.modelauthapp
 
+import com.google.inject.Guice
 import xyz.sashenka.modelauthapp.di.Container
+import xyz.sashenka.modelauthapp.di.DatabaseModule
 import xyz.sashenka.modelauthapp.model.ExitCode
 import xyz.sashenka.modelauthapp.model.ExitCode.DI_ERROR
 import xyz.sashenka.modelauthapp.model.ExitCode.HELP
@@ -18,7 +20,8 @@ import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.DBService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 
-class Application(private val args: Array<String>, private val container: Container) {
+class Application(private val args: Array<String>) {
+    private val container: Container = Container(Guice.createInjector(DatabaseModule()))
     private val validatingService: ValidatingService
         get() = container.getValidatingService()
     private val logger = container.getLogger(Application::class.java)

@@ -1,6 +1,5 @@
 package xyz.sashenka.modelauthapp.di
 
-import com.google.inject.Guice
 import com.google.inject.Injector
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.loggerOf
@@ -17,8 +16,9 @@ import xyz.sashenka.modelauthapp.service.HelpService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 import xyz.sashenka.modelauthapp.service.AccountingService
 
-class Container {
-    private val injector: Injector = Guice.createInjector(DatabaseModule())
+class Container(
+    private val injector: Injector
+) {
     private lateinit var validatingService: ValidatingService
 
     fun getLogger(ofClass: Class<*>): KotlinLogger = loggerOf(ofClass)
