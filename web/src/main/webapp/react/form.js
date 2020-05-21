@@ -149,7 +149,6 @@ class Form extends React.Component {
         updatedFormElement.valid = isValid;
 
         updatedControls[name] = updatedFormElement;
-        console.log("field ", name, ", value ", value, ", valid ", isValid)
         let formIsValid = true;
         for (let inputIdentifier in updatedControls) {
             formIsValid = updatedControls[inputIdentifier].valid && formIsValid;
@@ -164,6 +163,14 @@ class Form extends React.Component {
 
     formSubmitHandler = () => {
         console.log(this.state.formControls);
+        // создать объект для формы
+        var formData = new FormData(document.forms.activity);
+
+        // отослать
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/ajax/activity");
+        xhr.send(formData);
+
     }
 
     render() {
@@ -171,7 +178,7 @@ class Form extends React.Component {
 
         return (
             <div>
-                <form class="form-inline">
+                <form name="activity" class="form-inline">
                     <label>Логин:</label>
                     <input type="text"
                            name="login"
