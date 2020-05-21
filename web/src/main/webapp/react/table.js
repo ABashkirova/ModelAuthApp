@@ -1,22 +1,37 @@
 class Table extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {contentType: 'Users', id: null};
-        this.handleClick = this.handleClick.bind(this)
+        this.state = {
+            contentType: 'Users',
+            userId: null,
+            accessId: null
+        };
+        this.handleUserClick = this.handleUserClick.bind(this)
+        this.handleAccessClick = this.handleAccessClick.bind(this)
+        this.handleActivityClick = this.handleActivityClick.bind(this)
     }
 
-    handleClick(type, id) {
-        this.setState({contentType: type, id: id})
+    handleUserClick(type, userId) {
+        this.setState({contentType: type, userId: userId})
+    }
+
+    handleAccessClick(type, accessId) {
+        this.setState({contentType: type, accessId: accessId})
+    }
+
+    //кнопка назад вернет доступ с последним сохраненым userId
+    handleActivityClick(type) {
+        this.setState({contentType: type})
     }
 
     render() {
         const ct = this.state.contentType;
         if (ct === 'Activities') {
-            return <Activities handleClick={this.handleClick} accessId={this.state.id}/>
+            return <Activities handleClick={this.handleActivityClick} accessId={this.state.accessId}/>
         } else if (ct === 'Accesses') {
-            return <Accesses handleClick={this.handleClick} userId={this.state.id}/>
+            return <Accesses handleClick={this.handleAccessClick} userId={this.state.userId}/>
         } else {
-            return <Users handleClick={this.handleClick}/>
+            return <Users handleClick={this.handleUserClick}/>
         }
     }
 }
