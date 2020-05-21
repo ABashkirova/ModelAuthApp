@@ -37,7 +37,7 @@ class Activities extends React.Component {
         return (
             <div className="container">
                 <button className="btn btn-outline-primary" onClick={() => {
-                    this.props.handleClick('Users')
+                    this.props.handleClick('Accesses')
                 }}>Назад
                 </button>
                 <table className="table table-bordered table-hover">
