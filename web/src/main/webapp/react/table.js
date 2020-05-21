@@ -19,7 +19,7 @@ class Table extends React.Component {
         this.setState({contentType: type, accessId: accessId})
     }
 
-    //кнопка назад вернет доступ с последним сохраненым userId
+    //кнопка назад вернет доступ с последним сохранённым userId
     handleActivityClick(type) {
         this.setState({contentType: type})
     }
