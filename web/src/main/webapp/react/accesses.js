@@ -40,7 +40,7 @@ class Accesses extends React.Component {
 
         return (
             <div className="container">
-                <button className="btn btn-outline-primary" onClick={() => {
+                <button className="btn btn-outline-secondary mb-2" onClick={() => {
                     this.props.handleClick('Users')
                 }}>Назад
                 </button>

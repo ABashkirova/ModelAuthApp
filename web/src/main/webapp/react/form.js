@@ -197,79 +197,95 @@ class Form extends React.Component {
         let formControl = "form-control"
 
         return (
-            <div>
-                <form name="activity" class="form-inline">
-                    <label>Логин:</label>
-                    <input type="text"
-                           name="login"
-                           className={formControl}
-                           placeholder={this.state.formControls.login.placeholder}
-                           value={this.state.formControls.login.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.login.valid}
-                    />
-                    <label>Пароль:</label>
-                    <input type="password"
-                           name="password"
-                           className={formControl}
-                           placeholder={this.state.formControls.password.placeholder}
-                           value={this.state.formControls.password.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.password.valid}
-                    />
-                    <label>Ресурс:</label>
-                    <input type="text"
-                           name="resource"
-                           className={formControl}
-                           placeholder={this.state.formControls.resource.placeholder}
-                           value={this.state.formControls.resource.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.resource.valid}
-                    />
-                    <label>Роль доступа:</label>
-                    <select
-                        name="role"
-                        value={this.state.formControls.role.value}
-                        onChange={this.changeHandler}>
-                        {this.state.formControls.role.options.map(option => (
-                            <option value={option.value}>
-                                {option.displayValue}
-                            </option>
-                        ))}
-                    </select>
-                    <label>Дата обращения:</label>
-                    <input type="text"
-                           name="dateStart"
-                           className={formControl}
-                           placeholder={this.state.formControls.dateStart.placeholder}
-                           value={this.state.formControls.dateStart.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.dateStart.valid}
-                    />
-                    <label>Дата возврата:</label>
-                    <input type="text"
-                           name="dateEnd"
-                           className={formControl}
-                           placeholder={this.state.formControls.dateEnd.placeholder}
-                           value={this.state.formControls.dateEnd.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.dateEnd.valid}
-                    />
-                    <label>Запрашиваемый объем:</label>
-                    <input type="text"
-                           name="volume"
-                           className={formControl}
-                           placeholder={this.state.formControls.volume.placeholder}
-                           value={this.state.formControls.volume.value}
-                           onChange={this.changeHandler}
-                           valid={this.state.formControls.volume.valid}
-                    />
-                    <button
-                        onClick={this.formSubmitHandler}
-                        disabled={!this.state.formIsValid}
-                    >
-                        Submit
-                    </button>
+            <div className="container">
+                <form name="activity">
+                    <div className="form-group">
+                        <label>Логин:</label>
+                        <input type="text"
+                               name="login"
+                               className={formControl}
+                               placeholder={this.state.formControls.login.placeholder}
+                               value={this.state.formControls.login.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.login.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Пароль:</label>
+                        <input type="password"
+                               name="password"
+                               className={formControl}
+                               placeholder={this.state.formControls.password.placeholder}
+                               value={this.state.formControls.password.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.password.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Ресурс:</label>
+                        <input type="text"
+                               name="resource"
+                               className={formControl}
+                               placeholder={this.state.formControls.resource.placeholder}
+                               value={this.state.formControls.resource.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.resource.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Роль доступа:</label>
+                        <select className="custom-select"
+                            name="role"
+                            value={this.state.formControls.role.value}
+                            onChange={this.changeHandler}>
+                            {this.state.formControls.role.options.map(option => (
+                                <option value={option.value}>
+                                    {option.displayValue}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        <label>Дата обращения:</label>
+                        <input type="text"
+                               name="dateStart"
+                               className={formControl}
+                               placeholder={this.state.formControls.dateStart.placeholder}
+                               value={this.state.formControls.dateStart.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.dateStart.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Дата возврата:</label>
+                        <input type="text"
+                               name="dateEnd"
+                               className={formControl}
+                               placeholder={this.state.formControls.dateEnd.placeholder}
+                               value={this.state.formControls.dateEnd.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.dateEnd.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Запрашиваемый объем:</label>
+                        <input type="text"
+                               name="volume"
+                               className={formControl}
+                               placeholder={this.state.formControls.volume.placeholder}
+                               value={this.state.formControls.volume.value}
+                               onChange={this.changeHandler}
+                               valid={this.state.formControls.volume.valid}
+                        />
+                    </div>
+                    <div className="form-group">
+                        <button className="btn btn-secondary"
+                            onClick={this.formSubmitHandler}
+                            disabled={!this.state.formIsValid}
+                        >
+                            Отправить запрос
+                        </button>
+                    </div>
                 </form>
             </div>
         )
