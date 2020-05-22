@@ -38,7 +38,7 @@ class Container(
 
     fun getAccountingService(): AccountingService? = getSessionRepository()?.let { AccountingService(it) }
 
-    fun getUserRepository(): UserRepository? = getUserDao()?.let { UserRepository(it) }
+    fun getUserRepository(): UserRepository? = getUserDao()?.let { UserRepositoryImpl(it) }
 
     fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepositoryImpl(it) }
 
