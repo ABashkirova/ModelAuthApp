@@ -2,6 +2,7 @@ package xyz.sashenka.modelauthapp.di
 
 import com.google.inject.AbstractModule
 import com.google.inject.Singleton
+import xyz.sashenka.modelauthapp.Application
 import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.dao.*
 import xyz.sashenka.modelauthapp.repository.*
@@ -23,6 +24,7 @@ class ApplicationModule : AbstractModule() {
         bind(HelpService::class.java).to(HelpService::class.java).`in`(Singleton::class.java)
         bind(ValidatingService::class.java).to(ValidatingService::class.java).`in`(Singleton::class.java)
         bind(ArgHandler::class.java).to(ArgHandler::class.java).`in`(Singleton::class.java)
+        bind(Application::class.java).to(Application::class.java).`in`(Singleton::class.java)
     }
 
 }
