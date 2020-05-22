@@ -6,11 +6,6 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.ExitCode
 import xyz.sashenka.modelauthapp.model.domain.User
-import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
-import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
-import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
-import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
-import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.service.AccountingService
 import xyz.sashenka.modelauthapp.service.AuthenticationService
 import xyz.sashenka.modelauthapp.service.AuthorizationService
