@@ -51,7 +51,7 @@ class ArgHandler {
     fun parse(args: Array<String>) {
         try {
             parser.parse(args)
-            logger.debug("""
+            println("""
             login $login
             password $password
             resource $resource
@@ -59,7 +59,7 @@ class ArgHandler {
             dateStart $dateStart
             dateEnd $dateEnd
             volume $volume
-        """.trimIndent())
+        """)
         } catch (ex: IllegalStateException) {
             println(ex.localizedMessage)
         }

@@ -32,7 +32,6 @@ class HibernateProvider : Provider<SessionFactory> {
             cfg.setProperty("hibernate.connection.driverClass", "org.postgresql.Driver")
         }
         sessionFactory = cfg.buildSessionFactory()
-
     }
 
     override fun get(): SessionFactory {
@@ -50,7 +49,6 @@ class HibernateProvider : Provider<SessionFactory> {
             envPass = ""
             envDriver = "org.h2.Driver"
             hibernateDialect = "org.hibernate.dialect.H2Dialect"
-
         } else {
             logger.info { "setEnv from url" }
             envUrl = System.getenv("JDBC_DATABASE_URL")

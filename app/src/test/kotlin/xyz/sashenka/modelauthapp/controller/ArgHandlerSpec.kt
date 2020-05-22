@@ -1,7 +1,6 @@
 package xyz.sashenka.modelauthapp.controller
 
 import org.spekframework.spek2.Spek
-import org.spekframework.spek2.meta.Ignore
 import org.spekframework.spek2.style.gherkin.Feature
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -102,7 +101,6 @@ class ArgHandlerSpec : Spek({
                 assertNotNull(argHandler.getAccountingData())
             }
         }
-
 
         Scenario("getting null authentication data") {
             val argHandler = ArgHandler()
