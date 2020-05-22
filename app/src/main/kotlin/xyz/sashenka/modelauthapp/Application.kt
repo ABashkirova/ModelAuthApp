@@ -20,7 +20,7 @@ import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.DBService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 
-class Application(private val args: Array<String>) {
+class Application() {
     private val container: Container = Container(Guice.createInjector(DatabaseModule()))
     private val validatingService: ValidatingService
         get() = container.getValidatingService()
@@ -28,7 +28,7 @@ class Application(private val args: Array<String>) {
     private val diErrorMessage = "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}"
     private val nonCorrectActivity = "Неверная активность: "
 
-    fun run(): ExitCode {
+    fun run(args: Array<String>): ExitCode {
 
         DBService().migrate()
         val argHandler = container.getArgHandler(args)

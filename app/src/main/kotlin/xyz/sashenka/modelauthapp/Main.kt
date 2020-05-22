@@ -13,8 +13,8 @@ object Main {
             "Инициализация: ${args.joinToString(" ")}"
         }
 
-        val app = Application(args)
-        val returnCode = app.run()
+        val app = Application()
+        val returnCode = app.run(args)
 
         container.getLogger(Main::class.java).info {
             "Завершение программы с кодом: ${returnCode.value}" + "\n---------"
