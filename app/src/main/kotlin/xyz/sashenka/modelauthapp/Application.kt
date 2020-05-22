@@ -21,12 +21,16 @@ import xyz.sashenka.modelauthapp.service.*
 class Application {
     @Inject
     lateinit var helpService: HelpService
+
     @Inject
     lateinit var validatingService: ValidatingService
+
     @Inject
     lateinit var authenticationService: AuthenticationService
+
     @Inject
     lateinit var authorizationService: AuthorizationService
+
     @Inject
     lateinit var accountingService: AccountingService
 
