@@ -2,12 +2,13 @@ package xyz.sashenka.modelauthapp.controller
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
+import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
 
-class ArgHandler(args: Array<String>) {
-    private val parser = ArgParser("app.jar", true)
+class ArgHandler {
+    private val parser = ArgParser("aaa.jar", true)
 
     val login: String? by parser.option(
         ArgType.String,
@@ -45,9 +46,20 @@ class ArgHandler(args: Array<String>) {
         description = "Потребляемый объем, целое число"
     )
 
-    init {
+    private val logger = loggerOf(ArgHandler::class.java)
+
+    fun parse(args: Array<String>) {
         try {
             parser.parse(args)
+            println("""
+            login $login
+            password $password
+            resource $resource
+            role $role
+            dateStart $dateStart
+            dateEnd $dateEnd
+            volume $volume
+        """)
         } catch (ex: IllegalStateException) {
             println(ex.localizedMessage)
         }

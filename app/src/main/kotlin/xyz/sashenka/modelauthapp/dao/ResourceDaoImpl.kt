@@ -1,17 +1,12 @@
 package xyz.sashenka.modelauthapp.dao
 
 import com.google.inject.Inject
-import com.google.inject.Provider
+import xyz.sashenka.modelauthapp.di.HibernateProvider
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
-import javax.persistence.EntityManager
 import javax.persistence.NoResultException
-import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Root
 
-class ResourceDaoImpl @Inject constructor(
-    var entityManager: Provider<EntityManager>
-) : ResourceDao {
+class ResourceDaoImpl : ResourceDao {
+    @Inject lateinit var sessionProvider: HibernateProvider
     private val selectUserResourcesByLoginSql: String
         get() = """
                 SELECT a
@@ -25,40 +20,58 @@ class ResourceDaoImpl @Inject constructor(
                 """
 
     override fun save(user: DBAccess) {
-        entityManager.get().merge(user)
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+        session.save(user)
+        session.transaction.commit()
+        session.close()
     }
 
     override fun getAll(): List<DBAccess> {
-        val criteriaQuery = entityManager.get().criteriaBuilder.createQuery(DBAccess::class.java)
-        val rootEntry: Root<DBAccess> = criteriaQuery.from(DBAccess::class.java)
-        val all: CriteriaQuery<DBAccess> = criteriaQuery.select(rootEntry)
-        val allQuery: TypedQuery<DBAccess> = entityManager.get().createQuery(all)
-        return allQuery.resultList
+        val session = sessionProvider.get().openSession()
+
+        val query = session.createQuery("FROM DBAccess", DBAccess::class.java)
+        val accesses = query.resultList
+
+        session.close()
+        return accesses
     }
 
     override fun findById(id: Int): DBAccess? {
-        return entityManager.get().find(DBAccess::class.java, id)
+        val session = sessionProvider.get().openSession()
+        val access = session.get(DBAccess::class.java, id)
+        session.close()
+        return access
     }
 
     override fun findByUserId(userId: Int): List<DBAccess> {
-        val createQuery: CriteriaQuery<DBAccess> =
-            entityManager.get().criteriaBuilder.createQuery(DBAccess::class.java)
-        val root: Root<DBAccess> = createQuery.from(DBAccess::class.java)
-        createQuery.where(root.get<Any>("userId").`in`(userId))
-        return entityManager.get().createQuery(createQuery).resultList
+        val session = sessionProvider.get().openSession()
+        val query = session.createQuery(
+            "FROM DBAccess WHERE user_id = $userId",
+            DBAccess::class.java
+        )
+
+        val accessList = query.resultList
+        session.close()
+        return accessList
     }
 
     override fun find(login: String, resource: String, role: String): DBAccess? {
-        val query: TypedQuery<DBAccess> =
-            entityManager.get().createQuery(selectUserResourcesByLoginSql, DBAccess::class.java)
-        return try {
-            query
-                .setParameter(1, login)
-                .setParameter(2, resource)
-                .setParameter(3, role)
-                .singleResult
+        val session = sessionProvider.get().openSession()
+        val access = try {
+            session.createQuery(
+                """
+                FROM DBAccess
+                WHERE 
+                user.login = '$login' 
+                AND role = '$role' 
+                AND resource=SUBSTRING('$resource',1,LENGTH(resource)) 
+                """, DBAccess::class.java
+            ).singleResult
         } catch (e: NoResultException) {
             null
         }
+        session.close()
+        return access
     }
 }
