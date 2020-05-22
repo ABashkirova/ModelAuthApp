@@ -7,7 +7,7 @@
         <property column="resource" name="resource" type="string"/>
         <property column="role" name="role" type="string"/>
 
-<!--        <many-to-one column="user_id" name="user"-->
-<!--                     class="xyz.sashenka.modelauthapp.model.dto.db.DBUser" not-null="true"/>-->
+        <many-to-one column="user_id" name="user"
+                     class="xyz.sashenka.modelauthapp.model.dto.db.DBUser" not-null="true"/>
     </class>
 </hibernate-mapping>
