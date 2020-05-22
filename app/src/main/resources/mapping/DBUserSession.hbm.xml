@@ -1,0 +1,14 @@
+<hibernate-mapping>
+    <class name="xyz.sashenka.modelauthapp.model.dto.db.DBUserSession" table="USER_SESSIONS">
+        <id column="id" name="id" type="int">
+            <generator class="increment"/>
+        </id>
+        <version column="version" name="version" type="long"/>
+        <property column="start_date" name="dateStart" type="date"/>
+        <property column="end_date" name="dateEnd" type="date"/>
+        <property column="volume" name="volume" type="int"/>
+        <many-to-one column="access_id" name="access"
+                     class="xyz.sashenka.modelauthapp.model.dto.db.DBAccess" not-null="true"/>
+
+    </class>
+</hibernate-mapping>
