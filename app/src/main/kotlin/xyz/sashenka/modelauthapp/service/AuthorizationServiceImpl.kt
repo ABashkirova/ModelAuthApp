@@ -1,13 +1,16 @@
 package xyz.sashenka.modelauthapp.service
 
 import com.google.inject.Inject
+import com.google.inject.Singleton
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 
-class AuthorizationServiceImpl(
-    @Inject private val resourceRepository: ResourceRepository
-) : AuthorizationService {
+@Singleton
+class AuthorizationServiceImpl : AuthorizationService {
+    @Inject
+    lateinit var resourceRepository: ResourceRepository
+
     override fun checkAccess(usersResource: UsersResources): Boolean {
         val access = resourceRepository.getResourcesByUserLogin(usersResource)
         return access != null
