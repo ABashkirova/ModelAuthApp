@@ -189,13 +189,13 @@ class Form extends React.Component {
         })
             .then(result => result.json())
             .then(result => {
-                  //json = JSON.stringify(result)
-                  alert(result.exitCode)
-                  if(result.exitCode=="SUCCESS") {
+                //json = JSON.stringify(result)
+                alert(result.exitCode)
+                if (result.exitCode == "SUCCESS") {
                     //вызов Page.refreshActivities(userId, accessId)
-                    console.log("accessId"+result.accessId)
+                    console.log("accessId" + result.accessId)
                     this.props.refreshActivities(result.userId, result.accessId)
-                  }
+                }
             })
     }
 

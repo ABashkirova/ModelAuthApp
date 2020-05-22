@@ -11,23 +11,23 @@ class Page extends React.Component {
     }
 
     handleFormSubmit(userId, accessId) {
-       console.log("function handleFormSubmit")
+        console.log("function handleFormSubmit")
         let ct = 'Activities'
         this.setState({
             contentType: ct,
             userId: userId,
             accessId: accessId
         });
-       console.log("handleSubmitForm userId: "+this.state.userId)
-       console.log("handleSubmitForm accessId: "+this.state.accessId)
-       console.log("in Page.handleFormSubmit Page.state.contentType: "+this.state.contentType)
+        console.log("handleSubmitForm userId: " + this.state.userId)
+        console.log("handleSubmitForm accessId: " + this.state.accessId)
+        console.log("in Page.handleFormSubmit Page.state.contentType: " + this.state.contentType)
 
     }
 
     render() {
-       console.log("in Page render userId: "+this.state.userId)
-       console.log("in Page render accessId: "+this.state.accessId)
-       console.log("in Page render contentType: "+this.state.contentType)
+        console.log("in Page render userId: " + this.state.userId)
+        console.log("in Page render accessId: " + this.state.accessId)
+        console.log("in Page render contentType: " + this.state.contentType)
         return (
             <div>
                 <nav className="navbar navbar-dark bg-secondary mb-3">
