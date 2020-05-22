@@ -1,4 +1,3 @@
-
 const validate = (value, rules) => {
     let isValid = true;
 
@@ -90,7 +89,7 @@ class Form extends React.Component {
                     placeholder: 'Ресурс, A.B.C',
                     valid: false,
                     validationRules: {
-                        minLength: 1   ,
+                        minLength: 1,
                         isRequired: true
                     }
                 },
@@ -175,30 +174,33 @@ class Form extends React.Component {
         var formData = new FormData(document.forms.activity);
 
         var object = {};
-        formData.forEach((value, key) => {object[key] = value});
+        formData.forEach((value, key) => {
+            object[key] = value
+        });
         var json = JSON.stringify(object);
 
         // отослать
         fetch("/ajax/activity", {
-                    method: "POST",
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: json
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: json
         })
             .then(result => result.json())
             .then(result => {
-                  json = JSON.stringify(result)
-                  alert(json)
+                json = JSON.stringify(result)
+                alert(json)
             })
-            .then(() => {if(json=="\"SUCCESS\"") this.props.refreshActivities(0, 1)}//надо получить userId и accessId из json
+            .then(() => {
+                    if (json == "\"SUCCESS\"") this.props.refreshActivities(0, 1)
+                }//надо получить userId и accessId из json
             )
 
 
         //this.props.refreshActivities(1,1)
 
     }
-
 
 
     render() {
@@ -243,9 +245,9 @@ class Form extends React.Component {
                     <div className="form-group">
                         <label>Роль доступа:</label>
                         <select className="custom-select"
-                            name="role"
-                            value={this.state.formControls.role.value}
-                            onChange={this.changeHandler}>
+                                name="role"
+                                value={this.state.formControls.role.value}
+                                onChange={this.changeHandler}>
                             {this.state.formControls.role.options.map(option => (
                                 <option value={option.value}>
                                     {option.displayValue}
@@ -288,8 +290,8 @@ class Form extends React.Component {
                     </div>
                     <div className="form-group">
                         <button className="btn btn-secondary"
-                            onClick={this.formSubmitHandler}
-                            disabled={!this.state.formIsValid}
+                                onClick={this.formSubmitHandler}
+                                disabled={!this.state.formIsValid}
                         >
                             Отправить запрос
                         </button>
