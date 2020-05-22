@@ -45,9 +45,20 @@ class ArgHandler {
         description = "Потребляемый объем, целое число"
     )
 
+    private val logger = loggerOf(ArgHandler::class.java)
+
     fun parse(args: Array<String>) {
         try {
             parser.parse(args)
+            logger.debug("""
+            login $login
+            password $password
+            resource $resource
+            role $role
+            dateStart $dateStart
+            dateEnd $dateEnd
+            volume $volume
+        """.trimIndent())
         } catch (ex: IllegalStateException) {
             println(ex.localizedMessage)
         }
