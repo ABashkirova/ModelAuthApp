@@ -1,10 +1,9 @@
 package xyz.sashenka.modelauthapp
 
-import com.google.inject.Guice
-import xyz.sashenka.modelauthapp.di.Container
-import xyz.sashenka.modelauthapp.di.DatabaseModule
+import com.google.inject.Inject
+import org.apache.logging.log4j.kotlin.loggerOf
+import xyz.sashenka.modelauthapp.controller.ArgHandler
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.ExitCode.DI_ERROR
 import xyz.sashenka.modelauthapp.model.ExitCode.HELP
 import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_ACTIVITY
 import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_LOGIN_FORMAT
@@ -17,27 +16,27 @@ import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
-import xyz.sashenka.modelauthapp.service.DBService
-import xyz.sashenka.modelauthapp.service.ValidatingService
+import xyz.sashenka.modelauthapp.service.*
 
-class Application() {
-    private val container: Container = Container(Guice.createInjector(DatabaseModule()))
-    private val validatingService: ValidatingService
-        get() = container.getValidatingService()
-    private val logger = container.getLogger(Application::class.java)
-    private val diErrorMessage = "Что-то не проинициализировалось в контейнере: ${DI_ERROR.name}"
+class Application(
+    @Inject private val argHandler: ArgHandler,
+    @Inject private val helpService: HelpService,
+    @Inject private val validatingService: ValidatingService,
+    @Inject private val authenticationService: AuthenticationService,
+    @Inject private val authorizationService: AuthorizationService,
+    @Inject private val accountingService: AccountingService
+) {
+    private val logger = loggerOf(Application::class.java)
     private val nonCorrectActivity = "Неверная активность: "
 
     fun run(args: Array<String>): ExitCode {
-
-        DBService().migrate()
-        val argHandler = container.getArgHandler(args)
+        argHandler.parse(args)
 
         val authenticationData = argHandler.getAuthenticationData()
         logger.info { args.joinToString() }
         if (authenticationData == null) {
             logger.info { "Данных для аутентификации нет -> Печать справки" }
-            container.getHelpService().printHelp()
+            helpService.printHelp()
             return HELP
         }
 
@@ -109,11 +108,6 @@ class Application() {
     }
 
     private fun startAuthentication(login: String, password: String): ExitCode {
-        val authenticationService = container.getAuthenticationService()
-        if (authenticationService == null) {
-            logger.error { diErrorMessage }
-            return DI_ERROR
-        }
 
         val user = authenticationService.findUser(login)
         if (user == null) {
@@ -130,11 +124,6 @@ class Application() {
     }
 
     private fun startAuthorization(usersResources: UsersResources): ExitCode {
-        val authorizationService = container.getAuthorizationService()
-        if (authorizationService == null) {
-            logger.error { diErrorMessage }
-            return DI_ERROR
-        }
 
         if (!authorizationService.checkAccess(usersResources)) {
             logger.error {
@@ -176,17 +165,6 @@ class Application() {
                 nonCorrectActivity + "дата начала сессии невалидна ${accountingData.startDate}"
             }
             return INVALID_ACTIVITY
-        }
-
-        val authorizationService = container.getAuthorizationService()
-        if (authorizationService == null) {
-            logger.error { diErrorMessage }
-            return DI_ERROR
-        }
-        val accountingService = container.getAccountingService()
-        if (accountingService == null) {
-            logger.error { diErrorMessage }
-            return DI_ERROR
         }
 
         val userAccess = authorizationService.getResourceAccess(usersResources)
