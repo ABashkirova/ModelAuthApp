@@ -18,14 +18,14 @@ import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.*
 
-class Application(
-    @Inject private val argHandler: ArgHandler,
-    @Inject private val helpService: HelpService,
-    @Inject private val validatingService: ValidatingService,
-    @Inject private val authenticationService: AuthenticationService,
-    @Inject private val authorizationService: AuthorizationService,
-    @Inject private val accountingService: AccountingService
-) {
+class Application {
+    @Inject lateinit var argHandler: ArgHandler
+    @Inject lateinit var helpService: HelpService
+    @Inject lateinit var validatingService: ValidatingService
+    @Inject lateinit var authenticationService: AuthenticationService
+    @Inject lateinit var authorizationService: AuthorizationService
+    @Inject lateinit var accountingService: AccountingService
+
     private val logger = loggerOf(Application::class.java)
     private val nonCorrectActivity = "Неверная активность: "
 
