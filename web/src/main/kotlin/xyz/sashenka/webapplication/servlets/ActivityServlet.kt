@@ -4,7 +4,10 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.modelauthapp.Application
 import xyz.sashenka.modelauthapp.dao.SessionDao
+import xyz.sashenka.modelauthapp.model.ExitCode
+import xyz.sashenka.modelauthapp.model.dto.args.ArgsData
 import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
@@ -21,6 +24,9 @@ class ActivityServlet : HttpServlet() {
     @Inject
     lateinit var sessionDao: SessionDao
 
+    @Inject
+    lateinit var application: Application
+
     @InjectLogger
     lateinit var logger: KotlinLogger
 
@@ -31,12 +37,31 @@ class ActivityServlet : HttpServlet() {
     override fun service(request: HttpServletRequest, response: HttpServletResponse) {
         logger.info("Get activity info: ${request.requestURI} with ${request.queryString}")
         val query = request.queryString
-        when {
-            query.isNullOrEmpty() -> handleRequestWithEmptyParameters(response)
-            query.contains(ID) -> handleRequestWithIdParameter(request, response)
-            query.contains(ACCESS_ID) -> handleRequestWithAccessIdParameter(request, response)
-            else -> HandleError().sendErrorNotFound(response)
+        if (request.method == "GET") {
+            when {
+                query.isNullOrEmpty() -> handleRequestWithEmptyParameters(response)
+                query.contains(ID) -> handleRequestWithIdParameter(request, response)
+                query.contains(ACCESS_ID) -> handleRequestWithAccessIdParameter(request, response)
+                else -> HandleError().sendErrorNotFound(response)
+            }
+        } else if (request.method == "POST") {
+            onPost(request, response)
         }
+    }
+
+    @Throws(ServletException::class, IOException::class)
+    fun onPost(request: HttpServletRequest, response: HttpServletResponse) {
+        logger.debug(
+            "Activity DoPost ->\n" +
+                "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
+        )
+
+        val requestJson = request.reader.readLine()
+        val args: ArgsData = gson.fromJson(requestJson, ArgsData::class.java)
+        val resultCode = application.run(args.toArgsArray())
+
+        response.writer.write(gson.toJson(resultCode))
+
     }
 
     private fun handleRequestWithEmptyParameters(response: HttpServletResponse) {

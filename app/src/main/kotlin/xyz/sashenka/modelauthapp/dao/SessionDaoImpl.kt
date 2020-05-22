@@ -1,47 +1,48 @@
 package xyz.sashenka.modelauthapp.dao
 
 import com.google.inject.Inject
-import com.google.inject.Provider
-import xyz.sashenka.modelauthapp.model.domain.UserSession
-import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
+import xyz.sashenka.modelauthapp.di.HibernateProvider
 import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
-import java.sql.Date
-import javax.persistence.EntityManager
-import javax.persistence.TypedQuery
-import javax.persistence.criteria.CriteriaQuery
-import javax.persistence.criteria.Root
 
-class SessionDaoImpl @Inject constructor(
-    var entityManager: Provider<EntityManager>
-) : SessionDao {
-    override fun save(access: DBAccess, session: UserSession) {
-        entityManager.get().merge(
-            DBUserSession(
-                accessId = access.id,
-                dateStart = Date.valueOf(session.dateStart),
-                dateEnd = Date.valueOf(session.dateEnd),
-                volume = session.volume
-            )
-        )
+class SessionDaoImpl : SessionDao {
+    @Inject
+    lateinit var sessionProvider: HibernateProvider
+
+    override fun save(userSession: DBUserSession) {
+        val session = sessionProvider.get().openSession()
+        session.beginTransaction()
+        session.save(userSession)
+        session.transaction.commit()
+        session.close()
     }
 
     override fun getAll(): List<DBUserSession> {
-        val criteriaQuery = entityManager.get().criteriaBuilder.createQuery(DBUserSession::class.java)
-        val rootEntry: Root<DBUserSession> = criteriaQuery.from(DBUserSession::class.java)
-        val all: CriteriaQuery<DBUserSession> = criteriaQuery.select(rootEntry)
-        val allQuery: TypedQuery<DBUserSession> = entityManager.get().createQuery(all)
-        return allQuery.resultList
+        val session = sessionProvider.get().openSession()
+
+        val query = session.createQuery("FROM DBUserSession ", DBUserSession::class.java)
+        val userSessions = query.resultList
+
+        session.close()
+        return userSessions
     }
 
     override fun findById(id: Int): DBUserSession? {
-        return entityManager.get().find(DBUserSession::class.java, id)
+        val session = sessionProvider.get().openSession()
+        val userSession = session.get(DBUserSession::class.java, id)
+        session.close()
+        return userSession
     }
 
     override fun findByAccessId(accessId: Int): List<DBUserSession> {
-        val createQuery: CriteriaQuery<DBUserSession> =
-            entityManager.get().criteriaBuilder.createQuery(DBUserSession::class.java)
-        val root: Root<DBUserSession> = createQuery.from(DBUserSession::class.java)
-        createQuery.where(root.get<Any>("accessId").`in`(accessId))
-        return entityManager.get().createQuery(createQuery).resultList
+        val session = sessionProvider.get().openSession()
+        val query = session.createQuery(
+            "FROM DBUserSession WHERE access_id = $accessId",
+            DBUserSession::class.java
+        )
+
+        val userSessionList = query.resultList
+        session.close()
+
+        return userSessionList
     }
 }

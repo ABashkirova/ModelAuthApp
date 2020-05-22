@@ -1,23 +1,28 @@
 package xyz.sashenka.modelauthapp
 
-import xyz.sashenka.modelauthapp.di.Container
+import com.google.inject.Guice
+import org.apache.logging.log4j.kotlin.loggerOf
+import xyz.sashenka.modelauthapp.di.*
 import kotlin.system.exitProcess
 
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
-        val container = Container()
-        container.getLogger(Main::class.java).info {
+        val injector = Guice.createInjector(
+            ApplicationModule()
+        )
+        val logger = loggerOf(Main::class.java)
+        logger.info {
             "Инициализация: ${args.joinToString(" ")}"
         }
 
-        val app = Application(args, container)
-        val returnCode = app.run()
+        val app = injector.getInstance(Application::class.java)
+        val returnCode = app.run(args)
 
-        container.getLogger(Main::class.java).info {
-            "Завершение программы с кодом: ${returnCode.value}" + "\n---------"
+        logger.info {
+            "Завершение программы с кодом: ${returnCode.exitCode.value}" + "\n---------"
         }
 
-        exitProcess(returnCode.value)
+        exitProcess(returnCode.exitCode.value)
     }
 }

@@ -1,15 +1,17 @@
 package xyz.sashenka.modelauthapp.di
 
-import com.google.inject.AbstractModule
-import com.google.inject.persist.jpa.JpaPersistModule
+import com.google.inject.Provider
+import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.logger
 import org.flywaydb.core.Flyway
-import java.util.*
+import org.hibernate.SessionFactory
+import org.hibernate.cfg.Configuration
 
-class DatabaseModule : AbstractModule() {
+@Singleton
+class HibernateProvider : Provider<SessionFactory> {
+    private var sessionFactory: SessionFactory
     private val logger: KotlinLogger = logger()
-    private val persistenceUnitName = "AaaPersistenceUnit"
     private var envDriver: String = ""
     private var envUrl: String = ""
     private var envLogin: String = ""
@@ -17,31 +19,27 @@ class DatabaseModule : AbstractModule() {
     private var hibernateDialect = ""
     private val migrationLocation = "db/migration"
 
-    override fun configure() {
-        super.configure()
+    init {
+        val cfg = Configuration().configure("hibernate.cfg.xml")
         setEnv()
-        val jpaModule = JpaPersistModule(persistenceUnitName)
-        jpaModule.properties(getDatabaseEnvironments())
-        install(jpaModule)
-        bind(PersistenceInitializer::class.java).asEagerSingleton()
         migrate()
+        val url = System.getenv("JDBC_DATABASE_URL")
+        if (url != "" && url != null) {
+            logger.info("Reconfiguring hibernate to use postgres")
+            cfg.setProperty("hibernate.connection.url", url)
+            cfg.setProperty("hibernate.connection.username", System.getenv("JDBC_DATABASE_USERNAME"))
+            cfg.setProperty("hibernate.connection.password", System.getenv("JDBC_DATABASE_PASSWORD"))
+            cfg.setProperty("hibernate.connection.driverClass", "org.postgresql.Driver")
+        }
+        sessionFactory = cfg.buildSessionFactory()
     }
 
-    private fun getDatabaseEnvironments(): MutableMap<String, Any> {
-        logger.info {
-            "Env to map"
-        }
-        val envConfig: MutableMap<String, Any> = HashMap()
-        envConfig["javax.persistence.jdbc.url"] = envUrl
-        envConfig["javax.persistence.jdbc.user"] = envLogin
-        envConfig["javax.persistence.jdbc.password"] = envPass
-        envConfig["javax.persistence.jdbc.driver"] = envDriver
-        envConfig["hibernate.dialect"] = hibernateDialect
-        return envConfig
+    override fun get(): SessionFactory {
+        return sessionFactory
     }
 
     private fun setEnv() {
-        val url = System.getenv("DATABASE_URL")
+        val url = System.getenv("JDBC_DATABASE_URL")
         logger.info { "Env: [DATABASE_URL, $url]" }
         if (url.isNullOrEmpty()) {
             logger.info { "url.isNullOrEmpty(), use default local" }

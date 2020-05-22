@@ -9,7 +9,8 @@ import kotlin.test.assertNull
 class ArgHandlerSpec : Spek({
     Feature("ArgHandler") {
         Scenario("getting authentication data") {
-            val argHandler = ArgHandler(
+            val argHandler = ArgHandler()
+            argHandler.parse(
                 arrayOf(
                     "-login", "sasha", "-pass", "123"
                 )
@@ -37,13 +38,13 @@ class ArgHandlerSpec : Spek({
         }
 
         Scenario("getting authorization data") {
-            val argHandler = ArgHandler(
+            val argHandler = ArgHandler()
+            argHandler.parse(
                 arrayOf(
                     "-login", "sasha", "-pass", "123",
                     "-role", "READ", "-res", "A"
                 )
             )
-
             Then("it should have a role of read") {
                 assertEquals("READ", argHandler.role)
             }
@@ -66,7 +67,8 @@ class ArgHandlerSpec : Spek({
         }
 
         Scenario("getting accounting data") {
-            val argHandler = ArgHandler(
+            val argHandler = ArgHandler()
+            argHandler.parse(
                 arrayOf(
                     "-login", "sasha", "-pass", "123",
                     "-role", "READ", "-res", "A",
@@ -82,7 +84,7 @@ class ArgHandlerSpec : Spek({
                 assertEquals("2000-02-15", argHandler.dateEnd)
             }
 
-            Then("it should have a resource of A") {
+            Then("it should have a volume") {
                 assertEquals("10", argHandler.volume)
             }
 
@@ -100,7 +102,8 @@ class ArgHandlerSpec : Spek({
         }
 
         Scenario("getting null authentication data") {
-            val argHandler = ArgHandler(emptyArray())
+            val argHandler = ArgHandler()
+            argHandler.parse(emptyArray())
 
             Then("it should have login") {
                 assertNull(argHandler.login)

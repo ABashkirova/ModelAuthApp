@@ -1,27 +1,18 @@
 package xyz.sashenka.modelauthapp.model.dto.db
 
 import com.google.gson.annotations.Expose
-import java.util.*
-import javax.persistence.*
+import java.util.Date
 
-@Entity
-@Table(name = "user_sessions")
-data class DBUserSession @JvmOverloads constructor(
-    @Expose @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Column(name = "id")
-    val id: Int = 0,
-
-    @Expose @Column(name = "access_id")
-    val accessId: Int,
-
-    @Expose @Column(name = "start_date")
-    val dateStart: Date,
-
-    @Expose @Column(name = "end_date")
-    val dateEnd: Date,
-
-    @Expose @Column(name = "volume")
-    val volume: Int,
-
-    @Version
-    val version: Long = 1
-)
+class DBUserSession {
+    @Expose
+    var id: Int = 1
+    @Expose
+    var dateStart: Date = Date()
+    @Expose
+    var dateEnd: Date = Date()
+    @Expose
+    var volume: Int = 0
+//    var access: DBAccess? = null
+    var accessId: Int = 0
+    var version: Long = 1
+}

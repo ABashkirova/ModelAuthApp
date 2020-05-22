@@ -1,13 +1,20 @@
 package xyz.sashenka.modelauthapp
 
+import com.google.inject.Guice
 import org.junit.Assert.assertEquals
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import xyz.sashenka.modelauthapp.di.Container
+import xyz.sashenka.modelauthapp.di.ApplicationModule
 import xyz.sashenka.modelauthapp.model.ExitCode
 
 object IntegrationApplicationSpec : Spek({
-    lateinit var application: Application
+    val injector = Guice.createInjector(
+        ApplicationModule()
+    )
+    val app = injector.getInstance(Application::class.java)
+
+    lateinit var result: ExitCode
+
     describe("Help") {
         mapOf(
             arrayOf("") to ExitCode.HELP,
@@ -15,8 +22,8 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Print help for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+                    result = app.run(input).exitCode
+                    assertEquals(expected, result)
                 }
             }
         }
@@ -39,8 +46,8 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check authentication for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+                    result = app.run(input).exitCode
+                    assertEquals(expected, result)
                 }
             }
         }
@@ -67,8 +74,8 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check Authorization for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+                    result = app.run(input).exitCode
+                    assertEquals(expected, result)
                 }
             }
         }
@@ -111,8 +118,8 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check Accounting for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    application = Application(input, Container())
-                    assertEquals(expected, application.run())
+                    result = app.run(input).exitCode
+                    assertEquals(expected, result)
                 }
             }
         }

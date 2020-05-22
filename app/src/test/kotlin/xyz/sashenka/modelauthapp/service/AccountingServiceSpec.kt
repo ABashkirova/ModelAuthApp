@@ -7,12 +7,13 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.domain.UserSession
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 
 object AccountingServiceSpec : Spek({
-    lateinit var accountingService: AccountingService
+    lateinit var accountingService: AccountingServiceImpl
     val sessionRepositoryMock = mockk<SessionRepository>()
-    val access = DBAccess(0, 0, "", "")
+    val access = DBAccess(0, DBUser(), "", "")
     val session = UserSession("", "", "", "", 0)
     every { sessionRepositoryMock.addSession(access, session) } returns Unit
 
@@ -20,7 +21,8 @@ object AccountingServiceSpec : Spek({
         Scenario("login is valid") {
 
             Given("set repository") {
-                accountingService = AccountingService(sessionRepositoryMock)
+                accountingService = AccountingServiceImpl()
+                accountingService.sessionRepository = sessionRepositoryMock
             }
             Then("check addSession") {
                 accountingService.saveSession(access, session)
