@@ -21,7 +21,7 @@ class ApplicationModule : AbstractModule() {
         bind(SessionRepository::class.java).to(SessionRepositoryImpl::class.java).`in`(Singleton::class.java)
 
         bind(AuthenticationService::class.java).to(AuthenticationServiceImpl::class.java).`in`(Singleton::class.java)
-        bind(AuthorizationService::class.java).to(AuthorizationService::class.java).`in`(Singleton::class.java)
+        bind(AuthorizationService::class.java).to(AuthorizationServiceImpl::class.java).`in`(Singleton::class.java)
         bind(AccountingService::class.java).to(AccountingServiceImpl::class.java).`in`(Singleton::class.java)
         bind(HelpService::class.java).to(HelpService::class.java).`in`(Singleton::class.java)
         bind(ValidatingService::class.java).to(ValidatingService::class.java).`in`(Singleton::class.java)

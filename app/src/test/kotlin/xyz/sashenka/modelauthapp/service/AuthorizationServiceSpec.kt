@@ -28,7 +28,7 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check access") {
             Given("Set repository") {
-                authService = AuthorizationService(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl(resourceRepositoryMock)
             }
 
             Then("It should be access") {
@@ -41,7 +41,7 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check get resource access") {
             Given("Set repository") {
-                authService = AuthorizationService(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl(resourceRepositoryMock)
             }
 
             Then("It should be access") {
@@ -64,7 +64,7 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check no access") {
             Given("Set repository") {
-                authService = AuthorizationService(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl(resourceRepositoryMock)
             }
 
             Then("It should be access") {
@@ -77,7 +77,7 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check get null access resource") {
             Given("Set repository") {
-                authService = AuthorizationService(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl(resourceRepositoryMock)
             }
 
             Then("It should non be access") {

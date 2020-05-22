@@ -20,7 +20,7 @@ class Container(
 
     fun getAuthenticationService(): AuthenticationService? =injector.getInstance(AuthenticationServiceImpl::class.java)
 
-    fun getAuthorizationService(): AuthorizationService? = injector.getInstance(AuthorizationService::class.java)
+    fun getAuthorizationService(): AuthorizationService? = injector.getInstance(AuthorizationServiceImpl::class.java)
 
     fun getAccountingService(): AccountingService? = injector.getInstance(AccountingServiceImpl::class.java)
 
