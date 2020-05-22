@@ -19,11 +19,16 @@ import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.*
 
 class Application {
-    @Inject lateinit var helpService: HelpService
-    @Inject lateinit var validatingService: ValidatingService
-    @Inject lateinit var authenticationService: AuthenticationService
-    @Inject lateinit var authorizationService: AuthorizationService
-    @Inject lateinit var accountingService: AccountingService
+    @Inject
+    lateinit var helpService: HelpService
+    @Inject
+    lateinit var validatingService: ValidatingService
+    @Inject
+    lateinit var authenticationService: AuthenticationService
+    @Inject
+    lateinit var authorizationService: AuthorizationService
+    @Inject
+    lateinit var accountingService: AccountingService
 
     private val logger = loggerOf(Application::class.java)
     private val nonCorrectActivity = "Неверная активность: "
@@ -121,7 +126,7 @@ class Application {
             return ResultCode(WRONG_PASSWORD, "Wrong password", null, null)
         }
 
-        return ResultCode(SUCCESS, "UserId: ${user.id}", user.id,null)
+        return ResultCode(SUCCESS, "UserId: ${user.id}", user.id, null)
     }
 
     private fun startAuthorization(usersResources: UsersResources): ResultCode {
@@ -130,10 +135,10 @@ class Application {
                 "Нет доступа к ресурсу(${usersResources.path})" +
                     "c запрашиваемым доступом(${usersResources.role})"
             }
-            return ResultCode(NO_ACCESS, "No access to resource ${usersResources.path}", null,null)
+            return ResultCode(NO_ACCESS, "No access to resource ${usersResources.path}", null, null)
         }
         val access = authorizationService.getResourceAccess(usersResources)
-        return ResultCode(SUCCESS, "AccessId: ${access?.id}",access?.user?.id, access?.id)
+        return ResultCode(SUCCESS, "AccessId: ${access?.id}", access?.user?.id, access?.id)
     }
 
     private fun startAccounting(usersResources: UsersResources, accountingData: AccountingData): ResultCode {
@@ -143,14 +148,14 @@ class Application {
                 "Неверная активность: " +
                     "дата начала сессии невалидна по формату ${accountingData.startDate}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid start date ${accountingData.startDate}",null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid start date ${accountingData.startDate}", null, null)
         }
         val endDate = validatingService.parseDate(accountingData.endDate)
         if (endDate == null) {
             logger.error {
                 nonCorrectActivity + "дата окончании сессии невалидна по формату ${accountingData.endDate}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid end date ${accountingData.endDate}",null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid end date ${accountingData.endDate}", null, null)
         }
         val volume = validatingService.parseVolume(accountingData.volume)
         if (volume == null) {
