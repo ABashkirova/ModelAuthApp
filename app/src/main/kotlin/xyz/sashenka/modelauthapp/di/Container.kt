@@ -8,6 +8,7 @@ import xyz.sashenka.modelauthapp.dao.UserDao
 import xyz.sashenka.modelauthapp.dao.SessionDao
 import xyz.sashenka.modelauthapp.dao.ResourceDao
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
+import xyz.sashenka.modelauthapp.repository.ResourceRepositoryImpl
 import xyz.sashenka.modelauthapp.repository.SessionRepository
 import xyz.sashenka.modelauthapp.repository.UserRepository
 import xyz.sashenka.modelauthapp.service.AuthenticationService
@@ -42,7 +43,7 @@ class Container(
 
     fun getUserRepository(): UserRepository? = getUserDao()?.let { UserRepository(it) }
 
-    fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepository(it) }
+    fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepositoryImpl(it) }
 
     fun getSessionRepository(): SessionRepository? = getSessionDao()?.let { SessionRepository(it) }
 
