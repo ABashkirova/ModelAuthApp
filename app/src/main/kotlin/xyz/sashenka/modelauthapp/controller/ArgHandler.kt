@@ -6,8 +6,8 @@ import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
 
-class ArgHandler(args: Array<String>) {
-    private val parser = ArgParser("app.jar", true)
+class ArgHandler {
+    private val parser = ArgParser("aaa.jar", true)
 
     val login: String? by parser.option(
         ArgType.String,
@@ -45,7 +45,7 @@ class ArgHandler(args: Array<String>) {
         description = "Потребляемый объем, целое число"
     )
 
-    init {
+    fun parse(args: Array<String>) {
         try {
             parser.parse(args)
         } catch (ex: IllegalStateException) {
