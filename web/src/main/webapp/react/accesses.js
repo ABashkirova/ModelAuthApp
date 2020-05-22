@@ -30,6 +30,7 @@ class Accesses extends React.Component {
                     this.props.handleClick('Activities', access.id)
                 }} key={access.id}>
                     <td>{access.id}</td>
+                    <td>{access.user.login}</td>
                     <td>{access.resource}</td>
                     <td>{access.role}</td>
                 </tr>
@@ -47,6 +48,7 @@ class Accesses extends React.Component {
                     <thead>
                     <tr>
                         <th scope="col">id</th>
+                        <th scope="col">login</th>
                         <th scope="col">resource</th>
                         <th scope="col">role</th>
                     </tr>
