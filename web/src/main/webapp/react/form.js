@@ -194,7 +194,7 @@ class Form extends React.Component {
                   if(result.exitCode=="SUCCESS") {
                     //вызов Page.refreshActivities(userId, accessId)
                     console.log("accessId"+result.accessId)
-                    this.props.refreshActivities(0, result.accessId)
+                    this.props.refreshActivities(result.userId, result.accessId)
                   }
             })
     }
