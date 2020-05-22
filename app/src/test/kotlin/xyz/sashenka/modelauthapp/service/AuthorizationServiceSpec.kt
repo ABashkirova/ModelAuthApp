@@ -12,23 +12,25 @@ import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.domain.Role
 import xyz.sashenka.modelauthapp.model.domain.UsersResources
 import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.repository.ResourceRepository
 import kotlin.test.assertEquals
 
 object AuthorizationServiceSpec : Spek({
-    lateinit var authService: AuthorizationService
+    lateinit var authService: AuthorizationServiceImpl
 
     Feature("Authorisation service") {
         val usersResources = UsersResources("A", Role.READ, "sasha")
         val resourceRepositoryMock = mockk<ResourceRepository>()
-        val expectedAccess = DBAccess(0, 0, "A", "READ")
+        val expectedAccess = DBAccess(0, DBUser(), "A", "READ")
         every {
             resourceRepositoryMock.getResourcesByUserLogin(usersResources)
         } returns expectedAccess
 
         Scenario("Check access") {
             Given("Set repository") {
-                authService = AuthorizationServiceImpl(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl()
+                authService.resourceRepository = resourceRepositoryMock
             }
 
             Then("It should be access") {
@@ -41,7 +43,8 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check get resource access") {
             Given("Set repository") {
-                authService = AuthorizationServiceImpl(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl()
+                authService.resourceRepository = resourceRepositoryMock
             }
 
             Then("It should be access") {
@@ -64,7 +67,8 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check no access") {
             Given("Set repository") {
-                authService = AuthorizationServiceImpl(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl()
+                authService.resourceRepository = resourceRepositoryMock
             }
 
             Then("It should be access") {
@@ -77,7 +81,8 @@ object AuthorizationServiceSpec : Spek({
 
         Scenario("Check get null access resource") {
             Given("Set repository") {
-                authService = AuthorizationServiceImpl(resourceRepositoryMock)
+                authService = AuthorizationServiceImpl()
+                authService.resourceRepository = resourceRepositoryMock
             }
 
             Then("It should non be access") {

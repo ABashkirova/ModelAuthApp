@@ -12,29 +12,16 @@ import xyz.sashenka.modelauthapp.model.ExitCode
 import kotlin.test.assertEquals
 
 object HelpApplicationSpec : Spek({
-    lateinit var app: Application
-    val containerMock = mockk<Container>()
-    val argHandlerMock = mockk<ArgHandler>()
+    val app = Application()
 
-    every { containerMock.getLogger(Application::class.java) } returns loggerOf(ApplicationSpec::class.java)
-
+    lateinit var result: ExitCode
     Feature("Get Help") {
         Scenario("print help") {
             Given("App with args: -h") {
-                app = Application(arrayOf("-h"), containerMock)
-            }
-            When("container init service") {
-                every { containerMock.getArgHandler(ofType()) } returns argHandlerMock
-                every { argHandlerMock.getAuthenticationData() } returns null
-                every { containerMock.getHelpService().printHelp() } returns Unit
+                result = app.run(arrayOf("-h"))
             }
             Then("Return code Help") {
-                assertEquals(ExitCode.HELP, app.run())
-                verifyOrder {
-                    containerMock.getArgHandler(ofType())
-                    argHandlerMock.getAuthenticationData()
-                    containerMock.getHelpService().printHelp()
-                }
+                assertEquals(ExitCode.HELP, result)
             }
         }
     }

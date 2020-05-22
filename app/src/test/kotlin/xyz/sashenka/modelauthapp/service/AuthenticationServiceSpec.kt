@@ -15,7 +15,7 @@ import kotlin.test.assertFalse
 
 object AuthenticationServiceSpec : Spek({
     Feature("Authentication service") {
-        lateinit var authService: AuthenticationService
+        lateinit var authService: AuthenticationServiceImpl
 
         Scenario("user is exist") {
             val userLogin = "sasha"
@@ -30,7 +30,8 @@ object AuthenticationServiceSpec : Spek({
             } returns userSasha
 
             Given("Set repository") {
-                authService = AuthenticationServiceImpl(userRepositoryMock)
+                authService = AuthenticationServiceImpl()
+                authService.userRepository = userRepositoryMock
             }
 
             Then("it should be exist") {
@@ -50,7 +51,8 @@ object AuthenticationServiceSpec : Spek({
             } returns null
 
             Given("Set repository") {
-                authService = AuthenticationServiceImpl(userRepositoryMock)
+                authService = AuthenticationServiceImpl()
+                authService.userRepository = userRepositoryMock
             }
 
             Then("it should be not exist of vasya") {
@@ -69,7 +71,8 @@ object AuthenticationServiceSpec : Spek({
             )
             Given("Set repository") {
                 val userRepositoryMock = mockk<UserRepository>()
-                authService = AuthenticationServiceImpl(userRepositoryMock)
+                authService = AuthenticationServiceImpl()
+                authService.userRepository = userRepositoryMock
             }
             Then("it should be verified for sasha pass 123") {
                 assertTrue(authService.verifyPass(user, "123"))
