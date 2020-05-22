@@ -4,7 +4,6 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
-import xyz.sashenka.modelauthapp.Application
 import xyz.sashenka.modelauthapp.dao.SessionDao
 import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
@@ -15,8 +14,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Singleton
-class
-ActivityServlet : HttpServlet() {
+class ActivityServlet : HttpServlet() {
     @Inject
     lateinit var gson: Gson
 
