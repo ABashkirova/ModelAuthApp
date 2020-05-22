@@ -36,10 +36,10 @@ class Table extends React.Component {
     }
 
     render() {
-//        console.log("in Table render state.userId: "+this.state.userId)
-//        console.log("in Table render props.userId: "+this.props.userId)
-//        console.log("in Table render state.contentType: "+this.state.contentType)
-//        console.log("in Table render props.contentType: "+this.props.contentType)
+       console.log("in Table render state.userId: "+this.state.userId)
+       console.log("in Table render props.userId: "+this.props.userId)
+       console.log("in Table render state.contentType: "+this.state.contentType)
+       console.log("in Table render props.contentType: "+this.props.contentType)
         const ct = this.state.contentType;
         if (ct === 'Activities') {
             return <Activities handleClick={this.handleActivityClick} userId={this.state.userId} accessId={this.state.accessId}/>
