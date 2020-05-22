@@ -1,6 +1,7 @@
 package xyz.sashenka.modelauthapp.di
 
 import com.google.inject.AbstractModule
+import com.google.inject.Provides
 import com.google.inject.Singleton
 import xyz.sashenka.modelauthapp.Application
 import xyz.sashenka.modelauthapp.controller.ArgHandler
@@ -26,7 +27,6 @@ class ApplicationModule : AbstractModule() {
         bind(AccountingService::class.java).to(AccountingServiceImpl::class.java).`in`(Singleton::class.java)
         bind(HelpService::class.java).`in`(Singleton::class.java)
         bind(ValidatingService::class.java).`in`(Singleton::class.java)
-        bind(ArgHandler::class.java).`in`(Singleton::class.java)
 
         bind(Application::class.java).`in`(Singleton::class.java)
     }

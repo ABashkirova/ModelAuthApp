@@ -2,6 +2,7 @@ package xyz.sashenka.modelauthapp.controller
 
 import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
+import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthenticationData
 import xyz.sashenka.modelauthapp.model.dto.args.AuthorizationData
