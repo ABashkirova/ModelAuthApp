@@ -45,7 +45,6 @@ class ArgHandlerSpec : Spek({
                     "-role", "READ", "-res", "A"
                 )
             )
-            println(argHandler.role)
             Then("it should have a role of read") {
                 assertEquals("READ", argHandler.role)
             }

@@ -5,7 +5,8 @@ import io.mockk.mockk
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.model.dto.db.DBAccess
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.service.AccountingService
 import xyz.sashenka.modelauthapp.service.AuthenticationService
 import xyz.sashenka.modelauthapp.service.AuthorizationService
@@ -19,7 +20,8 @@ object AccountingAppSpec : Spek({
     val authorizationServiceMock = mockk<AuthorizationService>()
     val accountingServiceMock = mockk<AccountingService>()
 
-    val user = User(
+    val user = DBUser(
+        0,
         "sasha",
         "bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3",
         "V9Me2nx"
@@ -38,11 +40,17 @@ object AccountingAppSpec : Spek({
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
                 every { validationServiceMock.isRoleValid(ofType()) } returns true
                 every { authorizationServiceMock.checkAccess(ofType()) } returns true
+                every { authorizationServiceMock.getResourceAccess(ofType()) } returns DBAccess()
             }
             Then("Return code SUCCESS") {
                 assertEquals(
                     ExitCode.SUCCESS,
-                    app.run("-login sasha -pass qwerty -role READ -res A".split(" ").toTypedArray())
+                    app.run(
+                        "-login sasha -pass qwerty -role READ -res A"
+                            .split(" ")
+                            .toTypedArray()
+                    )
+                        .exitCode
                 )
             }
         }
@@ -58,7 +66,12 @@ object AccountingAppSpec : Spek({
             Then("Return code NO_ACCESS") {
                 assertEquals(
                     ExitCode.NO_ACCESS,
-                    app.run("-login sasha -pass qwerty -role READ -res A".split(" ").toTypedArray())
+                    app.run(
+                        "-login sasha -pass qwerty -role READ -res A"
+                            .split(" ")
+                            .toTypedArray()
+                    )
+                        .exitCode
                 )
             }
         }
@@ -70,6 +83,7 @@ object AccountingAppSpec : Spek({
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
                 every { validationServiceMock.isRoleValid(ofType()) } returns true
                 every { authorizationServiceMock.checkAccess(ofType()) } returns true
+                every { authorizationServiceMock.getResourceAccess(ofType()) } returns DBAccess()
                 every { validationServiceMock.parseDate(ofType()) } returns Date()
                 every { validationServiceMock.parseVolume(ofType()) } returns -1
                 every { validationServiceMock.areDatesValid(ofType(), ofType()) } returns true
@@ -79,9 +93,10 @@ object AccountingAppSpec : Spek({
                 assertEquals(
                     ExitCode.INVALID_ACTIVITY,
                     app.run(
-                        "-login sasha -pass qwerty -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1".split(" ")
+                        "-login sasha -pass qwerty -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol -1"
+                            .split(" ")
                             .toTypedArray()
-                    )
+                    ).exitCode
                 )
             }
         }
@@ -93,6 +108,7 @@ object AccountingAppSpec : Spek({
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
                 every { validationServiceMock.isRoleValid(ofType()) } returns true
                 every { authorizationServiceMock.checkAccess(ofType()) } returns true
+                every { authorizationServiceMock.getResourceAccess(ofType()) } returns DBAccess()
                 every { validationServiceMock.parseDate(ofType()) } returns Date()
                 every { validationServiceMock.parseVolume(ofType()) } returns 10
                 every { validationServiceMock.areDatesValid(ofType(), ofType()) } returns false
@@ -104,7 +120,7 @@ object AccountingAppSpec : Spek({
                         "-login sasha -pass qwerty -role READ -res A -ds 2000-01-15 -de 2000-01-10 -vol 10"
                             .split(" ")
                             .toTypedArray()
-                    )
+                    ).exitCode
                 )
             }
         }
@@ -116,6 +132,7 @@ object AccountingAppSpec : Spek({
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
                 every { validationServiceMock.isRoleValid(ofType()) } returns true
                 every { authorizationServiceMock.checkAccess(ofType()) } returns true
+                every { authorizationServiceMock.getResourceAccess(ofType()) } returns DBAccess()
                 every { validationServiceMock.parseDate(ofType()) } returns Date()
                 every { validationServiceMock.parseVolume(ofType()) } returns null
             }
@@ -123,9 +140,10 @@ object AccountingAppSpec : Spek({
                 assertEquals(
                     ExitCode.INVALID_ACTIVITY,
                     app.run(
-                        "-login sasha -pass qwerty -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.1".split(" ")
+                        "-login sasha -pass qwerty -role READ -res A -ds 2000-01-15 -de 2000-02-15 -vol 10.1"
+                            .split(" ")
                             .toTypedArray()
-                    )
+                    ).exitCode
                 )
             }
         }
@@ -137,15 +155,17 @@ object AccountingAppSpec : Spek({
                 every { authenticationServiceMock.verifyPass(ofType(), ofType()) } returns true
                 every { validationServiceMock.isRoleValid(ofType()) } returns true
                 every { authorizationServiceMock.checkAccess(ofType()) } returns true
+                every { authorizationServiceMock.getResourceAccess(ofType()) } returns DBAccess()
                 every { validationServiceMock.parseDate(ofType()) } returns null
             }
             Then("Return code INVALID_ACTIVITY") {
                 assertEquals(
                     ExitCode.INVALID_ACTIVITY,
                     app.run(
-                        "-login sasha -pass qwerty -role READ -res A -ds 2000-00-15 -de 2000-02-15 -vol 10".split(" ")
+                        "-login sasha -pass qwerty -role READ -res A -ds 2000-00-15 -de 2000-02-15 -vol 10"
+                            .split(" ")
                             .toTypedArray()
-                    )
+                    ).exitCode
                 )
             }
         }

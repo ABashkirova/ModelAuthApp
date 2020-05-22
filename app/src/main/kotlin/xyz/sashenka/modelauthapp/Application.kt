@@ -3,7 +3,6 @@ package xyz.sashenka.modelauthapp
 import com.google.inject.Inject
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
-import xyz.sashenka.modelauthapp.model.ExitCode
 import xyz.sashenka.modelauthapp.model.ExitCode.HELP
 import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_ACTIVITY
 import xyz.sashenka.modelauthapp.model.ExitCode.INVALID_LOGIN_FORMAT

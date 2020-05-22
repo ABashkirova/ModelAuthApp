@@ -22,7 +22,7 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Print help for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    result = app.run(input)
+                    result = app.run(input).exitCode
                     assertEquals(expected, result)
                 }
             }
@@ -46,7 +46,7 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check authentication for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    result = app.run(input)
+                    result = app.run(input).exitCode
                     assertEquals(expected, result)
                 }
             }
@@ -74,7 +74,7 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check Authorization for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    result = app.run(input)
+                    result = app.run(input).exitCode
                     assertEquals(expected, result)
                 }
             }
@@ -118,7 +118,7 @@ object IntegrationApplicationSpec : Spek({
         ).forEach { (input, expected) ->
             describe("Check Accounting for ${input.joinToString()}") {
                 it("Correctly returns $expected") {
-                    result = app.run(input)
+                    result = app.run(input).exitCode
                     assertEquals(expected, result)
                 }
             }

@@ -5,7 +5,7 @@ import io.mockk.mockk
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.gherkin.Feature
 import xyz.sashenka.modelauthapp.model.ExitCode
-import xyz.sashenka.modelauthapp.model.domain.User
+import xyz.sashenka.modelauthapp.model.dto.db.DBUser
 import xyz.sashenka.modelauthapp.service.AuthenticationService
 import xyz.sashenka.modelauthapp.service.ValidatingService
 import kotlin.test.assertEquals
@@ -14,7 +14,8 @@ object AuthenticationAppSpec : Spek({
     val validationServiceMock = mockk<ValidatingService>()
     val authenticationServiceMock = mockk<AuthenticationService>()
 
-    val user = User(
+    val user = DBUser(
+        0,
         "sasha",
         "bc4725cd5915a9cda45d2835bdd8e444be15c7c9aabdd0dc8693d7a7d2500dc3",
         "V9Me2nx"
@@ -34,7 +35,11 @@ object AuthenticationAppSpec : Spek({
             Then("Return code SUCCESS") {
                 assertEquals(
                     ExitCode.SUCCESS,
-                    app.run("-login sasha -pass qwerty".split(" ").toTypedArray())
+                    app.run(
+                        "-login sasha -pass qwerty"
+                            .split(" ")
+                            .toTypedArray()
+                    ).exitCode
                 )
             }
         }
@@ -48,7 +53,11 @@ object AuthenticationAppSpec : Spek({
             Then("Return code WRONG_PASSWORD") {
                 assertEquals(
                     ExitCode.WRONG_PASSWORD,
-                    app.run("-login sasha -pass qwerty".split(" ").toTypedArray())
+                    app.run(
+                        "-login sasha -pass qwerty"
+                            .split(" ")
+                            .toTypedArray()
+                    ).exitCode
                 )
             }
         }
@@ -61,7 +70,11 @@ object AuthenticationAppSpec : Spek({
             Then("Return code UNKNOWN_LOGIN") {
                 assertEquals(
                     ExitCode.UNKNOWN_LOGIN,
-                    app.run("-login sasha -pass qwerty".split(" ").toTypedArray())
+                    app.run(
+                        "-login sasha -pass qwerty"
+                            .split(" ")
+                            .toTypedArray()
+                    ).exitCode
                 )
             }
         }
