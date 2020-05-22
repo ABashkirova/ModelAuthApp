@@ -12,6 +12,7 @@ class DBUserSession {
     var dateEnd: Date = Date()
     @Expose
     var volume: Int = 0
-    var access: DBAccess? = null
+//    var access: DBAccess? = null
+    var accessId: Int = 0
     var version: Long = 1
 }

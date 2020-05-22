@@ -15,7 +15,7 @@ class SessionRepositoryImpl : SessionRepository {
 
     override fun addSession(access: DBAccess, session: UserSession) {
         val dbSession = DBUserSession()
-        dbSession.access = access
+        dbSession.accessId = access.id
         dbSession.dateStart = Date.valueOf(session.dateStart)
         dbSession.dateEnd = Date.valueOf(session.dateEnd)
         dbSession.volume = session.volume
