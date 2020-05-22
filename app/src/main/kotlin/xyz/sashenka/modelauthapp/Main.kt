@@ -20,9 +20,9 @@ object Main {
         val returnCode = app.run(args)
 
         logger.info {
-            "Завершение программы с кодом: ${returnCode.value}" + "\n---------"
+            "Завершение программы с кодом: ${returnCode.exitCode.value}" + "\n---------"
         }
 
-        exitProcess(returnCode.value)
+        exitProcess(returnCode.exitCode.value)
     }
 }

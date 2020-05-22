@@ -58,9 +58,9 @@ class ActivityServlet : HttpServlet() {
 
         val requestJson = request.reader.readLine()
         val args: ArgsData = gson.fromJson(requestJson, ArgsData::class.java)
-        val result: ExitCode = application.run(args.toArgsArray())
+        val resultCode = application.run(args.toArgsArray())
 
-        response.writer.write(gson.toJson(result))
+        response.writer.write(gson.toJson(resultCode))
 
     }
 

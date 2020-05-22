@@ -9,5 +9,5 @@ class UserRepositoryImpl : UserRepository {
     @Inject
     lateinit var dao: UserDao
 
-    override fun getUserByLogin(login: String) = dao.findUser(login)?.toPlain()
+    override fun getUserByLogin(login: String) = dao.findUser(login)
 }
