@@ -4,10 +4,6 @@ import com.google.inject.Injector
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
-import xyz.sashenka.modelauthapp.dao.UserDao
-import xyz.sashenka.modelauthapp.dao.SessionDao
-import xyz.sashenka.modelauthapp.dao.ResourceDao
-import xyz.sashenka.modelauthapp.repository.*
 import xyz.sashenka.modelauthapp.service.AuthenticationService
 import xyz.sashenka.modelauthapp.service.AuthorizationService
 import xyz.sashenka.modelauthapp.service.HelpService
@@ -17,36 +13,19 @@ import xyz.sashenka.modelauthapp.service.AccountingService
 class Container(
     private val injector: Injector
 ) {
-    private lateinit var validatingService: ValidatingService
 
     fun getLogger(ofClass: Class<*>): KotlinLogger = loggerOf(ofClass)
 
-    fun getArgHandler(args: Array<String>): ArgHandler = ArgHandler(args)
+    fun getArgHandler(): ArgHandler = injector.getInstance(ArgHandler::class.java)
 
-    fun getValidatingService(): ValidatingService {
-        if (!::validatingService.isInitialized) {
-            validatingService = ValidatingService()
-        }
-        return validatingService
-    }
+    fun getValidatingService(): ValidatingService = injector.getInstance(ValidatingService::class.java )
 
-    fun getHelpService(): HelpService = HelpService()
+    fun getHelpService(): HelpService = injector.getInstance(HelpService::class.java)
 
-    fun getAuthenticationService(): AuthenticationService? = getUserRepository()?.let { AuthenticationService(it) }
+    fun getAuthenticationService(): AuthenticationService? =injector.getInstance(AuthenticationService::class.java)
 
-    fun getAuthorizationService(): AuthorizationService? = getResourceRepository()?.let { AuthorizationService(it) }
+    fun getAuthorizationService(): AuthorizationService? = injector.getInstance(AuthorizationService::class.java)
 
-    fun getAccountingService(): AccountingService? = getSessionRepository()?.let { AccountingService(it) }
+    fun getAccountingService(): AccountingService? = injector.getInstance(AccountingService::class.java)
 
-    fun getUserRepository(): UserRepository? = getUserDao()?.let { UserRepositoryImpl(it) }
-
-    fun getResourceRepository(): ResourceRepository? = getResourceDao()?.let { ResourceRepositoryImpl(it) }
-
-    fun getSessionRepository(): SessionRepository? = getSessionDao()?.let { SessionRepositoryImpl(it) }
-
-    fun getUserDao(): UserDao? = injector.getInstance(UserDao::class.java)
-
-    fun getResourceDao(): ResourceDao? = injector.getInstance(ResourceDao::class.java)
-
-    fun getSessionDao(): SessionDao? = injector.getInstance(SessionDao::class.java)
 }
