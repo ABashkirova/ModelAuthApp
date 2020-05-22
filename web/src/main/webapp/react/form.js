@@ -189,17 +189,14 @@ class Form extends React.Component {
         })
             .then(result => result.json())
             .then(result => {
-                json = JSON.stringify(result)
-                alert(json)
+                  //json = JSON.stringify(result)
+                  alert(result.exitCode)
+                  if(result.exitCode=="SUCCESS") {
+                    //вызов Page.refreshActivities(userId, accessId)
+                    console.log("accessId"+result.accessId)
+                    this.props.refreshActivities(0, result.accessId)
+                  }
             })
-            .then(() => {
-                    if (json == "\"SUCCESS\"") this.props.refreshActivities(0, 1)
-                }//надо получить userId и accessId из json
-            )
-
-
-        //this.props.refreshActivities(1,1)
-
     }
 
 
