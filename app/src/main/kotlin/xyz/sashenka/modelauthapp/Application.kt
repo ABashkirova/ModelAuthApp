@@ -19,7 +19,6 @@ import xyz.sashenka.modelauthapp.model.dto.args.AccountingData
 import xyz.sashenka.modelauthapp.service.*
 
 class Application {
-    lateinit var argHandler: ArgHandler
     @Inject lateinit var helpService: HelpService
     @Inject lateinit var validatingService: ValidatingService
     @Inject lateinit var authenticationService: AuthenticationService
@@ -31,7 +30,7 @@ class Application {
 
     fun run(args: Array<String>): ExitCode {
         logger.info { "Старт выполнения запроса" }
-        argHandler = ArgHandler()
+        val argHandler = ArgHandler()
         argHandler.parse(args)
 
         val authenticationData = argHandler.getAuthenticationData()

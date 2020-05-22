@@ -64,7 +64,7 @@ class ResourceDaoImpl : ResourceDao {
                 FROM DBAccess
                 WHERE 
                 user.login = '$login' 
-                AND role = '${role}' 
+                AND role = '$role' 
                 AND resource=SUBSTRING('$resource',1,LENGTH(resource)) 
                 """, DBAccess::class.java
             ).singleResult

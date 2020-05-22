@@ -137,7 +137,6 @@
 |R8.17 Используйте PostgreSQL предоставляемую сервисом Heroku|[Heroku postgres](https://www.heroku.com/postgres)|
 |R8.18 Используйте пулл коннектов c3p0| [c3p0](https://www.baeldung.com/hibernate-c3p0) |
 
-
 ## Requirements #9
 
 | Требование | Комментарий |
