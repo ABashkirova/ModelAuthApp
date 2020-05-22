@@ -47,12 +47,12 @@ class Application {
         if (authenticationData == null) {
             logger.info { "Данных для аутентификации нет -> Печать справки" }
             helpService.printHelp()
-            return ResultCode(HELP, "Print help", null, null)
+            return ResultCode(HELP, "Print help")
         }
 
         if (!validatingService.isLoginValid(authenticationData.login)) {
             logger.error { "Неверный формат логина: ${authenticationData.login}" }
-            return ResultCode(INVALID_LOGIN_FORMAT, "Invalid login", null, null)
+            return ResultCode(INVALID_LOGIN_FORMAT, "Invalid login")
         }
 
         // Authentication
@@ -75,7 +75,7 @@ class Application {
             logger.error {
                 "Полученено неверное значение роли (${authorizationData.role}). " + "Завершаем шаг: $UNKNOWN_ROLE"
             }
-            return ResultCode(UNKNOWN_ROLE, "Unknown role ${authorizationData.role}", null, null)
+            return ResultCode(UNKNOWN_ROLE, "Unknown role ${authorizationData.role}")
         }
         val usersResources = UsersResources(
             authorizationData.path,
@@ -122,15 +122,15 @@ class Application {
         val user = authenticationService.findUser(login)
         if (user == null) {
             logger.error { "Не найден пользователь с логином: $login" }
-            return ResultCode(UNKNOWN_LOGIN, "Unknown login: $login", null, null)
+            return ResultCode(UNKNOWN_LOGIN, "Unknown login: $login")
         }
 
         if (!authenticationService.verifyPass(user.toPlain(), password)) {
             logger.error { "Неверный пароль" }
-            return ResultCode(WRONG_PASSWORD, "Wrong password", null, null)
+            return ResultCode(WRONG_PASSWORD, "Wrong password")
         }
 
-        return ResultCode(SUCCESS, "UserId: ${user.id}", user.id, null)
+        return ResultCode(SUCCESS, "UserId: ${user.id}", userId = user.id)
     }
 
     private fun startAuthorization(usersResources: UsersResources): ResultCode {
@@ -139,7 +139,7 @@ class Application {
                 "Нет доступа к ресурсу(${usersResources.path})" +
                     "c запрашиваемым доступом(${usersResources.role})"
             }
-            return ResultCode(NO_ACCESS, "No access to resource ${usersResources.path}", null, null)
+            return ResultCode(NO_ACCESS, "No access to resource ${usersResources.path}")
         }
         val access = authorizationService.getResourceAccess(usersResources)
         return ResultCode(SUCCESS, "AccessId: ${access?.id}", access?.user?.id, access?.id)
@@ -152,34 +152,34 @@ class Application {
                 "Неверная активность: " +
                     "дата начала сессии невалидна по формату ${accountingData.startDate}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid start date ${accountingData.startDate}", null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid start date ${accountingData.startDate}")
         }
         val endDate = validatingService.parseDate(accountingData.endDate)
         if (endDate == null) {
             logger.error {
                 nonCorrectActivity + "дата окончании сессии невалидна по формату ${accountingData.endDate}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid end date ${accountingData.endDate}", null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid end date ${accountingData.endDate}")
         }
         val volume = validatingService.parseVolume(accountingData.volume)
         if (volume == null) {
             logger.error {
                 nonCorrectActivity + "объем ресурса невалиден по формату ${accountingData.volume}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid volume ${accountingData.volume}", null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid volume ${accountingData.volume}")
         }
 
         if (!(validatingService.areDatesValid(startDate, endDate) && validatingService.isVolumeValid(volume))) {
             logger.error {
                 nonCorrectActivity + "дата  ${accountingData.startDate}"
             }
-            return ResultCode(INVALID_ACTIVITY, "Invalid dates or volume", null, null)
+            return ResultCode(INVALID_ACTIVITY, "Invalid dates or volume")
         }
 
         val userAccess = authorizationService.getResourceAccess(usersResources)
         if (userAccess == null) {
             logger.error { "Нет доступа, на попытке аккаунтиться" }
-            return ResultCode(NO_ACCESS, "No access on accounting :(", null, null)
+            return ResultCode(NO_ACCESS, "No access on accounting :(")
         }
 
         val session = UserSession(
@@ -191,6 +191,11 @@ class Application {
         )
         accountingService.saveSession(userAccess, session)
 
-        return ResultCode(SUCCESS, "AccessId: ${userAccess.id}", null, userAccess.id)
+        return ResultCode(
+            SUCCESS,
+            "AccessId: ${userAccess.id}",
+            userId = userAccess.user?.id,
+            accessId = userAccess.id
+        )
     }
 }
