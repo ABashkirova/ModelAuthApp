@@ -20,7 +20,7 @@ class ApplicationModule : AbstractModule() {
         bind(ResourceRepository::class.java).to(ResourceRepositoryImpl::class.java).`in`(Singleton::class.java)
         bind(SessionRepository::class.java).to(SessionRepositoryImpl::class.java).`in`(Singleton::class.java)
 
-        bind(AuthenticationService::class.java).to(AuthenticationService::class.java).`in`(Singleton::class.java)
+        bind(AuthenticationService::class.java).to(AuthenticationServiceImpl::class.java).`in`(Singleton::class.java)
         bind(AuthorizationService::class.java).to(AuthorizationService::class.java).`in`(Singleton::class.java)
         bind(AccountingService::class.java).to(AccountingServiceImpl::class.java).`in`(Singleton::class.java)
         bind(HelpService::class.java).to(HelpService::class.java).`in`(Singleton::class.java)

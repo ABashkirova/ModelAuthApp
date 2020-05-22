@@ -18,7 +18,7 @@ class Container(
 
     fun getHelpService(): HelpService = injector.getInstance(HelpService::class.java)
 
-    fun getAuthenticationService(): AuthenticationService? =injector.getInstance(AuthenticationService::class.java)
+    fun getAuthenticationService(): AuthenticationService? =injector.getInstance(AuthenticationServiceImpl::class.java)
 
     fun getAuthorizationService(): AuthorizationService? = injector.getInstance(AuthorizationService::class.java)
 

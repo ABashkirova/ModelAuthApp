@@ -30,7 +30,7 @@ object AuthenticationServiceSpec : Spek({
             } returns userSasha
 
             Given("Set repository") {
-                authService = AuthenticationService(userRepositoryMock)
+                authService = AuthenticationServiceImpl(userRepositoryMock)
             }
 
             Then("it should be exist") {
@@ -50,7 +50,7 @@ object AuthenticationServiceSpec : Spek({
             } returns null
 
             Given("Set repository") {
-                authService = AuthenticationService(userRepositoryMock)
+                authService = AuthenticationServiceImpl(userRepositoryMock)
             }
 
             Then("it should be not exist of vasya") {
@@ -69,7 +69,7 @@ object AuthenticationServiceSpec : Spek({
             )
             Given("Set repository") {
                 val userRepositoryMock = mockk<UserRepository>()
-                authService = AuthenticationService(userRepositoryMock)
+                authService = AuthenticationServiceImpl(userRepositoryMock)
             }
             Then("it should be verified for sasha pass 123") {
                 assertTrue(authService.verifyPass(user, "123"))
