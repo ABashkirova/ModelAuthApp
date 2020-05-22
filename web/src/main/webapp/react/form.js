@@ -190,8 +190,15 @@ class Form extends React.Component {
             .then(result => {
                   alert(JSON.stringify(result))
             })
+            .then(this.props.refreshActivities(100, 1)//надо получить userId и accessId из json
+            )
+
+
+        //this.props.refreshActivities(1,1)
 
     }
+
+
 
     render() {
         let formControl = "form-control"
