@@ -9,7 +9,6 @@ object Main {
     @JvmStatic
     fun main(args: Array<String>) {
         val injector = Guice.createInjector(
-            DatabaseModule(),
             ApplicationModule()
         )
         val logger = loggerOf(Main::class.java)
