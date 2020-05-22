@@ -30,6 +30,7 @@ class Application {
     private val nonCorrectActivity = "Неверная активность: "
 
     fun run(args: Array<String>): ExitCode {
+        logger.info { "Старт выполнения запроса" }
         argHandler.parse(args)
 
         val authenticationData = argHandler.getAuthenticationData()
