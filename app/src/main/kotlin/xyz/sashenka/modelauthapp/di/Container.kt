@@ -4,11 +4,7 @@ import com.google.inject.Injector
 import org.apache.logging.log4j.kotlin.KotlinLogger
 import org.apache.logging.log4j.kotlin.loggerOf
 import xyz.sashenka.modelauthapp.controller.ArgHandler
-import xyz.sashenka.modelauthapp.service.AuthenticationService
-import xyz.sashenka.modelauthapp.service.AuthorizationService
-import xyz.sashenka.modelauthapp.service.HelpService
-import xyz.sashenka.modelauthapp.service.ValidatingService
-import xyz.sashenka.modelauthapp.service.AccountingService
+import xyz.sashenka.modelauthapp.service.*
 
 class Container(
     private val injector: Injector
@@ -26,6 +22,6 @@ class Container(
 
     fun getAuthorizationService(): AuthorizationService? = injector.getInstance(AuthorizationService::class.java)
 
-    fun getAccountingService(): AccountingService? = injector.getInstance(AccountingService::class.java)
+    fun getAccountingService(): AccountingService? = injector.getInstance(AccountingServiceImpl::class.java)
 
 }
