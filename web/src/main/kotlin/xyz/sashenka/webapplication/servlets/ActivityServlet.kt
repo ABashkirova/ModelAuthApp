@@ -4,7 +4,10 @@ import com.google.gson.Gson
 import com.google.inject.Inject
 import com.google.inject.Singleton
 import org.apache.logging.log4j.kotlin.KotlinLogger
+import xyz.sashenka.modelauthapp.Application
 import xyz.sashenka.modelauthapp.dao.SessionDao
+import xyz.sashenka.modelauthapp.model.ExitCode
+import xyz.sashenka.modelauthapp.model.dto.args.ArgsData
 import xyz.sashenka.modelauthapp.model.dto.db.DBUserSession
 import xyz.sashenka.webapplication.di.logger.InjectLogger
 import java.io.IOException
@@ -20,6 +23,9 @@ class ActivityServlet : HttpServlet() {
 
     @Inject
     lateinit var sessionDao: SessionDao
+
+    @Inject
+    lateinit var application: Application
 
     @InjectLogger
     lateinit var logger: KotlinLogger
@@ -50,23 +56,11 @@ class ActivityServlet : HttpServlet() {
                 "RESPONCE: $response" + "REQUEST: $request  ${request.requestURI}"
         )
 
-        if (request.requestURI.contains("/ajax/activity")) {
-            val args = arrayOf(
-                "-login", request.getParameter("login"),
-                "-pass", request.getParameter("password"),
-                "-res", request.getParameter("resource"),
-                "-role", request.getParameter("role"),
-                "-ds", request.getParameter("dateStart"),
-                "-de", request.getParameter("dateEnd"),
-                "-vol", request.getParameter("volume")
-            )
+        val requestJson = request.reader.readLine()
+        val args: ArgsData = gson.fromJson(requestJson, ArgsData::class.java)
+        val result: ExitCode = application.run(args.toArgsArray())
+        response.writer.write(gson.toJson(result))
 
-            val result = request.reader.readLine()
-            //val result = sessionDao.findById(1)
-            //val result = Application(args).run()
-            //println("result ----> $result")
-            response.writer.write(result)
-        }
     }
 
     private fun handleRequestWithEmptyParameters(response: HttpServletResponse) {
