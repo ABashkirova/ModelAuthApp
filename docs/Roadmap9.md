@@ -56,3 +56,12 @@
 | 6.3 | 20m |
 | 6.4 | 20m |
 | *Итого* | *5h* |
+
+
+## Requirements #9 WebPack
+
+1. Исследуем webpack
+2. Читаем про typescript
+3. Переписываем на typescript
+4. Собираем webpack
+5. Копируем бандл в webapp
