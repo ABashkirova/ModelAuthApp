@@ -1,0 +1,38 @@
+{
+  "name": "model-auth-app",
+  "version": "9.1.0",
+  "description": "",
+  "main": "page.js",
+  "directories": {
+    "doc": "doc",
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ABashkirova/model-auth-app"
+  },
+  "author": "ABashkirova",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ABashkirova/model-auth-app/issues"
+  },
+  "homepage": "https://abashkirova.github.io/model-auth-app/",
+  "devDependencies": {
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "source-map-loader": "^0.2.4",
+    "ts-loader": "^7.0.4",
+    "typescript": "^3.9.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
