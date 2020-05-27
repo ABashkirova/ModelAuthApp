@@ -6,7 +6,6 @@ jdk: oraclejdk8
 env:
   - DBURL=jdbc:h2:./AAA DBLOGIN=sa DBPASS=
 script:
-  - ./scripts/CREATE_BUNDLE.sh
   - ./gradlew build
 deploy:
   provider: heroku
