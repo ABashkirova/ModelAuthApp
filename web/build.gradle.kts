@@ -1,9 +1,11 @@
+import com.moowork.gradle.node.npm.NpmTask
 // web
 plugins {
     kotlin("jvm")
     id("org.gretty") version "3.0.2"
     id("com.github.johnrengelman.shadow") version "5.1.0"
     id("com.heroku.sdk.heroku-gradle") version "1.0.4"
+    id("com.moowork.node") version "1.3.1"
     jacoco
     application
 }
@@ -37,6 +39,8 @@ dependencies {
     compile(project(":app"))
 }
 
+
+
 tasks {
     shadowJar {
         manifest {
@@ -49,6 +53,29 @@ tasks {
         dependsOn(shadowJar)
     }
 
+    // Task for installing frontend dependencies in web
+    val installDependencies by registering(NpmTask::class) {
+        setArgs(listOf("install"))
+        setExecOverrides(closureOf<ExecSpec> {
+            setWorkingDir("../web")
+        })
+    }
+
+    // Task for executing build:gradle in web
+    val buildReact by registering(NpmTask::class) {
+        // Before buildWeb can run, installDependencies must run
+        dependsOn(installDependencies)
+        setArgs(listOf("run", "build"))
+        setExecOverrides(closureOf<ExecSpec> {
+            setWorkingDir("../web")
+        })
+    }
+
+    // Before build can run, buildWeb must run
+    build {
+        dependsOn(buildReact)
+    }
+
     val copyToLib by registering(Copy::class) {
         into("${rootProject.buildDir}/libs")
         from("$buildDir/libs")
@@ -59,6 +86,6 @@ tasks {
     }
 
     register("stage") {
-        dependsOn(clean, shadowJar)
+        dependsOn(clean, buildReact, shadowJar)
     }
 }
