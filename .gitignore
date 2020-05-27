@@ -40,4 +40,5 @@ jetty-distribution-*/
 bundle.js
 node_modules
 package-lock.json
+./**/dist
 ./**/bundle.js.map
